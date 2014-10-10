@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Script to install dart sdk on a linux ubuntu system
-apt-get update
 apt-add-repository ppa:hachre/dart -y
+apt-get update
 apt-get install dartsdk -y
 
 # Install
