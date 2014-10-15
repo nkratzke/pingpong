@@ -5,8 +5,8 @@ apt-add-repository ppa:hachre/dart -y
 apt-get update
 apt-get install dartsdk -y
 
-# Commands to install siege on a linux ubuntu system
-apt-get install siege -y
+# Commands to install apache benchmark on a linux ubuntu system
+apt-get install apache2-utils -y
 
 # Install pingpong and dependencies
 pub get
