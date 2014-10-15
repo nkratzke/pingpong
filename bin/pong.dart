@@ -13,6 +13,7 @@ void main() {
     app.get("/pong/:length").listen((req) {
       int len = int.parse(req.param('length'));
       final answer = answers[len] != null ? answers[len] : answers[len] = "p".padRight(len - 2, "o") + "ng";
+      req.response.status(200);
       req.response.send(answer);
     });
 

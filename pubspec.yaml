@@ -1,5 +1,7 @@
 name: pingpong
-description: A sample command-line application
+author: Nane Kratzke
+description: A ping pong server to do load testing.
 dependencies:
+  args: any
   http: any
   start: any
