@@ -3,7 +3,7 @@ import 'ping.dart';
 import 'pong.dart';
 
 /**
- * The entry point for the docker container
+ * Entry point to start ping or pong server via docker
  */
 void main(args) {
   
