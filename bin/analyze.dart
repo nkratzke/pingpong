@@ -49,7 +49,7 @@ void main(args) {
       return
         "${getPing(document)}, " 
         "${getInt(length)}, "
-        "${getFloat(length)}, "
+        "${getFloat(testtime)}, "
         "${getInt(completed)}, "
         "${getInt(failed)}, "
         "${getInt(concurrency)}, "
