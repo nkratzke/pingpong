@@ -7,14 +7,7 @@ import 'package:args/args.dart';
 /**
  * Starts the ping server.
  */
-void startPingServer(args) {
-  // Command line options for the ping server
-  final options = new ArgParser();
-  options.addOption('url', abbr: 'u', defaultsTo: 'http://localhost:4040', help: 'used to specify the pong url');
-  options.addOption('port', abbr: 'p', defaultsTo: '8080', help: 'port number');
-
-  final url  = options.parse(args)['url'];             // get the url of pong server
-  final port = int.parse(options.parse(args)['port']); // get the port number of ping server
+void startPingServer(url, port) {
 
   start(host: "0.0.0.0", port: port).then((app) {
     app.get("/ping/:length").listen((req) {
@@ -39,4 +32,14 @@ void startPingServer(args) {
 /**
  * Entrypoint to start the ping relay server without docker.
  */
-void main(args) => startPingServer(args);
+void main(args) {
+  // Command line options for the ping server
+  final options = new ArgParser();
+  options.addOption('url', abbr: 'u', defaultsTo: 'http://localhost:4040', help: 'used to specify the pong url');
+  options.addOption('port', abbr: 'p', defaultsTo: '8080', help: 'port number');
+
+  final url  = options.parse(args)['url'];             // get the url of pong server
+  final port = int.parse(options.parse(args)['port']); // get the port number of ping server
+  
+  startPingServer(url, port);
+}
