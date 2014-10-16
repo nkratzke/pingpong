@@ -10,7 +10,6 @@ sudo apt-get install dartsdk -y
 sudo apt-get install apache2-utils -y
 
 # Install ping and pong and dependencies
-pub install
 pub global activate ping
 pub global activate pong
 
