@@ -1,12 +1,10 @@
+library pong;
+
 import 'package:start/start.dart';
 
 final PORT = 4040; // Port number for the pong server
 
-/**
- * Entrypoint to start the pong answer server.
- */
-void main() {
-
+void startPongServer() {
   var answers = {};
 
   start(host: "0.0.0.0", port: PORT).then((app) {
@@ -19,5 +17,10 @@ void main() {
 
     print("Pong-Server is up and running, listening on port $PORT");
 
-  });
+  });  
 }
+
+/**
+ * Entrypoint to start the pong answer server without docker.
+ */
+void main() => startPongServer();

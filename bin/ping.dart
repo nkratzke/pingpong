@@ -1,13 +1,14 @@
+library ping;
+
 import 'package:start/start.dart';
 import 'package:http/http.dart' as http;
 import 'package:args/args.dart';
 
 /**
- * Entrypoint to start the ping relay server.
+ * Starts the ping server.
  */
-void main(args) {
-
-  // Command line options
+void startPingServer(args) {
+  // Command line options for the ping server
   final options = new ArgParser();
   options.addOption('url', abbr: 'u', defaultsTo: 'http://localhost:4040', help: 'used to specify the pong url');
   options.addOption('port', abbr: 'p', defaultsTo: '8080', help: 'port number');
@@ -32,5 +33,10 @@ void main(args) {
     print("Ping-Server is up and running, Listening on port $port");
     print("Pong-Server assumed to be reachable at $url");
 
-  });
+  });  
 }
+
+/**
+ * Entrypoint to start the ping relay server without docker.
+ */
+void main(args) => startPingServer(args);
