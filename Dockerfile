@@ -2,11 +2,11 @@ FROM google/dart
 
 WORKDIR /app
 
-ONBUILD ADD pubspec.yaml /app/
-ONBUILD ADD pubspec.lock /app/
-ONBUILD RUN pub get
-ONBUILD ADD . /app/
-ONBUILD RUN pub get
+ADD pubspec.yaml /app/
+ADD pubspec.lock /app/
+RUN pub get
+ADD . /app/
+RUN pub get
 
 CMD []
 ENTRYPOINT ["/usr/bin/dart", "/app/bin/server.dart"]
