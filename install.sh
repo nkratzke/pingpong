@@ -2,11 +2,9 @@
 
 # Commands to set up and install dart from the stable channel
 sudo apt-get update
-sudo apt-get install apt-tansport-https
-sudo sh -c 'curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -'
-sudo sh -c 'curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
+sudo apt-add-repository ppa:hachre/dart
 sudo apt-get update
-apt-get install dart -y
+apt-get install dart-sdk -y
 
 # Commands to install apache benchmark
 apt-get install apache2-utils -y
