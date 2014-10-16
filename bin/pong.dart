@@ -2,7 +2,7 @@ library pong;
 
 import 'package:start/start.dart';
 
-final PORT = 4040; // Port number for the pong server
+final PORT = 8080; // Port number for the pong server
 
 void startPongServer() {
   var answers = {};
