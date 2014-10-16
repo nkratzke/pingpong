@@ -15,9 +15,9 @@ void main(args) {
   options.addFlag('asPing', defaultsTo: false, negatable: false, help: 'used to start server as ping server');
   final flags = options.parse(args);
   
-  final url  = options.parse(args)['url'];             // get the url of pong server
-  final port = int.parse(options.parse(args)['port']); // get the port number of ping server
+  final url  = flags['url'];             // get the url of pong server
+  final port = int.parse(flags['port']); // get the port number of ping server
   
   if (flags['asPing']) startPingServer(url, port);
-  if (flags['asPong'])  startPongServer(port);
+  if (flags['asPong']) startPongServer(port);
 }
