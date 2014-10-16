@@ -1,17 +1,22 @@
 #!/bin/sh
 
-# Commands to install dart sdk on a linux ubuntu system
-apt-add-repository ppa:hachre/dart -y
-apt-get update
-apt-get install dartsdk -y
+# Commands to set up and install dart from the stable channel
+sudo apt-get update
+sudo apt-get install apt-tansport-https
+sudo sh -c 'curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -'
+sudo sh -c 'curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
+sudo apt-get update
+apt-get install dart -y
 
-# Commands to install apache benchmark on a linux ubuntu system
+# Commands to install apache benchmark
 apt-get install apache2-utils -y
 
-# Install pingpong and dependencies
-pub get
+# Install ping and pong and dependencies
+pub install
+pub global activate ping
+pub global activate pong
 
 # Report finished installation
-echo "Now you can run 'dart bin/ping.dart' to start the ping server"
-echo "or you can run 'dart bin/pong.dart' to start the pong server."
+echo "Now you can run 'ping' to start the ping server"
+echo "or you can run 'pong' to start the pong server."
 echo "Furthermore, you can run 'run.sh' to benchmark your pingpong deployment."
