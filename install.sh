@@ -4,10 +4,10 @@
 sudo apt-get update
 sudo apt-add-repository ppa:hachre/dart
 sudo apt-get update
-apt-get install dart-sdk -y
+sudo apt-get install dart-sdk -y
 
 # Commands to install apache benchmark
-apt-get install apache2-utils -y
+sudo apt-get install apache2-utils -y
 
 # Install ping and pong and dependencies
 pub install
