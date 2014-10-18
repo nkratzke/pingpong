@@ -49,16 +49,16 @@ String extractAndTagData(String log, String tag) {
 
   // Return a csv line by applying the matchers
   return
-    "${getPing(document)}, "
-    "${getInt(length)}, "
-    "${getFloat(testtime)}, "
-    "${getInt(completed)}, "
-    "${getInt(failed)}, "
-    "${getInt(concurrency)}, "
-    "${getInt(data)}, "
-    "${getFloat(rps)}, "
-    "${getFloat(trans)}, "
-    "$tag";
+    '"${tag.trim()}",'
+    '"${getPing(document)}",'
+    '"${getInt(length)}",'
+    '"${getFloat(testtime)}",'
+    '"${getInt(completed)}",'
+    '"${getInt(failed)}",'
+    '"${getInt(concurrency)}",'
+    '"${getInt(data)}",'
+    '"${getFloat(rps)}",'
+    '"${getFloat(trans)}"';
 }
 
 /**
@@ -67,7 +67,7 @@ String extractAndTagData(String log, String tag) {
  */
 void main(args) {
 
-  // Command line options for the ping server
+  // Command line options for the analyze script
   final options = new ArgParser();
   options.addOption('tag', abbr: 't', defaultsTo: '', help: 'used to tag a dataset');
 
@@ -76,7 +76,8 @@ void main(args) {
   final files = params.rest; // Files to process
 
   // Processes a set of given files.
-  // Tags are assigned according to the order specified by the tag parameter
+  // Tags are assigned according to the order specified by the parameter --tag
+  // --tag=tag1,tag2,tag2,tag3
   var count = 0;
   final reads = files.map((fname) {
     final file = new File(fname);
@@ -85,7 +86,7 @@ void main(args) {
     final Future<String> read  = file.readAsString().then((log) {
       final tag = tags.elementAt(item % tags.length);
       final csv = log.split("This is ApacheBench,")
-                     .map((data) => extractAndTagData(data, tag))
+                     .map((data) => extractAndTagData(data, tag.trim()))
                      .where((data) => data.isNotEmpty)
                      .join("\n");
       return csv;
@@ -96,6 +97,7 @@ void main(args) {
 
   Future.wait(reads).then((csvs) {
     final head = [
+     "Tag",
      "Document Path",
      "Document Length",
      "Time taken for tests",
@@ -105,8 +107,7 @@ void main(args) {
      "Total transferred",
      "Requests per second (mean)",
      "Transfer rate",
-     "Tag"
-    ].join(", ");
+    ].join(",");
 
     print("$head\n${csvs.join("\n")}"); // Generates the csv string
   });
