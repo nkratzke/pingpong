@@ -1,23 +1,44 @@
 #!/bin/bash
 
 # Run the experiment against
-
+# You have to specify your ping host here!
 URL=http://my.host.com/ping
 
-# Starts the experiment with following amount of concurrent users.
-for USER in 50
+# Each experiment should be done with following amount of concurrent users.
+USER=50
+
+# Repeat each benchmarking run 10 times
+for round in $(seq 1 10)
 do
 
-  # each requesting messages of length (in bytes)
-  for LEN in 10 50 100 500 1000 5000 10000 50000 100000 500000 1000000
+  # Small message sizes (10, 20, ... 100) bytes
+  for LEN in $(seq 10 10 100)
   do
+    ab -c $USER -n 1000 $URL/$LEN >> apachebench.log
+  done
 
-    # run each benchmark 10 times
-    for round in $(seq 1 10)
-    do
-      ab -c $USER -n 1000 $URL/$LEN >> apachebench.log
-    done
+  # Sub kilobyte message sizes (100, 200, ..., 1000) bytes
+  for LEN in $(seq 100 100 1000)
+  do
+    ab -c $USER -n 1000 $URL/$LEN >> apachebench.log
+  done
 
+  # kilobyte message sizes (1000, 2000, ..., 10000) bytes
+  for LEN in $(seq 1000 1000 10000)
+  do
+    ab -c $USER -n 1000 $URL/$LEN >> apachebench.log
+  done
+
+  # 10 kByte message sizes (10kB, 20kB, ..., 100kB)
+  for LEN in $(seq 10000 10000 100000)
+  do
+    ab -c $USER -n 1000 $URL/$LEN >> apachebench.log
+  done
+
+  # 100kByte messages sizes (100kB, 200kB, ..., 500kB)
+  for LEN in $(seq 100000 100000 500000)
+  do
+    ab -c $USER -n 1000 $URL/$LEN >> apachebench.log
   done
 
 done
