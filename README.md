@@ -1,7 +1,7 @@
 pingpong
 ========
 
-A Ping Pong Server for test and benchmarking purposes.
+A Ping Pong Server for test and benchmarking purposes of http requests.
 
 The intended usage of this package is to run two hosts. Host 1 runs a ping server questioning a pong server (on host 2) for the answer. Ping and pong build a very simple distributed system.
 
