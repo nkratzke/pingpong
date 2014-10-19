@@ -18,4 +18,12 @@ So the following answers would be generated for following requests by host 2:
 
 So we can vary the message size (and therefore the network load) between host 1 and host 2.
 
-This setting shall be used to analyse the impact of infrastructures where host 1 and host 2 are running on.
+This setting shall be used to analyse the impact of infrastructures where host 1 and host 2 are running on. The deployment above stays the same for every experiment. Just the underlying infrastructure of host 1 and host 2 changes. Thererfore variations of benchmark results can be assigned to changing infrastructures.
+
+For example you could be interested of the impact by several deployment strategies. IaaS cloud service providers normally provide options to deploy hosts into the same zone, into the same region or even into different regions. Normally network performance decreases from within zone to cross-zone and to cross-region. But how big is this impact?
+
+To figure this out you can derive several experiments for example with Amazon Web Services EC2 service.
+
+- Your reference data could be to deploy host 1, host 2 into the same AWS availability zone (assumed to show best network performance).
+- Your first experiment could be to deploy host and host 2 into different availability zones to measure a cross-zone impact of deployments (assumed to show middle network performance).
+- Your second experiment could be to deploy host 1 and host 2 into different regions to measure a cross-region impact of deployments (assumed to show worst network performance).
