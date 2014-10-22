@@ -11,7 +11,7 @@ sudo apt-get install apache2-utils docker.io conntrack -y
 
 # Commands to install weave
 sudo wget -O /usr/local/bin/weave \
-  https://raw.githubusercontent.com/zettio/weave/master/weaver/weave
+  https://raw.githubusercontent.com/zettio/weave/master/weave
 sudo chmod a+x /usr/local/bin/weave
 
 # Install ping and pong and dependencies
