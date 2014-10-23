@@ -21,7 +21,8 @@ String extractAndTagData(String log, String tag) {
     line.startsWith("Concurrency Level:") ||
     line.startsWith("Total transferred:") ||
     line.startsWith("Requests per second:") ||
-    line.startsWith("Transfer rate:")
+    line.startsWith("Transfer rate:") ||
+    line.endsWith("(mean, across all concurrent requests)")
   );
 
   if (lines.isEmpty) return ""; // Skip non successfull benchmark runs (they are empty)
@@ -36,6 +37,7 @@ String extractAndTagData(String log, String tag) {
   final data = lines.where((String line) => line.startsWith("Total transferred:")).first;
   final rps = lines.where((String line) => line.startsWith("Requests per second:")).first;
   final trans = lines.where((String line) => line.startsWith("Transfer rate:")).first;
+  final tpr = lines.where((String line) => line.startsWith("Time per request:")).first;
 
   // Define some regular expression matchers to read data
   final pingMatcher = new RegExp(r'/ping/\d+');
@@ -58,7 +60,8 @@ String extractAndTagData(String log, String tag) {
     '"${getInt(concurrency)}",'
     '"${getInt(data)}",'
     '"${getFloat(rps)}",'
-    '"${getFloat(trans)}"';
+    '"${getFloat(trans)}",'
+    '"${getFloat(tpr)}"';
 }
 
 /**
@@ -107,6 +110,7 @@ void main(args) {
      "Total transferred",
      "Requests per second (mean)",
      "Transfer rate",
+     "Time per request"
     ].join(",");
 
     print("$head\n${csvs.join("\n")}"); // Generates the csv string
