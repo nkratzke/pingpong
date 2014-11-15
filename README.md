@@ -37,7 +37,7 @@ This will install dart runtime and development environment, apachebench, docker 
 First step is to start the _pong_ service on the _pong_ host. This will start the _pong_ service on the host on port 8080.
 
 ```
-sudo dart bin/pong.dart -port=8080
+sudo dart bin/pong.dart --port=8080
 ```
 
 You want to check wether the _pong_ service is working correctly by checking that 
@@ -50,11 +50,19 @@ answers with 'poong'.
 
 ### Set up the ping
 
-Second step is to start the _pong_ service on the _pong_ host. This will start the _pong_ service on the host on port 8080.
+Second step is to start the _ping_ service on the _ping_ host. This will start the _ping_ service on the host on port 8080.
 
 ```
-sudo dart bin/pong.dart -port=8080
+sudo dart bin/ping.dart --port=8080 --url=http://<pongip>:8080
 ```
+
+You want to check wether the _ping_ service is started and able to communicate with the _pong_ service by checking that 
+
+```
+curl http://localhost:8080/5
+```
+
+answers with 'poong'.
 
 ### Set up the siege
 
