@@ -20,6 +20,14 @@ So we can vary the message size (and therefore the network load) between _ping_ 
 
 This setting shall be used to analyse the impact of infrastructures where _ping_ and _pong_ services are running on. The deployment above stays the same for every experiment. Just the underlying infrastructure of _ping_ and _pong_ changes. Thererfore variations of benchmark results can be assigned to changing infrastructures.
 
-## How to set up a experiment
+## Set up a benchmark experiment
+
+### Set up the pong
+
+### Set up the ping
+
+### Set up the siege
+
+
 
 
