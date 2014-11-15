@@ -63,7 +63,7 @@ pong:$ curl http://localhost:8080/pong/5
 
 answers with 'poong'.
 
-Please figure out the IP adress or DNS name the your pong host. We will refer to it as <code><pongip></code>. 
+Please figure out the IP adress or DNS name the your pong host. We will refer to it as <code>&lt;pongip&gt;</code>. 
 
 ### On the ping host: Set up the _ping service_
 
@@ -88,7 +88,7 @@ ping:$ curl http://localhost:8080/ping/5
 
 answers with 'poong'.
 
-Please figure out the IP adress or DNS name the your pong host. We will refer to it as <code><pingip></code>. 
+Please figure out the IP adress or DNS name the your pong host. We will refer to it as <code>&lt;pingip&gt;</code>. 
 
 ### On the siege host: set up the benchmark
 
