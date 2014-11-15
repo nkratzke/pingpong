@@ -68,6 +68,7 @@ Please figure out the IP adress or DNS name the your pong host. We will refer to
 ### On the ping host: Set up the _ping service_
 
 Second step is to start the _ping_ service on the _ping_ host. This will start the _ping_ service on the host on port 8080.
+You will have to provide the _ping_ service where it will find its _pong_ service by providing <code>&lt;pongip&gt;</code> and port number you have assigned to the _pong_ service above.
 
 ```
 ping:$ sudo dart bin/ping.dart --port=8080 --url=http://<pongip>:8080
