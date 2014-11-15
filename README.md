@@ -22,7 +22,7 @@ This setting shall be used to analyse the impact of infrastructures where _ping_
 
 ## Set up a benchmark experiment
 
-To do a benchmark you have to set up a _siege_, a_ping_ and a _pong_ host. We assume these are Linux hosts with git, apt-get, wget and curl installed. Install this package on all of this three hosts by running following commands.
+To do a benchmark you have to set up a _siege_, a _ping_ and a _pong_ host. We assume these are Linux hosts with git, apt-get, wget and curl installed. Install this package on all of this three hosts by running following commands.
 
 ```
 git clone https://github.com/nkratzke/pingpong.git
@@ -40,7 +40,7 @@ docker build -t pingpong github.com/nkratzke/pingpong
 
 Please be aware, that the dockerized ping-pong system will not show the same performance like a "naked" run ping-pong system.
 
-### On the pong host: Set up the pong service
+### On the pong host: Set up the _pong service_
 
 First step is to start the _pong_ service on the _pong_ host. This will start the _pong_ service on the host on port 8080.
 
@@ -63,7 +63,9 @@ pong:$ curl http://localhost:8080/pong/5
 
 answers with 'poong'.
 
-### On the ping host: Set up the ping service
+Please figure out the IP adress or DNS name the your pong host. We will refer to it as <code><pongip></code>. 
+
+### On the ping host: Set up the _ping service_
 
 Second step is to start the _ping_ service on the _ping_ host. This will start the _ping_ service on the host on port 8080.
 
@@ -85,6 +87,8 @@ ping:$ curl http://localhost:8080/ping/5
 ```
 
 answers with 'poong'.
+
+Please figure out the IP adress or DNS name the your pong host. We will refer to it as <code><pingip></code>. 
 
 ### On the siege host: set up the benchmark
 
