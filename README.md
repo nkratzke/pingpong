@@ -86,7 +86,7 @@ ping:$ curl http://localhost:8080/5
 
 answers with 'poong'.
 
-### On the siege host: set up the siege
+### On the siege host: set up the benchmark
 
 
 
