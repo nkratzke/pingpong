@@ -32,6 +32,14 @@ sudo sh ./install.sh
 
 This will install dart runtime and development environment, apachebench, docker as well as the docker overlay network weave.
 
+It is possible to run the _ping_ and _pong_ service as a docker container. Therefore you have to build a pingpong image on your _ping_ and _pong_ hosts, like that:
+
+```
+docker build -t pingpong github.com/nkratzke/pingpong
+```
+
+Please be aware, that the dockerized ping-pong system will not show the same performance like a "naked" run ping-pong system.
+
 ### Set up the pong
 
 First step is to start the _pong_ service on the _pong_ host. This will start the _pong_ service on the host on port 8080.
