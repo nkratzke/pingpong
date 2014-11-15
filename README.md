@@ -22,7 +22,7 @@ This setting shall be used to analyse the impact of infrastructures where _ping_
 
 ## Set up a benchmark experiment
 
-To do a benchmark you have to set up a _siege_, a_ping_ and a _pong_ host. We assume these are Linux hosts with git, apt-get, wget and curl installed. Install this package by running following commands.
+To do a benchmark you have to set up a _siege_, a_ping_ and a _pong_ host. We assume these are Linux hosts with git, apt-get, wget and curl installed. Install this package on all of this three hosts by running following commands.
 
 ```
 git clone https://github.com/nkratzke/pingpong.git
@@ -40,39 +40,53 @@ docker build -t pingpong github.com/nkratzke/pingpong
 
 Please be aware, that the dockerized ping-pong system will not show the same performance like a "naked" run ping-pong system.
 
-### Set up the pong
+### On the pong host: Set up the pong service
 
 First step is to start the _pong_ service on the _pong_ host. This will start the _pong_ service on the host on port 8080.
 
 ```
-sudo dart bin/pong.dart --port=8080
+pong:$ sudo dart bin/pong.dart --port=8080
+```
+
+It is although possible to run the pong server as docker container (you will have performance impacts):
+
+```
+pong:$ docker build -t pingpong github.com/nkratzke/pingpong
+pong:$ docker run -d -p 8080:8080 pingpong --asPong --port=8080
 ```
 
 You want to check wether the _pong_ service is working correctly by checking that 
 
 ```
-curl http://localhost:8080/5
+pong:$ curl http://localhost:8080/5
 ```
 
 answers with 'poong'.
 
-### Set up the ping
+### On the ping host: Set up the ping service
 
 Second step is to start the _ping_ service on the _ping_ host. This will start the _ping_ service on the host on port 8080.
 
 ```
-sudo dart bin/ping.dart --port=8080 --url=http://<pongip>:8080
+ping:$ sudo dart bin/ping.dart --port=8080 --url=http://<pongip>:8080
+```
+
+It is although possible to run the ping server as docker container (you will have performance impacts):
+
+```
+pong:$ docker build -t pingpong github.com/nkratzke/pingpong
+pong:$ docker run -d -p 8080:8080 pingpong --asPing --port=8080 --url=http://<pongip>:8080
 ```
 
 You want to check wether the _ping_ service is started and able to communicate with the _pong_ service by checking that 
 
 ```
-curl http://localhost:8080/5
+ping:$ curl http://localhost:8080/5
 ```
 
 answers with 'poong'.
 
-### Set up the siege
+### On the siege host: set up the siege
 
 
 
