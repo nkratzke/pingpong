@@ -22,15 +22,39 @@ This setting shall be used to analyse the impact of infrastructures where _ping_
 
 ## Set up a benchmark experiment
 
-To do a benchmark you have to set up a _siege_, a_ping_ and a _pong_ host. We assume these are Linux hosts with git installed.
+To do a benchmark you have to set up a _siege_, a_ping_ and a _pong_ host. We assume these are Linux hosts with git, apt-get, wget and curl installed. Install this package by running following commands.
 
 ```
-git clone 
+git clone https://github.com/nkratzke/pingpong.git
+cd pingpong
+sudo sh ./install.sh
 ```
+
+This will install dart runtime and development environment, apachebench, docker as well as the docker overlay network weave.
 
 ### Set up the pong
 
+First step is to start the _pong_ service on the _pong_ host. This will start the _pong_ service on the host on port 8080.
+
+```
+sudo dart bin/pong.dart -port=8080
+```
+
+You want to check wether the _pong_ service is working correctly by checking that 
+
+```
+curl http://localhost:8080/5
+```
+
+answers with 'poong'.
+
 ### Set up the ping
+
+Second step is to start the _pong_ service on the _pong_ host. This will start the _pong_ service on the host on port 8080.
+
+```
+sudo dart bin/pong.dart -port=8080
+```
 
 ### Set up the siege
 
