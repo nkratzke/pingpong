@@ -3,7 +3,7 @@ pingpong
 
 A distributed HTTP-based and REST-like ping-pong system for test and benchmarking purposes.
 
-The intended usage of this package is to run two hosts. Host 1 runs a _ping_ service querying a _pong_ service (on host 2) for the answer. _Ping_ and _pong_ build a very simple distributed system.
+The intended usage of this package is to run two hosts which are queried (benchmarked) by a third host (the _siege_). Host 1 runs a _ping_ service querying a _pong_ service (on host 2) for the answer. _Ping_ and _pong_ build a very simple distributed system.
 
 <img src="experiment.png" width=100%>
 
