@@ -22,6 +22,12 @@ This setting shall be used to analyse the impact of infrastructures where _ping_
 
 ## Set up a benchmark experiment
 
+To do a benchmark you have to set up a _siege_, a_ping_ and a _pong_ host. We assume these are Linux hosts with git installed.
+
+```
+git clone 
+```
+
 ### Set up the pong
 
 ### Set up the ping
