@@ -58,7 +58,7 @@ pong:$ docker run -d -p 8080:8080 pingpong --asPong --port=8080
 You want to check wether the _pong_ service is working correctly by checking that 
 
 ```
-pong:$ curl http://localhost:8080/5
+pong:$ curl http://localhost:8080/pong/5
 ```
 
 answers with 'poong'.
@@ -81,7 +81,7 @@ pong:$ docker run -d -p 8080:8080 pingpong --asPing --port=8080 --url=http://<po
 You want to check wether the _ping_ service is started and able to communicate with the _pong_ service by checking that 
 
 ```
-ping:$ curl http://localhost:8080/5
+ping:$ curl http://localhost:8080/ping/5
 ```
 
 answers with 'poong'.
