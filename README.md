@@ -20,12 +20,6 @@ So we can vary the message size (and therefore the network load) between _ping_ 
 
 This setting shall be used to analyse the impact of infrastructures where _ping_ and _pong_ services are running on. The deployment above stays the same for every experiment. Just the underlying infrastructure of _ping_ and _pong_ changes. Thererfore variations of benchmark results can be assigned to changing infrastructures.
 
-For example you could be interested of the impact by several deployment strategies. IaaS cloud service providers normally provide options to deploy hosts into the same zone, into the same region or even into different regions. Normally network performance decreases from within zone to cross-zone and to cross-region. But how big is this impact?
+## How to set up a experiment
 
-To figure this out you can derive several experiments for example with Amazon Web Services EC2 service.
 
-- Your reference data could be to deploy _ping_ and _pong_ into the same AWS availability zone (assumed to show best network performance).
-- Your first experiment could be to deploy _ping_ and _pong_ into different availability zones to measure a cross-zone impact of deployments (assumed to show middle network performance, in fact you have neglible impacts according to our experience).
-- Your second experiment could be to deploy _ping_ and _pong_ into different regions to measure a cross-region impact of deployments (assumed to show worst network performance).
-
-In order to get fair results you should deploy _siege_ and _ping_ always into the same zone.
