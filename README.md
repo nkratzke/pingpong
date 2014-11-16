@@ -107,13 +107,10 @@ The <code>run.sh</code> script provides more parameters to vary your experiments
 - the message sizes,
 - and how often each benchmark run per message size should be executed.
 
-All benchmark results are written into a file <code>apachebench.log</code>. This log file can be processed by Dart script <code>bin/analyze.dart</code> to generate a csv file which is better suited to be imported into databases or statistical tools like R.
+All benchmark results are written into a file <code>apachebench.log</code>. This log file can be processed by <code>bin/analyze.dart</code> to generate a csv file which is better suited to be imported into databases or statistical tools like R.
 
-This works like that to convert experiment data, tag it with a name (here 'Reference') and convert it into a csv file.
+The following line converts experiment data (apachebench log format), tag it with a name (here 'Reference') and convert it into a csv file. You can use tags to distinguish different experiments for analysis.
 
 ```
 dart bin/analze.dart --tag=Reference apachebench.log > reference.csv
 ```
-
-
-
