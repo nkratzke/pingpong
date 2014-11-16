@@ -99,11 +99,15 @@ Third step you should run the benchmark to figure out the answer performance of 
 # Run the experiment against
 # You have to specify your ping host here!
 URL=http://my.host.com/ping
-
-# Each experiment should be done with following amount of concurrent users.
-USER=50
 ```
 
+The <code>run.sh</code> script provides more parameters to vary your experiments. You can change 
+
+- the amount of concurrent messages,
+- the message sizes,
+- and how often each benchmark run per message size should be executed.
+
+All benchmark results are written into a file <code>apachebench.log</code>. 
 
 
 
