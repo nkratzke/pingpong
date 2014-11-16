@@ -23,7 +23,7 @@ do
     ab -c $USER -n 1000 $URL/$LEN >> apachebench.log
   done
 
-  # kilobyte message sizes (1000, 2000, ..., 20000) bytes
+  # kilobyte message sizes (1000, 2000, ..., 10000) bytes
   for LEN in $(seq 1000 1000 10000)
   do
     ab -c $USER -n 1000 $URL/$LEN >> apachebench.log
