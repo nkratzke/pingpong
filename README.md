@@ -48,7 +48,7 @@ First step is to start the _pong_ service on the _pong_ host. This will start th
 pong:$ sudo dart bin/pong.dart --port=8080
 ```
 
-It is although possible to run the pong server as docker container (you will have performance impacts):
+It is although possible to run the pong server as docker container (you will have performance impacts of about 10% to 20%):
 
 ```
 pong:$ docker build -t pingpong github.com/nkratzke/pingpong
@@ -74,7 +74,7 @@ You will have to provide the _ping_ service where it will find its _pong_ servic
 ping:$ sudo dart bin/ping.dart --port=8080 --url=http://<pongip>:8080
 ```
 
-It is although possible to run the ping server as docker container (you will have performance impacts):
+It is although possible to run the ping server as docker container (you will have performance impacts of about 10% to 20%):
 
 ```
 pong:$ docker build -t pingpong github.com/nkratzke/pingpong
@@ -91,7 +91,18 @@ answers with 'poong'.
 
 Please figure out the IP adress or DNS name the your pong host. We will refer to it as <code>&lt;pingip&gt;</code>. 
 
-### On the siege host: set up the benchmark
+### On the siege host: set up apachebench
+
+Third step you should run the benchmark to figure out the answer performance of your ping-pong system. On your _siege_ host you will find a <code>run.sh</code> script to start your benchmark. You should replace <code>http://my.host.com/ping</code> with <code>http://&lt;pingip&gt;:8080/ping</code> to provide the script the correct ping service uri.
+
+```
+# Run the experiment against
+# You have to specify your ping host here!
+URL=http://my.host.com/ping
+
+# Each experiment should be done with following amount of concurrent users.
+USER=50
+```
 
 
 
