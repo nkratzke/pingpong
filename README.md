@@ -89,14 +89,13 @@ ping:$ curl http://localhost:8080/ping/5
 
 answers with 'poong'.
 
-Please figure out the IP adress or DNS name the your pong host. We will refer to it as <code>&lt;pingip&gt;</code>. 
+Please figure out the IP adress or DNS name the your ping host. We will refer to it as <code>&lt;pingip&gt;</code>. 
 
 ### On the siege host: set up apachebench
 
 Third step you should run the benchmark to figure out the answer performance of your ping-pong system. On your _siege_ host you will find a <code>run.sh</code> script to start your benchmark. You should replace <code>http://my.host.com/ping</code> with <code>http://&lt;pingip&gt;:8080/ping</code> to provide the script the correct ping service uri.
 
 ```
-# Run the experiment against
 # You have to specify your ping host here!
 URL=http://my.host.com/ping
 ```
@@ -112,5 +111,5 @@ All benchmark results are written into a file <code>apachebench.log</code>. This
 The following line converts experiment data (apachebench log format), tag it with a name (here 'Reference') and convert it into a csv file. You can use tags to distinguish different experiments for analysis.
 
 ```
-dart bin/analze.dart --tag=Reference apachebench.log > reference.csv
+dart bin/analyze.dart --tag=Reference apachebench.log > reference.csv
 ```
