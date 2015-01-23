@@ -11,7 +11,10 @@ void startPingServer(url, port) {
 
   start(host: "0.0.0.0", port: port).then((app) {
     app.get("/ping/:length").listen((req) {
-      int len = int.parse(req.param('length'));
+      int len = int.parse(req.param('length'), onError: (len) {
+        print("A message of undefined length has been requested ('$len'). Switching to standard length 4 ('pong')");
+        return 4;
+      });
 
       http.get("$url/pong/$len").then((response) {
         req.response.status(200);
@@ -26,7 +29,7 @@ void startPingServer(url, port) {
     print("Ping-Server is up and running, Listening on port $port");
     print("Pong-Server assumed to be reachable at $url");
 
-  });  
+  });
 }
 
 /**
@@ -40,6 +43,6 @@ void main(args) {
 
   final url  = options.parse(args)['url'];             // get the url of pong server
   final port = int.parse(options.parse(args)['port']); // get the port number of ping server
-  
+
   startPingServer(url, port);
 }
