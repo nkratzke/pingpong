@@ -35,8 +35,8 @@ do
     ab -c $USER -n 1000 $URL/$LEN >> apachebench.log
   done
 
-  # 100kByte messages sizes (300kB, 400kB, ..., 1000kB)
-  for LEN in $(seq 300000 100000 1000000)
+  # 100kByte messages sizes (300kB, 400kB, ..., 500kB)
+  for LEN in $(seq 300000 100000 500000)
   do
     ab -c $USER -n 1000 $URL/$LEN >> apachebench.log
   done

@@ -15,6 +15,7 @@ void startPongServer(port) {
         print("A message of undefined length has been requested. Switching to default message 'pong'.");
         return 4;
       });
+
       final answer = memory[len] != null ? memory[len] : memory[len] = "p".padRight(len - 2, "o") + "ng";
       req.response.status(200);
       req.response.send(answer);
