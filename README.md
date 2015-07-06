@@ -113,3 +113,13 @@ The following line converts experiment data (apachebench log format), tag it wit
 ```
 dart bin/analyze.dart --tag=Reference apachebench.log > reference.csv
 ```
+
+### Measuring the impact of SDN solutions
+
+SDN solutions like weave show additional performance impacts. You can use this ping-pong system to measure this impact. Therefore you have
+
+1. Create your SDN network (solution specific, for weave this works like [that](http://weave.works/guides/weave-docker-ubuntu-simple.html))
+2. Attach your ping host container to the SDN network (solution specific, for weave this works like [that](http://weave.works/guides/weave-docker-ubuntu-simple.html))
+3. Attach your pong host container to the SDN network (solution specific, for weave this works like [that](http://weave.works/guides/weave-docker-ubuntu-simple.html))
+4. Run the benchmark script on the siege host as described above
+
