@@ -116,7 +116,7 @@ dart bin/analyze.dart --tag=Reference apachebench.log > reference.csv
 
 ### Measuring the impact of SDN solutions
 
-SDN solutions like weave show additional performance impacts. You can use this ping-pong system to measure this impact. Therefore you have
+SDN solutions like [weave](http://weave.works/) show additional performance impacts. You can use this ping-pong system to measure this impact. Therefore you have
 
 1. Create your SDN network (solution specific, for weave this works like [that](http://weave.works/guides/weave-docker-ubuntu-simple.html))
 2. Attach your ping host container to the SDN network (solution specific, for weave this works like [that](http://weave.works/guides/weave-docker-ubuntu-simple.html))
