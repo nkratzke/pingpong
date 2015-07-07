@@ -1,15 +1,18 @@
 #!/bin/sh
 
-# Commands to set up and install dart from the stable channel
+# Install dart from the stable channel
 sudo apt-get update
 sudo apt-add-repository ppa:hachre/dart
 sudo apt-get update
 sudo apt-get install dartsdk -y
 
-# Commands to install apache benchmark, docker, conntrack
-sudo apt-get install apache2-utils docker.io conntrack -y
+# Install apache benchmark, conntrack
+sudo apt-get install apache2-utils conntrack -y
 
-# Commands to install weave
+# Install docker
+wget -qO- https://get.docker.com/ | sh
+
+# Install weave
 sudo curl -L git.io/weave -o /usr/local/bin/weave
 sudo chmod a+x /usr/local/bin/weave
 
