@@ -17,36 +17,38 @@ ponghostip=$4
 function bare {
 
 	case "$1"
-	
-	ping) sudo dart bin/ping.dart --port=8080 -url="http://$2:8080"
-		  ;;
-		  
 	pong) sudo dart bin/pong.dart --port=8080
 	      ;;
 	
+	ping) sudo dart bin/ping.dart --port=8080 -url="http://$2:8080"
+		  ;;
 	esac
 }
 
 function docker {
 
 	case "$1"
+	pong) sudo docker build -t pingpong .
+	      sudo docker run -d -p 8080:8080 pingpong --asPong --port=8080
+	      ;;
 	
 	ping) sudo docker build -t pingpong .
 	      sudo docker run -d -p 8080:8080 pingpong --asPing --port=8080 --url="http://$2:8080"
 		  ;;
-	pong) sudo docker build -t pingpong .
-	      sudo docker run -d -p 8080:8080 pingpong --asPong --port=8080
-	      ;;
 	esac
 }
 
 function weave {
 	case "$1"
+	pong) sudo weave launch && sudo weave launch-dns
+	      sudo docker build -t pingpong .
+		  sudo weave run --with-dns --name=pong -d -p 8080:8080 pingpong --asPong --port=8080
+		  ;;
 	
-	ping)
-	
-	pong)
-	
+	ping) sudo weave launch "$4" && sudo weave launch-dns
+	      sudo docker build -t pingpong .
+		  sudo weave run --with-dns --name=ping -d -p 8080:8080 pingpong --asPing --port=8080 --url="http://$3:8080"
+		  ;;	
 	esac
 }
 
