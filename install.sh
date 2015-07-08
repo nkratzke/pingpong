@@ -19,7 +19,5 @@ sudo chmod a+x /usr/local/bin/weave
 # Install ping and pong and dependencies
 pub install
 
-# Report finished installation
-echo "Now you can run 'ping' to start the ping server"
-echo "or you can run 'pong' to start the pong server."
-echo "Furthermore, you can run 'run.sh' to benchmark your pingpong deployment."
+# Report finished installation calling the start script
+./start.sh
