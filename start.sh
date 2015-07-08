@@ -17,7 +17,7 @@ ponghostip=$4
 function bare {
 	case "$service" in
 	pong) sudo dart bin/pong.dart --port=8080 ;;
-	ping) sudo dart bin/ping.dart --port=8080 -url="http://$:8080" ;;
+	ping) sudo dart bin/ping.dart --port=8080 --url="http://$pongip:8080" ;;
 	esac
 }
 
