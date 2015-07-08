@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Run the experiment against the following host
-URL=$1
+URL="http://$1:8080/ping"
+echo "Running benchmark agains $URL"
 
 # Each experiment should be done with following amount of concurrent users.
 USER=50

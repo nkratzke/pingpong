@@ -192,7 +192,7 @@ ping:$ curl http://localhost:8080/ping/5
 answers with 'poong'.
 
 
-### On the siege host: set up apachebench
+### On the siege host: set up and run apachebench
 
 Third step you should run the benchmark to figure out the answer performance of your ping-pong system. On your _siege_ 
 host you will find a <code>run.sh</code> script to start your benchmark. 
