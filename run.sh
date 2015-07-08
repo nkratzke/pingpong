@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Run the experiment against
-# You have to specify your ping host here!
-URL=http://my.host.com/ping
+# Run the experiment against the following host
+URL="http://$1:8080/ping"
+echo "Running benchmark agains $URL"
 
 # Each experiment should be done with following amount of concurrent users.
 USER=50
