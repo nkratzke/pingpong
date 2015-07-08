@@ -212,5 +212,5 @@ All benchmark results are written into a file <code>apachebench.log</code>. This
 The following line converts experiment data (apachebench log format), tag it with a name (here 'Reference') and convert it into a csv file. You can use tags to distinguish different experiments for analysis.
 
 ```
-dart bin/analyze.dart --tag=Reference apachebench.log > reference.csv
+dart bin/analyze.dart --tag Reference apachebench.log > reference.csv
 ```
