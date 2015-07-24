@@ -5,7 +5,7 @@ URL="http://$1:8080/ping"
 echo "Running benchmark agains $URL"
 
 # Each experiment should be done with following amount of concurrent users.
-USER=50
+USER=5
 
 # Repeat each benchmarking run 20 times
 for ((round=1; round<=20; round++))
