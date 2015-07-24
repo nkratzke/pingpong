@@ -29,16 +29,17 @@ do
     ab -c $USER -n 1000 $URL/$LEN >> apachebench.log
   done
 
-  # 10 kByte message sizes (10kB, 20kB, ..., 300kB)
-  for ((LEN=10000; LEN<300000; LEN=LEN+10000))
+  # 10 kByte message sizes (10kB, 20kB, ..., 250kB)
+  for ((LEN=10000; LEN<250000; LEN=LEN+10000))
   do
     ab -c $USER -n 1000 $URL/$LEN >> apachebench.log
   done
 
+  # Most of the times not gives additional insights
   # 100kByte messages sizes (300kB, 400kB, ..., 1000kB)
-  for ((LEN=300000; LEN<=1000000; LEN=LEN+100000))
-  do
-    ab -c $USER -n 1000 $URL/$LEN >> apachebench.log
-  done
+  # for ((LEN=300000; LEN<=1000000; LEN=LEN+100000))
+  # do
+  #  ab -c $USER -n 1000 $URL/$LEN >> apachebench.log
+  # done
 
 done
