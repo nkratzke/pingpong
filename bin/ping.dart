@@ -9,21 +9,44 @@ import 'package:args/args.dart';
  */
 void startPingServer(url, port) {
 
+  int errorCounter = 0;
+
   start(host: "0.0.0.0", port: port).then((app) {
-    app.get("/ping/:length").listen((req) {
+    app.get("/ping/:length").listen((req) async {
       int len = int.parse(req.param('length'), onError: (len) {
         print("A message of undefined length has been requested ('$len'). Switching to standard length 4 ('pong')");
         return 4;
       });
 
-      http.get("$url/pong/$len").then((response) {
+      var tries = 0;
+
+      while (tries < 10) {
+        try {
+          var response = await http.get("$url/pong/$len");
+          req.response.status(200);
+          req.response.send(response.body);
+        } catch (e) {
+          print(e);
+          print("But we will retry.");
+          tries++;
+        }
+      }
+
+      if (tries >= 10) {
+        req.response.status(503);
+        req.response.send("Pong server is not answering");
+        print("$errorCounter non resolveable problem");
+        errorCounter++;
+      }
+
+      /*.then((response) {
         req.response.status(200);
         req.response.send(response.body);
       }).catchError((err) {
         print(err);
         req.response.status(503);
         req.response.send("Pong server is not answering");
-      });
+      });*/
     });
 
     print("Ping-Server is up and running, Listening on port $port");
