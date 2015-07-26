@@ -26,6 +26,7 @@ void startPingServer(url, port) {
           req.response.status(200);
           req.response.send(response.body);
           req.response.close();
+          return;
         } catch (e) {
           print(e);
           print("But we will retry.");
