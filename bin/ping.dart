@@ -25,6 +25,7 @@ void startPingServer(url, port) {
           var response = await http.get("$url/pong/$len");
           req.response.status(200);
           req.response.send(response.body);
+          req.response.close();
         } catch (e) {
           print(e);
           print("But we will retry.");
@@ -35,6 +36,7 @@ void startPingServer(url, port) {
       if (tries >= 10) {
         req.response.status(503);
         req.response.send("Pong server is not answering");
+        req.response.close();
         print("$errorCounter non resolveable problem");
         errorCounter++;
       }
