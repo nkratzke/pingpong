@@ -29,11 +29,18 @@ do
   for ((LEN=1000; LEN<10000; LEN=LEN+1000))
   do
     ab -c $USER -n 1000 $URL/$LEN >> apachebench.log
-    sleep 5 # cool down
+    sleep 7 # cool down
   done
 
-  # 10 kByte message sizes (10kB, 20kB, ..., 250kB)
-  for ((LEN=10000; LEN<260000; LEN=LEN+10000))
+  # 10 kByte message sizes (10kB, ..., 50kB)
+  for ((LEN=10000; LEN<60000; LEN=LEN+10000))
+  do
+    ab -c $USER -n 1000 $URL/$LEN >> apachebench.log
+    sleep 8 # cool down
+  done
+
+  # 10 kByte message sizes (50kB, 60kB, ..., 250kB)
+  for ((LEN=50000; LEN<260000; LEN=LEN+10000))
   do
     ab -c $USER -n 1000 $URL/$LEN >> apachebench.log
     sleep 5 # cool down
