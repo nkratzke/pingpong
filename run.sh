@@ -7,8 +7,8 @@ echo "Running benchmark agains $URL"
 # Each experiment should be done with following amount of concurrent users.
 USER=10
 
-# Repeat each benchmarking run 10 times
-for ((round=1; round<=10; round++))
+# Repeat each benchmarking run 20 times
+for ((round=1; round<=20; round++))
 do
 
   # Small message sizes (10, 20, ... 100) bytes
@@ -46,12 +46,11 @@ do
     sleep 5 # cool down
   done
 
-  # Most of the times not gives additional insights
-  # 100kByte messages sizes (300kB, 400kB, ..., 1000kB)
-  # for ((LEN=300000; LEN<=1000000; LEN=LEN+100000))
-  # do
-  #  ab -c $USER -n 1000 $URL/$LEN >> apachebench.log
-  #  sleep 10 # cool down
-  # done
+  # 100kByte messages sizes (300kB, 400kB, 500kB)
+  for ((LEN=300000; LEN<=500000; LEN=LEN+100000))
+  do
+    ab -c $USER -n 1000 $URL/$LEN >> apachebench.log
+    sleep 10 # cool down
+  done
 
 done
