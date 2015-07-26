@@ -7,7 +7,7 @@ import 'package:args/args.dart';
 /**
  * Starts the ping server.
  */
-void startPingServer(url, port) {
+void startPingServer(url, port, { maxTries: 100 }) {
 
   int errorCounter = 0;
 
@@ -19,37 +19,26 @@ void startPingServer(url, port) {
       });
 
       var tries = 0;
+      var problem;
 
-      while (tries < 10) {
+      while (tries < maxTries) {
         try {
           var response = await http.get("$url/pong/$len");
           req.response.status(200);
           req.response.send(response.body);
           req.response.close();
           return;
-        } catch (e) {
-          print(e);
-          print("But we will retry.");
-          tries++;
-        }
+        } catch (e) { problem = e; tries++; }
       }
 
-      if (tries >= 10) {
+      if (tries >= maxTries) {
         req.response.status(503);
         req.response.send("Pong server is not answering");
         req.response.close();
-        print("$errorCounter non resolveable problem");
+        print("$errorCounter non resolveable problems (Last one: $problem)");
         errorCounter++;
       }
 
-      /*.then((response) {
-        req.response.status(200);
-        req.response.send(response.body);
-      }).catchError((err) {
-        print(err);
-        req.response.status(503);
-        req.response.send("Pong server is not answering");
-      });*/
     });
 
     print("Ping-Server is up and running, Listening on port $port");
