@@ -6,8 +6,13 @@ sudo apt-add-repository ppa:hachre/dart
 sudo apt-get update
 sudo apt-get install dartsdk -y
 
-# Install apache benchmark, conntrack
-sudo apt-get install apache2-utils conntrack -y
+# Install apache benchmark, conntrack, curl
+sudo apt-get install apache2-utils conntrack curl -y
+
+# Install ruby and ppbench
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+\curl -sSL https://get.rvm.io | bash -s stable --ruby
+bundle install --gemfile=./ppbench/Gemfile
 
 # Install docker
 wget -qO- https://get.docker.com/ | sh
