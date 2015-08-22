@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
-require 'ppbench'
-
 require 'rubygems'
+
+require 'ppbench'
 require 'commander/import'
 
 program :name, 'ppbench'
