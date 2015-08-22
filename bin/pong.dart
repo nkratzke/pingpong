@@ -7,7 +7,6 @@ import 'package:args/args.dart';
  * Starts the pong server.
  */
 void startPongServer(port) {
-  var memory = {};
 
   start(host: "0.0.0.0", port: port).then((app) {
     app.get("/pong/:length").listen((req) {
@@ -16,7 +15,7 @@ void startPongServer(port) {
         return 4;
       });
 
-      final answer = memory[len] != null ? memory[len] : memory[len] = "p".padRight(len - 2, "o") + "ng";
+      final answer = "p".padRight(len - 2, "o") + "ng";
       req.response.status(200);
       req.response.send(answer);
     });
