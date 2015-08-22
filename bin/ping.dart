@@ -3,6 +3,7 @@ library ping;
 import 'package:start/start.dart';
 import 'package:http/http.dart' as http;
 import 'package:args/args.dart';
+import 'dart:convert';
 
 /**
  * Starts the ping server.
@@ -12,6 +13,58 @@ void startPingServer(url, port, { maxTries: 100 }) {
   int errorCounter = 0;
 
   start(host: "0.0.0.0", port: port).then((app) {
+
+    app.get("/mping/:length").listen((req) async {
+      int len = int.parse(req.param('length'), onError: (len) {
+        print("A message of undefined length has been requested ('$len'). Switching to standard length 4 ('pong')");
+        return 4;
+      });
+
+      var tries = 0;
+      var problem;
+
+      final start = new DateTime.now().millisecondsSinceEpoch;
+      while (tries < maxTries) {
+        try {
+          var response = await http.get("$url/pong/$len");
+          final end = new DateTime.now().millisecondsSinceEpoch;
+          final duration = end - start;
+
+          final answer = {
+            'duration': duration,
+            'length': response.contentLength,
+            'code': response.statusCode,
+            'retries': tries
+          };
+
+          req.response.status(200);
+          req.response.send(JSON.encode(answer).toString());
+          req.response.close();
+          return;
+        } catch (e) { problem = e; tries++; }
+      }
+
+      if (tries >= maxTries) {
+        final end = new DateTime.now().millisecondsSinceEpoch;
+        final duration = end - start;
+
+        final answer = {
+          'duration': duration,
+          'length': 0,
+          'code': 503,
+          'retries': tries
+        };
+
+        req.response.status(503);
+        req.response.send(JSON.encode(answer).toString());
+        req.response.close();
+        print("$errorCounter non resolveable problems (Last one: $problem)");
+        errorCounter++;
+      }
+
+
+    });
+
     app.get("/ping/:length").listen((req) async {
       int len = int.parse(req.param('length'), onError: (len) {
         print("A message of undefined length has been requested ('$len'). Switching to standard length 4 ('pong')");
