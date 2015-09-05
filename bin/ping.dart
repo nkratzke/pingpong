@@ -23,12 +23,12 @@ void startPingServer(url, port, { maxTries: 100 }) {
       var tries = 0;
       var problem;
 
-      final start = new DateTime.now().millisecondsSinceEpoch;
+      final watch = new StopWatch..start();
       while (tries < maxTries) {
         try {
           var response = await http.get("$url/pong/$len");
-          final end = new DateTime.now().millisecondsSinceEpoch;
-          final duration = end - start;
+          watch.stop();
+          final duration = watch.ellapsedMicroseconds;
 
           final answer = {
             'duration': duration,
@@ -45,11 +45,11 @@ void startPingServer(url, port, { maxTries: 100 }) {
       }
 
       if (tries >= maxTries) {
-        final end = new DateTime.now().millisecondsSinceEpoch;
-        final duration = end - start;
+        watch.stop();
+        final duration = watch.ellapsedMicroseconds;
 
         final answer = {
-          'duration': duration,
+          'duration': duration,   // Microseconds (us)
           'length': 0,
           'code': 503,
           'retries': tries

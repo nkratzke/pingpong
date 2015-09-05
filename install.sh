@@ -9,6 +9,10 @@ sudo apt-get install dartsdk -y
 # Install apache benchmark, conntrack, curl
 sudo apt-get install apache2-utils conntrack curl -y
 
+# Install Java 8
+echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+sudo apt-get install oracle-java8-installer -y
+
 # Install ruby and ppbench
 gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
 \curl -sSL https://get.rvm.io | bash -s stable --ruby

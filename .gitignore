@@ -1,14 +1,19 @@
-# Don’t commit the following directories created by pub.
+# Don’t commit the following directories for pingpong-dart
 build/
 packages/
 .buildlog
 
-# Or the files created by dart2js.
+## Files created by dart2js
 *.dart.js
 *.dart.precompiled.js
 *.js_
 *.js.deps
 *.js.map
 
-# Include when developing application packages.
+## Include when developing application packages.
 pubspec.lock
+
+
+# Don't commit the following directories for pingpong-java
+pingpong-java/.settings
+pingpong-java/bin
