@@ -29,8 +29,8 @@ wget -qO- https://get.docker.com/ | sh
 sudo curl -L git.io/weave -o /usr/local/bin/weave
 sudo chmod a+x /usr/local/bin/weave
 
-# Install ping and pong and dependencies
-pub install
+# Install ping and pong and dependencies (pingpong-dart)
+/usr/lib/dart/bin/pub install
 
 # Report finished installation calling the start script
 ./start.sh
