@@ -48,12 +48,14 @@ function weave {
 }
 
 function usage {
-	echo "'start.sh bare pong' starts the pong server in bare mode"
-	echo "'start.sh bare ping <pongip>' starts the ping server in bare mode"
-	echo "'start.sh docker pong' starts the pong server as docker container"
-	echo "'start.sh docker ping <pongip>' starts the ping server as docker container"
-	echo "'start.sh weave pong' starts the pong server as docker container and connects it to a weave SDN network"
-	echo "'start.sh weave ping <pongip> <ponghostip>' starts the ping server as docker container and connects it to a weave SDN network"
+	echo "'start.sh bare {lang}_pong' starts the pong server in bare mode"
+	echo "'start.sh bare {lang}_ping <pongip>' starts the ping server in bare mode"
+	echo "'start.sh docker {lang}_pong' starts the pong server as docker container"
+	echo "'start.sh docker {lang}_ping <pongip>' starts the ping server as docker container"
+	echo "'start.sh weave {lang}_pong' starts the pong server as docker container and connects it to a weave SDN network"
+	echo "'start.sh weave {lang}_ping <pongip> <ponghostip>' starts the ping server as docker container and connects it to a weave SDN network"
+    echo ""
+	echo "{lang} can be one of the following: java, dart"
 }
 
 case "$mode" in
