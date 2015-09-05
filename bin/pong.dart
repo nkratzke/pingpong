@@ -32,9 +32,10 @@ void main(List<String> args) {
 
   // Command line options for the ping server
   final options = new ArgParser();
-  options.addOption('port', abbr: 'p', defaultsTo: '8080', help: 'port number');
+  options.addOption('port', abbr: 'p', defaultsTo: '4040', help: 'port number');
+
 
   final flags = options.parse(args);
-  final port = int.parse(options.parse(args)['port'], onError: (_) => 8080); // get the port number for the pong server
+  final port = int.parse(flags['port'], onError: (_) => 4040); // get the port number for the pong server
   startPongServer(port);
 }
