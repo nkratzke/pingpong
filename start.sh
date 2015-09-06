@@ -19,8 +19,8 @@ function bare {
 	pong) sudo dart bin/pong.dart --port=8080 ;;
 	ping) sudo dart bin/ping.dart --port=8080 --url="http://$pongip:8080" ;;
 	
-	pong-java) sudo java --classpath pingpong-java/src Pong 8080 ;;
-	ping-java) sudo java --classpath pingpong-java/src Ping 8080 $pongip ;;
+	pong-java) sudo java -cp pingpong-java/bin Pong 8080 ;;
+	ping-java) sudo java -cp pingpong-java/bin Ping 8080 $pongip ;;
 	
 	esac
 }
