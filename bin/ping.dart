@@ -31,7 +31,7 @@ void startPingServer(url, port, { maxTries: 100 }) {
           final duration = watch.elapsedMicroseconds;
 
           final answer = {
-            'duration': duration ~/ 1000,     // Milliseconds (ms)
+            'duration': duration / 1000,     // Milliseconds (ms)
             'duration_us': duration,          // Microseconds (us)
             'length': response.contentLength,
             'code': response.statusCode,
@@ -50,7 +50,7 @@ void startPingServer(url, port, { maxTries: 100 }) {
         final duration = watch.elapsedMicroseconds;
 
         final answer = {
-          'duration': duration ~/ 1000,   // Milliseconds (ms)
+          'duration': duration / 1000,   // Milliseconds (ms)
           'duration_us': duration,       // Microseconds (us)
           'length': 0,
           'code': 503,

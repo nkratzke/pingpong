@@ -109,7 +109,7 @@ public class Ping {
 			long end = System.nanoTime();
 			
 			int responseCode = content.length == length ? 200 : 503;
-			double duration = (end - start) / 1000000.0; // milliseconds
+			double duration = (end - start) / 1000.0 / 1000.0; // nano -> micro -> milliseconds
 			String retries = answer.get("retries");
 			
 			final byte[] json = ( 
