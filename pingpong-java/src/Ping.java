@@ -101,15 +101,15 @@ public class Ping {
 		server.createContext("/mping", (HttpExchange httpExchange) -> {
 			final String[] request = httpExchange.getRequestURI().getPath().split("/");			
 			final int length = Integer.parseInt(request[2]);
-			
-			final Map<String, String> answer = get(ip, port, length);
-			
+
 			long start = System.nanoTime();
-			final byte[] content = answer.get("content").getBytes("UTF-8");
+			final Map<String, String> answer = get(ip, port, length);
 			long end = System.nanoTime();
-			
+
+			final byte[] content = answer.get("content").getBytes("UTF-8");
+
 			int responseCode = content.length == length ? 200 : 503;
-			double duration = (end - start) / 1000.0 / 1000.0; // nano -> micro -> milliseconds
+			double duration = (end - start) / 1000.0 / 1000.0; // milliseconds
 			String retries = answer.get("retries");
 			
 			final byte[] json = ( 
