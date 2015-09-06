@@ -10,6 +10,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * Ping Service of the Ping Pong System.
@@ -17,7 +19,10 @@ import java.util.concurrent.Executors;
  * @author Nane Kratzke
  */
 public class Ping {
-	
+
+	/**
+	 * Amount of retries to connect with the Pong Service.
+	 */
 	public final static int RETRIES = 100;
 	
 	private static Map<String, String> get(String host, int port, int length) {
@@ -47,9 +52,6 @@ public class Ping {
 	}
 
 	/**
-	 */
-	
-	/**
 	 * Implements the ping handling for the Ping Service
 	 * @param server Server object the handling should registered with
 	 * @param ip Ip (or DNS name) address of the pong service
@@ -75,7 +77,15 @@ public class Ping {
             os.close();
         });
 	}
-	
+
+	/**
+	 * Implements the meta ping handling for the Ping Service.
+	 * Returning detailed benchmark data
+	 * @param server Server object the handling should registered with
+	 * @param ip Ip (or DNS name) address of the pong service
+	 * @param port Port number of the pong service
+	 * @throws IOException on network connection problems or wrong requests (number formats)
+	 */
 	private static void registerMPingHandlerWith(HttpServer server, String ip, int port) {
 		server.createContext("/mping", (HttpExchange httpExchange) -> {
 			final String[] request = httpExchange.getRequestURI().getPath().split("/");			
@@ -88,7 +98,7 @@ public class Ping {
 			long end = System.nanoTime();
 			
 			int responseCode = content.length == length ? 200 : 503;
-			long duration = (end - start) / 1000; // microseconds
+			double duration = (end - start) / 1000000.0; // milliseconds
 			String retries = answer.get("retries");
 			
 			final byte[] json = ( 
@@ -124,6 +134,8 @@ public class Ping {
 			System.out.println("- a host/ip for the pong service as second command line parameter");
 			System.out.println("- a port for the pong service as third command line parameter");
 			System.out.println("");
+			System.out.println("It seems, you started ping like that");
+			System.out.println("java Ping " + Arrays.stream(args).collect(Collectors.joining(", ")));
 			System.out.println("So please use: java Ping <pingport> <ponghost> <pongport>");
 			System.exit(1);
 		}
