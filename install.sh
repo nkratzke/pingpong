@@ -19,7 +19,8 @@ sudo chmod o+w /usr/local/rvm/gems/* --recursive
 bundle install --gemfile=./ppbench/Gemfile
 
 # Install docker
-wget -qO- https://get.docker.com/ | sh
+curl -sSL https://get.docker.com/gpg | sudo apt-key add -
+curl -sSL https://get.docker.com/ | sudo sh
 
 # Install weave
 sudo curl -L git.io/weave -o /usr/local/bin/weave
