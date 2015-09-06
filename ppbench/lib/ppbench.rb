@@ -56,7 +56,7 @@ module Ppbench
               "#{failed}",
               "#{concurrency}",
               "#{length}",
-              "#{time_taken}", # time per request missing
+              "#{time_taken}",
               "#{retries}",
               "#{code}"
           ]
