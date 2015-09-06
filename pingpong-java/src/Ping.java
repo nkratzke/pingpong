@@ -24,7 +24,18 @@ public class Ping {
 	 * Amount of retries to connect with the Pong Service.
 	 */
 	public final static int RETRIES = 100;
-	
+
+    /**
+     * Sends a HTTP get request to a pong service.
+     * @param host Host (valid IP or valid DNS name) of the pong service.
+     * @param port Valid port number of the pong service.
+     * @param length Length in bytes of the to be retrieved message (must be positive).
+     * @return A map with the following structure:
+     *         {
+     *            'content' : String,
+     *            'retries' : Integer
+     *         }
+     */
 	private static Map<String, String> get(String host, int port, int length) {
 		int retries = 0;
 		final Map<String, String> answer = new HashMap<String, String>();
