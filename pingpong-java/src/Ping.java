@@ -32,8 +32,8 @@ public class Ping {
      * @param length Length in bytes of the to be retrieved message (must be positive).
      * @return A map with the following structure:
      *         {
-     *            'content' : String,
-     *            'retries' : Integer
+     *            "content": String,
+     *            "retries": Integer
      *         }
      */
 	private static Map<String, String> get(String host, int port, int length) {
@@ -114,10 +114,10 @@ public class Ping {
 			
 			final byte[] json = ( 
 					"{\n" +
-					"  'length': " + content.length + ",\n" +
-					"  'code': " + responseCode + ",\n" + 
-					"  'duration': " + duration + ",\n" +
-					"  'retries': " + retries + "\n" +
+					"  \"length\": " + content.length + ",\n" +
+					"  \"code\": " + responseCode + ",\n" +
+					"  \"duration\": " + duration + ",\n" +
+					"  \"retries\": " + retries + "\n" +
 					"}\n").getBytes("UTF-8");
 			
             httpExchange.sendResponseHeaders(responseCode, json.length);

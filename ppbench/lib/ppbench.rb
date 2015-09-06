@@ -59,6 +59,7 @@ module Ppbench
           end
         rescue Exception => e
           print ("Timeout of '#{uri}'\n")
+          print ("#{e}")
         end
 
         unless results[:duration].empty?
