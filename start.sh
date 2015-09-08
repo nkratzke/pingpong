@@ -30,10 +30,18 @@ function docker {
 	pong) sudo docker build -t pingpong .
 	      sudo docker run -d -p 8080:8080 pingpong --asPong --port=8080
 	      ;;
-	
+		  	
 	ping) sudo docker build -t pingpong .
 	      sudo docker run -d -p 8080:8080 pingpong --asPing --port=8080 --url="http://$pongip:8080"
 		  ;;
+
+    pong-java) sudo docker build -t ppjava pingpong-java/
+	           sudo docker run -d -p 8080:8080 ppjava Pong 8080
+			   ;;
+		  
+    ping-java) docker build -t ppjava pingpong-java/
+	           docker run -d -p 8080:8080 ppjava Ping 8080 $pongip 8080
+			   ;;
 	esac
 }
 
@@ -43,11 +51,22 @@ function weave {
 	      sudo docker build -t pingpong .
 		  sudo weave run --with-dns --name=pong -d -p 8080:8080 pingpong --asPong --port=8080
 		  ;;
-	
+		  			   
 	ping) sudo weave launch "$ponghostip" && sudo weave launch-dns
 	      sudo docker build -t pingpong .
 		  sudo weave run --with-dns --name=ping -d -p 8080:8080 pingpong --asPing --port=8080 --url="http://$pongip:8080"
-		  ;;	
+		  ;;
+		  
+	pong-java) sudo weave launch && sudo weave launch-dns
+	   		   sudo docker build -t ppjava pinpong-java/
+	           sudo weave run --with-dns --name=pong-java -d -p 8080:8080 ppjava Pong 8080
+	           ;;
+
+    ping-java) sudo weave launch "$ponghostip" && sudo weave launch-dns
+	           sudo docker build -t ppjava pingpong-java/
+	           sudo weave run --with-dns --name=ping-java -d -p 8080:8080 ppjava Ping 8080 $pongip 8080
+			   ;;
+	
 	esac
 }
 

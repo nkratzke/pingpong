@@ -9,5 +9,5 @@ echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | su
 sudo apt-get install oracle-java8-installer -y
 
 # Install pingpong-java
-mkdir bin
-javac src/*.java -d bin
+mkdir -p bin
+javac -d bin src/*.java
