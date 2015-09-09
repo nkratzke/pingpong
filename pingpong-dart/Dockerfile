@@ -5,7 +5,7 @@ WORKDIR /app
 ADD pubspec.yaml /app/
 RUN pub get
 ADD . /app/
-RUN pub get
+RUN pub install
 
 CMD []
 ENTRYPOINT ["/usr/bin/dart", "/app/bin/server.dart"]

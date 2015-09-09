@@ -8,7 +8,7 @@
 mode=$1
 service=$2
 pongip=$3
-ponghostip=$4
+#ponghostip=$4
 
 # Prints usage information
 #
@@ -42,11 +42,11 @@ function bare {
 #
 function docker {
 	case "$service" in
-	pong-dart) sudo docker build -t pingpong .
+	pong-dart) sudo docker build -t pingpong pingpong-dart/
 	           sudo docker run -d -p 8080:8080 pingpong --asPong --port=8080
 	           ;;
 		  	
-	ping-dart) sudo docker build -t pingpong .
+	ping-dart) sudo docker build -t pingpong pingpong-dart/
 	           sudo docker run -d -p 8080:8080 pingpong --asPing --port=8080 --url="http://$pongip:8080"
 		       ;;
 
@@ -64,28 +64,36 @@ function docker {
 	esac
 }
 
-# Starts ping and pong services as docker containers attached to a weave SDN
+# Starts ping and pong services as docker containers 
+# attached to a weave SDN (CIDR 10.2.0.0/16)
+# Pong gets IP 10.2.1.1
+# Ping gets IP 10.2.1.2
 #
 function weave {
 	case "$service" in
-	pong-dart) sudo weave launch && sudo weave launch-dns
-	           sudo docker build -t pingpong .
-		       sudo weave run --with-dns --name=pong -d -p 8080:8080 pingpong --asPong --port=8080
+	pong-dart) sudo weave launch --ipalloc-range 10.2.0.0/16
+	           sudo docker build -t pingpong pingpong-dart/
+		       sudo weave run --with-dns 10.2.1.1/16 --name=pong -d -p 8080:8080 pingpong --asPong --port=8080
 		       ;;
 		  			   
-	ping-dart) sudo weave launch "$ponghostip" && sudo weave launch-dns
-	           sudo docker build -t pingpong .
-		       sudo weave run --with-dns --name=ping -d -p 8080:8080 pingpong --asPing --port=8080 --url="http://$pongip:8080"
+	ping-dart) sudo weave launch $pongip --ipalloc-range 10.2.0.0/16
+	           sudo docker build -t pingpong pingpong-dart/
+		       sudo weave run --with-dns 10.2.1.2/16 --name=ping -d -p 8080:8080 pingpong --asPing --port=8080 --url="http://$pongip:8080"
 		       ;;
 		  
-	pong-java) sudo weave launch && sudo weave launch-dns
-	   		   sudo docker build -t ppjava pinpong-java/
-	           sudo weave run --with-dns --name=pong-java -d -p 8080:8080 ppjava Pong 8080
+	pong-java) weaveupsudo weave launch --ipalloc-range 10.2.0.0/16
+	   		   sudo docker build -t ppjava pingpong-java/
+	           sudo weave run --with-dns 10.2.1.1/16 --name=pong -d -p 8080:8080 ppjava Pong 8080
 	           ;;
 
-    ping-java) sudo weave launch "$ponghostip" && sudo weave launch-dns
+    ping-java) sudo weave launch $pongip --ipalloc-range 10.2.0.0/16
 	           sudo docker build -t ppjava pingpong-java/
-	           sudo weave run --with-dns --name=ping-java -d -p 8080:8080 ppjava Ping 8080 $pongip 8080
+	           sudo weave run --with-dns 10.2.1.2/16 --name=ping -d -p 8080:8080 ppjava Ping 8080 10.2.1.1 8080
+			   ;;
+			   
+    stop)      sudo docker stop pong
+	           sudo docker stop ping
+			   sudo weave stop
 			   ;;
 			   
 	*)         echo "Unknown service $service" 

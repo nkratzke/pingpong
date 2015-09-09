@@ -172,6 +172,7 @@ def inspect_data(args, options)
   rows = []
   aggregated_data.each do |experiment, machines|
     machines.each { |machine, data| rows << [experiment, machine, data.count] }
+    rows << :separator
   end
 
   print("We have data for: \n")
