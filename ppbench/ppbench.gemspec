@@ -29,4 +29,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "parallel"
   spec.add_runtime_dependency "progressbar"
   spec.add_runtime_dependency "descriptive_statistics"
+  spec.add_runtime_dependency "terminal-table"
+
 end

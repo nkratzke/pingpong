@@ -5,6 +5,7 @@ require 'rubygems'
 
 require 'ppbench'
 require 'commander/import'
+require 'terminal-table'
 
 program :name, 'ppbench'
 program :version, "#{Ppbench::VERSION}"
@@ -150,10 +151,40 @@ def lossplot(args, options)
 
 end
 
+# Implements the inspect command
+#
+def inspect_data(args, options)
+
+  options.default :machines => ''
+  options.default :experiments => ''
+
+  experiments = options.experiments.split(',')
+  machines = options.machines.split(',')
+
+  data = Ppbench::load_data(args)
+  filtered_data = Ppbench::filter(
+      data,
+      experiments: experiments,
+      machines: machines
+  )
+  aggregated_data = Ppbench::aggregate(filtered_data)
+
+  rows = []
+  aggregated_data.each do |experiment, machines|
+    machines.each { |machine, data| rows << [experiment, machine, data.count] }
+  end
+
+  print("We have data for: \n")
+  table = Terminal::Table.new(:headings => ['Experiment', 'Machine', 'Data Points'], :rows => rows)
+  table.align_column(2, :right)
+  print("#{table}\n")
+end
+
 command :run do |c|
   c.syntax = 'ppbench run [options] output.csv'
   c.description = 'Runs a ping pong benchmark'
-  c.example 'Run a benchmark and tags the results as to be collected on a m3.2xlarge instance running a docker experiment', 'ppbench run --host http://1.2.3.4:8080 --machine m3.2xlarge --experiment docker log.csv'
+  c.example 'Run a benchmark and tags the results as to be collected on a m3.2xlarge instance running a docker experiment',
+            'ppbench run --host http://1.2.3.4:8080 --machine m3.2xlarge --experiment docker log.csv'
 
   c.option '--host STRING', String, 'Host'
   c.option '--machine STRING', String, 'A tag to categorize the machine (defaults to empty String)'
@@ -216,5 +247,25 @@ command :lossplot do |c|
   c.action do |args, options|
     lossplot(args, options)
   end
+end
+
+command :inspect do |c|
+  c.syntax = 'ppbench inspect [options] *.csv'
+  c.summary = 'Inspects benchmark data.'
+
+  c.example 'Inspects and lists a summary of all benchmark data.',
+            'ppbench inspect *.csv'
+  c.example 'Inspects and lists a summary of all benchmark data tagged to be run on machines m3.2xlarge, m3.xlarge',
+            'ppbench inspect --machines m3.2xlarge,m3.xlarge *.csv'
+  c.example 'Inspects and lists a summary of all benchmark data tagged to be run as docker-java or bare-dart experiments',
+            'ppbench inspect --experiments bare-dart,docker-java *.csv'
+
+  c.option '--machines STRING', String, 'Consider only data of provided machines (comma separated)'
+  c.option '--experiments STRING', String, 'Consider only data of provided experiments (comma separated)'
+
+  c.action do |args, options|
+    inspect_data(args, options)
+  end
+
 end
 
