@@ -81,7 +81,7 @@ function weave {
 		       sudo weave run --with-dns 10.2.1.2/16 --name=ping -d -p 8080:8080 pingpong --asPing --port=8080 --url="http://$pongip:8080"
 		       ;;
 		  
-	pong-java) weaveupsudo weave launch --ipalloc-range 10.2.0.0/16
+	pong-java) sudo weave launch --ipalloc-range 10.2.0.0/16
 	   		   sudo docker build -t ppjava pingpong-java/
 	           sudo weave run --with-dns 10.2.1.1/16 --name=pong -d -p 8080:8080 ppjava Pong 8080
 	           ;;
