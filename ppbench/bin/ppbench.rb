@@ -171,14 +171,20 @@ def inspect_data(args, options)
 
   rows = []
   aggregated_data.each do |experiment, machines|
-    machines.each { |machine, data| rows << [experiment, machine, data.count] }
+    machines.each do |machine, data|
+      mtr = data.map { |e| e[:transfer_rate] }.median / 1000 # median transfer rate
+      rps = 1000 / data.map { |e| e[:tpr] }.median           # median request per second
+      rows << [experiment, machine, data.count, "%.2f" % mtr, "%.2f" % rps]
+    end
     rows << :separator
   end
   rows.pop
 
   print("We have data for: \n")
-  table = Terminal::Table.new(:headings => ['Experiment', 'Machine', 'Data Points'], :rows => rows)
+  table = Terminal::Table.new(:headings => ['Experiment', 'Machine', 'Samples', 'Transfer Rate (kB/s)', "Requests/sec"], :rows => rows)
   table.align_column(2, :right)
+  table.align_column(3, :right)
+  table.align_column(4, :right)
   print("#{table}\n")
 end
 
