@@ -174,6 +174,7 @@ def inspect_data(args, options)
     machines.each { |machine, data| rows << [experiment, machine, data.count] }
     rows << :separator
   end
+  rows.pop
 
   print("We have data for: \n")
   table = Terminal::Table.new(:headings => ['Experiment', 'Machine', 'Data Points'], :rows => rows)
