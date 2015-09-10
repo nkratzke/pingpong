@@ -30,10 +30,10 @@ public class Ping {
      * @param host Host (valid IP or valid DNS name) of the pong service.
      * @param port Valid port number of the pong service.
      * @param length Length in bytes of the to be retrieved message (must be positive).
-     * @return A map with the following structure:
+     * @return A map with the following structure Map<String, String>:
      *         {
      *            "content": String,
-     *            "retries": Integer
+     *            "retries": Integer (String encoded)
      *         }
      */
 	private static Map<String, String> get(String host, int port, int length) {
