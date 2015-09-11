@@ -7,6 +7,6 @@ sudo apt-get update
 sudo apt-get install golang -y
 
 # Install pingpong-go
-export GOPATH=$PWD/pingpong-go
+export GOPATH=$PWD
 go get github.com/gorilla/mux
 go install pingpong
