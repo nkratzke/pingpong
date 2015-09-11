@@ -102,14 +102,14 @@ function weave {
 	           sudo weave run --with-dns 10.2.1.2/16 --name=ping -d -p 8080:8080 ppjava Ping 8080 10.2.1.1 8080
 			   ;;
 			   
-	pong-go)   sudo weave launch --ipalloc-rang 10.2.0.0/16
+	pong-go)   sudo weave launch --ipalloc-range 10.2.0.0/16
 	           sudo docker build -t ppgo pingpong-go/
 			   sudo weave run --with-dns 10.2.1.1/16 --name=pong -d -p 8080:8080 ppgo -asPong
 			   ;;
 			   
 	ping-go)   sudo weave launch $pongip --ipalloc-range 10.2.0.0/16
 			   sudo docker build -t ppgo pingpong-go/
-			   sudo weave run --with-dns 10.2.1.2/16 --name=ping -d -p 8080:8080 ppgo -asPing -pongPort 8080
+			   sudo weave run --with-dns 10.2.1.2/16 --name=ping -d -p 8080:8080 ppgo -asPing -pongHost 10.2.1.1 -pongPort 8080
 			   ;;
 			   			  
     stop)      sudo docker stop pong
