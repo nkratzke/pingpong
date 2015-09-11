@@ -4,7 +4,7 @@
 
 # Install Golang
 sudo apt-get update
-sudo add-apt install golang -y
+sudo apt-get install golang -y
 
 # Install pingpong-go
 export GOPATH=$PWD/pingpong-go
