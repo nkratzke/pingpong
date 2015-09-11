@@ -1,5 +1,6 @@
 # Don't commit the following directories for ppbench
-ppbench/.idea/
+ppbench/.idea
+ppbench/.idea/workspace.xml
 
 # Don't commit the following for pingpong-dart
 *.dart.js
@@ -15,6 +16,8 @@ pingpong-dart/.buildlog
 # Don't commit the following for pingpong-java
 pingpong-java/.settings
 pingpong-java/bin
+pingpong-java/.idea
+pingpong-java/pingpong-java.iml
 
 # Don't commit the following for pingpong-go
 pingpong-go/.settings
@@ -23,3 +26,7 @@ pingpong-go/pkg
 
 # Further files to ignore (IDE specifics)
 .metadata
+
+
+
+
