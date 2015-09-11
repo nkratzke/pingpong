@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Installs Golang and pingpong-go on system under test
+
+# Install Golang
+sudo apt-get update
+sudo add-apt install golang -y
+
+# Install pingpong-go
+export GOPATH=$PWD/pingpong-go
+go get github.com/gorilla/mux
+go install pingpong
