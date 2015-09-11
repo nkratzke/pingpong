@@ -33,8 +33,8 @@ function bare {
 	pong-java) sudo java -cp pingpong-java/bin Pong 8080 ;;
 	ping-java) sudo java -cp pingpong-java/bin Ping 8080 $pongip 8080 ;;
 	
-	pong-go)   sudo $PWD/pingpong-go/bin/pingpong -asPong
-	ping-go)   sudo $PWD/pingpong-go/bin/pingpong -asPing -pongHost $pongip -pongPort 8080
+	pong-go)   sudo $PWD/pingpong-go/bin/pingpong -asPong ;;
+	ping-go)   sudo $PWD/pingpong-go/bin/pingpong -asPing -pongHost $pongip -pongPort 8080 ;;
 	
 	*)         echo "Unknown service $service" 
 	           usage ;;
