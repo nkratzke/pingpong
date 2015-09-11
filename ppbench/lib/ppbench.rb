@@ -19,6 +19,7 @@ module Ppbench
       "Total transferred",
       "Time per request",
       "Transfer rate",
+      "Requests per second",
       "Retries",
       "Response Code"
   ]
@@ -70,6 +71,8 @@ module Ppbench
           retries = results[:retries].sum # Amount of retries
           failed = results[:fails].sum # Amount of fails
 
+          requests_per_second = 1000 / time_taken
+
           logfile.synchronize do
             progress.inc
 
@@ -82,6 +85,7 @@ module Ppbench
                 "#{length}",
                 "#{time_taken}",
                 "#{transfer_rate}",
+                "#{requests_per_second}",
                 "#{retries}",
                 "#{code}"
             ]
@@ -99,15 +103,16 @@ module Ppbench
 
       rows.map do |row|
         {
-            :experiment => row['Experiment Tag'],
-            :machine => row['Machine Tag'],
-            :document => row['Document Path'],
-            :length => row['Total transferred'].to_i,
-            :failed => row['Failed requests'].to_i,
-            :tpr => row['Time per request'].to_f,
-            :transfer_rate => row['Transfer rate'].to_f,
-            :retries => row['Retries'].to_i,
-            :response_code => row['Response Code'].to_i
+            :experiment => row.key?('Experiment Tag') ? row['Experiment Tag'] : nil,
+            :machine => row.key?('Machine Tag') ? row['Machine Tag'] : nil,
+            :document => row.key?('Document Path') ? row['Document Path'] : nil,
+            :length => row.key?('Total transferred') ? row['Total transferred'].to_i : nil,
+            :failed => row.key?('Failed requests') ? row['Failed requests'].to_i : nil,
+            :tpr => row.key?('Time per request') ? row['Time per request'].to_f : nil,
+            :transfer_rate => row.key?('Transfer rate') ? row['Transfer rate'].to_f : nil,
+            :rps => row.key?('Requests per second') ? row['Requests per second'].to_f : nil,
+            :retries => row.key?('Retries') ? row['Retries'].to_i : nil,
+            :response_code => row.key?('Response Code') ? row['Response Code'].to_i : nil
         }
       end
     end.flatten
