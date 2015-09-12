@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script to start the ping and pong services
+# Script to start the ping and pong services on hosts under test.
 #
 
 # Passed command line parameters 
@@ -8,7 +8,6 @@
 mode=$1
 service=$2
 pongip=$3
-#ponghostip=$4
 
 # Prints usage information
 #
@@ -110,11 +109,6 @@ function weave {
 	ping-go)   sudo weave launch $pongip --ipalloc-range 10.2.0.0/16
 			   sudo docker build -t ppgo pingpong-go/
 			   sudo weave run --with-dns 10.2.1.2/16 --name=ping -d -p 8080:8080 ppgo -asPing -pongHost 10.2.1.1 -pongPort 8080
-			   ;;
-			   			  
-    stop)      sudo docker stop pong
-	           sudo docker stop ping
-			   sudo weave stop
 			   ;;
 			   
 	*)         echo "Unknown service $service" 
