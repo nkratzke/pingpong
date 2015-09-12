@@ -26,8 +26,8 @@ function usage {
 #
 function bare {
 	case "$service" in
-	pong-dart) sudo dart bin/pong.dart --port=8080 ;;
-	ping-dart) sudo dart bin/ping.dart --port=8080 --url="http://$pongip:8080" ;;
+	pong-dart) sudo dart pingpong-dart/bin/pong.dart --port=8080 ;;
+	ping-dart) sudo dart pingpong-dart/bin/ping.dart --port=8080 --url="http://$pongip:8080" ;;
 	
 	pong-java) sudo java -cp pingpong-java/bin Pong 8080 ;;
 	ping-java) sudo java -cp pingpong-java/bin Ping 8080 $pongip 8080 ;;
