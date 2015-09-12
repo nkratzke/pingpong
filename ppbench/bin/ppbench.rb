@@ -188,6 +188,35 @@ def inspect_data(args, options)
   print("#{table}\n")
 end
 
+# Implements the citation command
+#
+def citation(args, options)
+
+  bibtex =
+  """
+  @misc{Kra2015,
+     title = {A distributed HTTP-based and REST-like ping-pong system for test and benchmarking purposes.},
+     author = {{Nane Kratzke}},
+     organization = {L\\\"ubeck University of Applied Sciences},
+     address = {L\\\"ubeck, Germany},
+     year = {2015},
+     howpublished = {\\url{https://github.com/nkratzke/pingpong}}
+  }
+  """
+
+  return bibtex if options.bibtex
+
+  """
+  To cite ppbench in publications use:
+
+  Kratzke, Nane (2015). A distributed HTTP-based and REST-like ping-pong system for test and benchmarking purposes.
+  L\\\"ubeck University of Applied Sciences, L\\\"ubeck, Germany. URL https://github.com/nkratzke/pingpong.
+
+  A BibTeX entry for LaTeX users is: #{bibtex}
+
+  """
+end
+
 command :run do |c|
   c.syntax = 'ppbench run [options] output.csv'
   c.description = 'Runs a ping pong benchmark'
@@ -274,6 +303,20 @@ command :inspect do |c|
   c.action do |args, options|
     inspect_data(args, options)
   end
+end
 
+command :citation do |c|
+  c.syntax = 'ppbench citation [options]'
+  c.summary = 'Provides information how to cite ppbench in publications.'
+
+  c.example 'Get general information how to cite ppbench in publications',
+            'ppbench citation'
+  c.example 'Append a bibtex entry to cite ppbench in publications (LaTex Users) to your references.bib',
+            'ppbench citation --bibtex >> references.bib'
+  c.option  '--bibtex', 'Get bibtex entry (for Latex users)'
+
+  c.action do |args, options|
+    print citation(args, options)
+  end
 end
 

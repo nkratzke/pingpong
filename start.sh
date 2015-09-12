@@ -88,7 +88,7 @@ function weave {
 		  			   
 	ping-dart) sudo weave launch $pongip --ipalloc-range 10.2.0.0/16
 	           sudo docker build -t ppdart pingpong-dart/
-		       sudo weave run --with-dns 10.2.1.2/16 --name=ping -d -p 8080:8080 ppdart --asPing --port=8080 --url="http://$pongip:8080"
+		       sudo weave run --with-dns 10.2.1.2/16 --name=ping -d -p 8080:8080 ppdart --asPing --port=8080 --url="http://10.2.1.1:8080"
 		       ;;
 		  
 	pong-java) sudo weave launch --ipalloc-range 10.2.0.0/16
