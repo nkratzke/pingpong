@@ -3,26 +3,40 @@ pingpong
 
 A distributed HTTP-based and REST-like ping-pong system for test and benchmarking purposes.
 
-The intended usage of this package is to run two hosts which are queried (benchmarked) by a third host (the _siege_). Host 1 runs a _ping_ service querying a _pong_ service (on host 2) for the answer. _Ping_ and _pong_ build a very simple distributed system.
+The intended usage of this package is to run two hosts which are queried (benchmarked) by a third host (the _siege_). 
+Host 1 runs a _ping_ service querying a _pong_ service (on host 2) for the answer. 
+_Ping_ and _pong_ build a very simple distributed system communicating via a simple HTTP based resource API.
 
 <img src="experiment.png" width=100%>
 
-From a benchmark host (this is called the _siege_ host) a benchmark (e.g. apachebench) is run againt host 1. _Ping_ host 1 has to interact with _pong_ host 2 to answer the request. The interaction between both hosts is very simple. Whenever host 1 (_ping_) is asked to deliver a document for '/ping/<nr>' this request is passed forward to host 2 (_pong_). Host 2 (_pong_) returns the answer which is formed of a message "pooooong" where the message is as long in bytes as the number '<nr>' provided with the query (so the answer message length can be specified by the _siege_ host to benchmark network performance of message sizes of varying length).
+From a benchmark host (this is called the _siege_ host) _ppbench_ is run againt host 1. 
+_Ping_ host 1 has to interact with _pong_ host 2 to answer the request. 
+The interaction between both hosts is very simple. 
+Whenever host 1 (_ping_) is asked to deliver a document for '/ping/{n}' this request is passed forward to host 2 (_pong_). 
+Host 2 (_pong_) returns the answer which is formed of a message "pooooong" where the message is as long in 
+bytes as the number '{nr}' provided with the query. 
 
-So the following answers would be generated for following requests by host 2:
+So we (or better _ppbench_) can vary the message size 
+(and therefore the network load) between _ping_ (host 1) and _pong_ (host 2).
 
-- GET /pong/4 returns "pong"
-- GET /pong/5 returns "poong"
-- GET /pong/6 returns "pooong"
-- and so on
+This setting shall be used to analyse the impact of infrastructures where _ping_ and _pong_ services are running on. 
+The deployment above stays the same for every experiment. 
+Just the underlying infrastructure of _ping_ and _pong_ changes. 
 
-So we can vary the message size (and therefore the network load) between _ping_ (host 1) and _pong_ (host 2).
+- _Ping_ and _Pong_ might be realized in different programming languages.
+- _Ping_ and _Pong_ might be deployed on different virtual machine types.
+- _Ping_ and _Pong_ might be deployed on different IaaS infrastructures.
+- _Ping_ and _Pong_ might be deployed in a containerized form.
+- _Ping_ and _Pong_ might be connected with an overlay network.
+- and so on 
 
-This setting shall be used to analyse the impact of infrastructures where _ping_ and _pong_ services are running on. The deployment above stays the same for every experiment. Just the underlying infrastructure of _ping_ and _pong_ changes. Thererfore variations of benchmark results can be assigned to changing infrastructures.
+Therefore variations of benchmark results can be assigned to above mentioned changes in infrastructure.
 
 ## Set up a benchmark experiment
 
-To do a benchmark you have to set up a _siege_, a _ping_ and a _pong_ host. We assume these are Linux hosts with git, apt-get, wget and curl installed. Install this package on all of this three hosts by running following commands.
+To do a benchmark you have to set up a _siege_, a _ping_ and a _pong_ host. 
+We assume these are Linux hosts with git, apt-get and curl installed. 
+Install this package on all of this three hosts by running following commands.
 
 ```
 git clone https://github.com/nkratzke/pingpong.git
@@ -30,12 +44,18 @@ cd pingpong
 sudo sh ./install.sh
 ```
 
-This will install dart runtime and development environment, apachebench, docker as well as the docker overlay network weave.
+This will install necessary dependencies. These include:
 
-It is possible to run the _ping_ and _pong_ service as a docker container and as a docker container connected to a weave SDN network. 
+- Dart SDK
+- Docker
+- Docker overlay network Weave.
+- Ruby runtime and development environment
+- Golang SDK
+- Java SDK
+- ppbench (as benchmarking and analyzing front end)
 
-Please be aware, that the dockerized ping-pong system will not show the same performance like a "naked" run ping-pong system.
-The network performance of the ping-pong system with an additional SDN layer decreases as well.
+It is possible to run the _Ping_ and _Pong_ service as a Docker container 
+and as a Docker container connected to a Weave SDN network. 
 
 ### On the pong host: Set up the _pong service_
 

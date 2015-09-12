@@ -44,28 +44,28 @@ function bare {
 #
 function docker {
 	case "$service" in
-	pong-dart) sudo docker build -t pingpong pingpong-dart/
-	           sudo docker run -d -p 8080:8080 ppdart --asPong --port=8080
+	pong-dart) sudo docker build -t ppdart pingpong-dart/
+	           sudo docker run -d -p 8080:8080 --name pong ppdart --asPong --port=8080
 	           ;;
 		  	
-	ping-dart) sudo docker build -t pingpong pingpong-dart/
-	           sudo docker run -d -p 8080:8080 ppdart --asPing --port=8080 --url="http://$pongip:8080"
+	ping-dart) sudo docker build -t ppdart pingpong-dart/
+	           sudo docker run -d -p 8080:8080 --name ping ppdart --asPing --port=8080 --url="http://$pongip:8080"
 		       ;;
 
     pong-java) sudo docker build -t ppjava pingpong-java/
-	           sudo docker run -d -p 8080:8080 ppjava Pong 8080
+	           sudo docker run -d -p 8080:8080 --name pong ppjava Pong 8080
 			   ;;
 		  
     ping-java) sudo docker build -t ppjava pingpong-java/
-	           sudo docker run -d -p 8080:8080 ppjava Ping 8080 $pongip 8080
+	           sudo docker run -d -p 8080:8080 --name ping ppjava Ping 8080 $pongip 8080
 			   ;;
 			   
 	pong-go)  sudo docker build -t ppgo pingpong-go/
-	          sudo docker run -d -p 8080:8080 ppgo -asPong
+	          sudo docker run -d -p 8080:8080 --name pong ppgo -asPong
 			  ;;
 			  
 	ping-go)  sudo docker build -t ppgo pingpong-go/
-	          sudo docker run -d -p 8080:8080 ppgo -asPing -pongHost $pongip -pongPort 8080
+	          sudo docker run -d -p 8080:8080 --name ping ppgo -asPing -pongHost $pongip -pongPort 8080
 	          ;;
 			   
 	*)        echo "Unknown service $service" 
