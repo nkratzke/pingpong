@@ -58,9 +58,9 @@ def pdfout(content, file: 'output.pdf', width: 7, height: 7)
   """
 end
 
-# Implements the transferplot command.
+# Implements the transfer-plot command.
 #
-def transferplot(args, options)
+def transfer_plot(args, options)
   options.default :machines => ''
   options.default :experiments => ''
   options.default :length => 500
@@ -99,7 +99,12 @@ def transferplot(args, options)
       with_bands: options.withbands,
       maxy: options.maxy,
       ysteps: options.ysteps,
-      xsteps: options.xsteps
+      xsteps: options.xsteps,
+      title: "Data Transfer Rates",
+      xaxis_title: "Message Size",
+      xaxis_unit: "kB",
+      yaxis_title: "Transfer Rate",
+      yaxis_unit: "MB/sec"
   )
 
   script = pdfout(rplot, file: options.pdf, width: options.width, height: options.height)
@@ -109,15 +114,17 @@ def transferplot(args, options)
   #R.eval(pdfout(rplot, file: options.pdf, width: options.width, height: options.height)) unless options.pdf.empty?
 end
 
-# Implements the lossplot command
+# Implements the request-plot command.
 #
-def lossplot(args, options)
-
+def request_plot(args, options)
   options.default :machines => ''
   options.default :experiments => ''
-  options.default :length => 500
+  options.default :length => 5000
   options.default :recwindow => 87380
+  options.default :confidence => 90
 
+  options.default :maxy => 5000
+  options.default :ysteps => 10
   options.default :xsteps => 10
 
   options.default :pdf => ''
@@ -136,14 +143,130 @@ def lossplot(args, options)
   )
   aggregated_data = Ppbench::aggregate(filtered_data)
 
-  rplot = Ppbench::lossplotter(
+  rplot = Ppbench::plotter(
       aggregated_data,
+      to_plot: :rps,
+      machines: machines,
+      experiments: experiments,
+      receive_window: options.recwindow,
+      length: options.length * 1000,
+      confidence: options.confidence,
+      no_points: options.nopoints,
+      with_bands: options.withbands,
+      maxy: options.maxy,
+      ysteps: options.ysteps,
+      xsteps: options.xsteps,
+      title: "Request per seconds",
+      xaxis_title: "Message Size",
+      xaxis_unit: "kB",
+      yaxis_title: "Requests per seconds",
+      yaxis_unit: "Req/sec",
+      yaxis_divisor: 1
+  )
+
+  script = pdfout(rplot, file: options.pdf, width: options.width, height: options.height)
+
+  print "#{ options.pdf.empty? ? rplot : script }"
+end
+
+# Implements the latency-plot command.
+#
+def latency_plot(args, options)
+  options.default :machines => ''
+  options.default :experiments => ''
+  options.default :length => 500
+  options.default :recwindow => 87380
+  options.default :confidence => 90
+
+  options.default :maxy => 50
+  options.default :ysteps => 10
+  options.default :xsteps => 10
+
+  options.default :pdf => ''
+  options.default :width => 7
+  options.default :height => 7
+
+  experiments = options.experiments.split(',')
+  machines = options.machines.split(',')
+
+  data = Ppbench::load_data(args)
+  filtered_data = Ppbench::filter(
+      data,
+      maxsize: options.length * 1000,
+      experiments: experiments,
+      machines: machines
+  )
+  aggregated_data = Ppbench::aggregate(filtered_data)
+
+  rplot = Ppbench::plotter(
+      aggregated_data,
+      to_plot: :tpr,
+      machines: machines,
+      experiments: experiments,
+      receive_window: options.recwindow,
+      length: options.length * 1000,
+      confidence: options.confidence,
+      no_points: options.nopoints,
+      with_bands: options.withbands,
+      maxy: options.maxy,
+      ysteps: options.ysteps,
+      xsteps: options.xsteps,
+      title: "Round-trip latency",
+      xaxis_title: "Message Size",
+      xaxis_unit: "kB",
+      yaxis_title: "Latency",
+      yaxis_unit: "ms",
+      yaxis_divisor: 1
+  )
+
+  script = pdfout(rplot, file: options.pdf, width: options.width, height: options.height)
+
+  print "#{ options.pdf.empty? ? rplot : script }"
+end
+
+
+# Implements the transfer-comparison-plot command
+#
+def transfer_comparison_plot(args, options)
+
+  options.default :machines => ''
+  options.default :experiments => ''
+  options.default :length => 500
+  options.default :recwindow => 87380
+
+  options.default :maxy => 1.5
+  options.default :xsteps => 10
+
+  options.default :pdf => ''
+  options.default :width => 7
+  options.default :height => 7
+
+  experiments = options.experiments.split(',')
+  machines = options.machines.split(',')
+
+  data = Ppbench::load_data(args)
+  filtered_data = Ppbench::filter(
+      data,
+      maxsize: options.length * 1000,
+      experiments: experiments,
+      machines: machines
+  )
+  aggregated_data = Ppbench::aggregate(filtered_data)
+
+  rplot = Ppbench::comparison_plotter(
+      aggregated_data,
+      maxy: options.maxy,
       to_plot: :transfer_rate,
       machines: machines,
       experiments: experiments,
       receive_window: options.recwindow,
       length: options.length * 1000,
-      xsteps: options.xsteps
+      xsteps: options.xsteps,
+      title: "Relative Comparison of Data Transfer Rates",
+      xaxis_title: "Message Size",
+      xaxis_unit: "kB",
+      xaxis_divisor: 1000,
+      yaxis_title: "Relative Performance compared with Reference"
   )
 
   script = pdfout(rplot, file: options.pdf, width: options.width, height: options.height)
@@ -239,9 +362,9 @@ command :run do |c|
   end
 end
 
-command :transferplot do |c|
-  c.syntax = 'ppbench transferplot [options] *.csv'
-  c.summary = 'Generates a R script to visualize benchmark data of ping pong experiments.'
+command 'transfer-plot' do |c|
+  c.syntax = 'ppbench transfer-plot [options] *.csv'
+  c.summary = 'Generates a R script to plot data transfer rates of ping pong experiments.'
 
   c.option '--machines STRING', String, 'Generate R script for specific machines (e.g. m3.large, m3.xlarge, m3.2xlarge) comma separated'
   c.option '--experiments STRING', String, 'Generate R script for specific experiment (e.g. bare, docker, weave, flannel) comma separated'
@@ -262,16 +385,74 @@ command :transferplot do |c|
 
 
   c.action do |args, options|
-    transferplot(args, options)
+    transfer_plot(args, options)
   end
 end
 
-command :lossplot do |c|
-  c.syntax = 'ppbench lossplot [options] *.csv'
-  c.summary = 'Generates a R script to visualize benchmark data of ping pong experiments.'
+command 'request-plot' do |c|
+  c.syntax = 'ppbench request-plot [options] *.csv'
+  c.summary = 'Generates a R script to plot requests per second of ping pong experiments.'
 
   c.option '--machines STRING', String, 'Generate R script for specific machines (e.g. m3.large, m3.xlarge, m3.2xlarge) comma separated'
   c.option '--experiments STRING', String, 'Generate R script for specific experiment (e.g. bare, docker, weave, flannel) comma separated'
+  c.option '--length INTEGER', Integer, 'Maximum message size to consider in kB (e.g. 500). Defaults to 500kB.'
+  c.option '--recwindow INTEGER', Integer, 'Standard Receive Window. Defaults to 87380 byte. (Receive Window is not plotted if set to 0.)'
+
+  c.option '--maxy INTEGER', Integer, 'Maximum Y value on the Y axis (defaults to 5000 == 5000 Req/s)'
+  c.option '--ysteps INTEGER', Integer, '(defaults to 10)'
+  c.option '--xsteps INTEGER', Integer, '(defaults to 10)'
+
+  c.option '--confidence INTEGER' , Integer, 'Percent value for confidence bands. Defaults to 90%.'
+  c.option '--withbands', 'Plots confidence bands (confidence bands are _not_ plotted by default).'
+  c.option '--nopoints', 'Show no points (points are plotted by default).'
+
+  c.option '--pdf FILE', String, 'Saves output to a PDF file'
+  c.option '--width INTEGER', Integer, 'Width of plot in inch (defaults to 7 inch, only useful with PDF output)'
+  c.option '--height INTEGER', Integer, 'Height of plot in inch (defaults to 7 inch, only useful with PDF output)'
+
+
+  c.action do |args, options|
+    request_plot(args, options)
+  end
+end
+
+command 'latency-plot' do |c|
+  c.syntax = 'ppbench latency-plot [options] *.csv'
+  c.summary = 'Generates a R script to plot round-trip latency of ping pong experiments.'
+
+  c.option '--machines STRING', String, 'Generate R script for specific machines (e.g. m3.large, m3.xlarge, m3.2xlarge) comma separated'
+  c.option '--experiments STRING', String, 'Generate R script for specific experiment (e.g. bare, docker, weave, flannel) comma separated'
+  c.option '--length INTEGER', Integer, 'Maximum message size to consider in kB (e.g. 500). Defaults to 500kB.'
+  c.option '--recwindow INTEGER', Integer, 'Standard Receive Window. Defaults to 87380 byte. (Receive Window is not plotted if set to 0.)'
+
+  c.option '--maxy INTEGER', Integer, 'Maximum Y value on the Y axis (defaults to 500 ms)'
+  c.option '--ysteps INTEGER', Integer, '(defaults to 10)'
+  c.option '--xsteps INTEGER', Integer, '(defaults to 10)'
+
+  c.option '--confidence INTEGER' , Integer, 'Percent value for confidence bands. Defaults to 90%.'
+  c.option '--withbands', 'Plots confidence bands (confidence bands are _not_ plotted by default).'
+  c.option '--nopoints', 'Show no points (points are plotted by default).'
+
+  c.option '--pdf FILE', String, 'Saves output to a PDF file'
+  c.option '--width INTEGER', Integer, 'Width of plot in inch (defaults to 7 inch, only useful with PDF output)'
+  c.option '--height INTEGER', Integer, 'Height of plot in inch (defaults to 7 inch, only useful with PDF output)'
+
+
+  c.action do |args, options|
+    latency_plot(args, options)
+  end
+end
+
+
+
+command 'transfer-comparison-plot' do |c|
+  c.syntax = 'ppbench transfer-comparison-plot [options] *.csv'
+  c.summary = 'Generates a R script to compare data transfer rates of ping pong experiments.'
+
+  c.option '--maxy FLOAT', Float, 'Maximum Y Value (must be greater than 1.0, defaults to 1.5)'
+
+  c.option '--machines STRING', String, 'Only consider specific machines (e.g. m3.large, m3.xlarge, m3.2xlarge) comma separated'
+  c.option '--experiments STRING', String, 'Only consider specific experiments (e.g. bare, docker, weave, flannel) comma separated'
   c.option '--length INTEGER', Integer, 'Maximum message size to consider in kB (e.g. 500). Defaults to 500kB.'
   c.option '--recwindow INTEGER', Integer, 'Standard Receive Window. Defaults to 87380 byte. (Receive Window is not plotted if set to 0.)'
 
@@ -282,7 +463,7 @@ command :lossplot do |c|
   c.option '--height INTEGER', Integer, 'Height of plot in inch (defaults to 7 inch, only useful with PDF output)'
 
   c.action do |args, options|
-    lossplot(args, options)
+    transfer_comparison_plot(args, options)
   end
 end
 

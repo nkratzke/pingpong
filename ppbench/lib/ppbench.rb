@@ -149,20 +149,38 @@ module Ppbench
   end
 
 
-  def self.prepare_plot(maxy, receive_window: 87380, length: 500000)
+  def self.prepare_plot(
+      maxy,
+      receive_window: 87380,
+      length: 500000,
+      xaxis_title: "Message Length",
+      xaxis_unit: "kB",
+      yaxis_title: "Transfer Rate",
+      yaxis_unit: "MB/sec",
+      title: "Data Transfer Rates"
+  )
     recwindow = receive_window == 0 ? '' : "abline(v = seq(#{receive_window}, 500000, by=#{receive_window}), lty='dashed')"
 
     """
-    plot(x=c(0), y=c(0), xlim=c(0, #{length}), ylim=c(0, #{maxy}), main='Data Transfer Rates', xlab='Message Length', ylab='Transfer Rate', xaxt='n', yaxt='n', pch=NA)
+    plot(x=c(0), y=c(0), xlim=c(0, #{length}), ylim=c(0, #{maxy}), main='#{title}', xlab='#{xaxis_title} (#{xaxis_unit})', ylab='#{yaxis_title} (#{yaxis_unit})', xaxt='n', yaxt='n', pch=NA)
    	#{recwindow}
     """
   end
 
-  def self.prepare_lossplot(maxy, receive_window: 87300, length: 50000)
+  def self.prepare_comparisonplot(
+      maxy,
+      receive_window: 87300,
+      length: 50000,
+      xaxis_title: "Message Length (kB)",
+      xaxis_unit: "kB",
+      yaxis_title: "Relative performance compared with reference experiment (%)",
+      yaxis_unit: "%",
+      title: "Relative performance (Data Transfer Rate)"
+  )
     recwindow = receive_window == 0 ? '' : "abline(v = seq(#{receive_window}, 500000, by=#{receive_window}), lty='dashed')"
 
     """
-    plot(x=c(0), y=c(0), xlim=c(0, #{length}), ylim=c(0, #{maxy}), main='Relative performance (Data Transfer Rate)', xlab='Message Length', ylab='Relative performance compared with reference experiment', xaxt='n', yaxt='n', pch=NA)
+    plot(x=c(0), y=c(0), xlim=c(0, #{length}), ylim=c(0, #{maxy}), main='#{title}', xlab='#{xaxis_title} (#{xaxis_unit})', ylab='#{yaxis_title} (#{yaxis_unit})', xaxt='n', yaxt='n', pch=NA)
    	#{recwindow}
     """
   end
@@ -184,7 +202,7 @@ module Ppbench
     """
   end
 
-  def self.add_loss(
+  def self.add_comparisonplot(
       reference,
       serie,
       to_plot: :tpr,
@@ -312,7 +330,14 @@ module Ppbench
       with_bands: false,
       maxy: 10000000,
       ysteps: 10,
-      xsteps: 10
+      xsteps: 10,
+      xaxis_title: "",
+      xaxis_unit: "",
+      xaxis_divisor: 1000,
+      yaxis_title: "",
+      yaxis_unit: "",
+      yaxis_divisor: 1000000,
+      title: ""
   )
     series_data = []
     series_names = []
@@ -341,7 +366,7 @@ module Ppbench
     colors = "c(#{series_colors.map { |c| "rgb(#{c})" } * ','})"
 
     sym = 1;
-    r = "#{prepare_plot(maxy, receive_window: receive_window, length: length)}\n"
+    r = "#{prepare_plot(maxy, receive_window: receive_window, length: length, title: title, xaxis_title: xaxis_title, xaxis_unit: xaxis_unit, yaxis_title: yaxis_title, yaxis_unit: yaxis_unit)}\n"
 
     for serie in series_data
       r += add_series(serie, to_plot: to_plot, with_bands: with_bands, no_points: no_points, color: series_colors.shift, symbol: sym, length: length, confidence: confidence)
@@ -353,20 +378,27 @@ module Ppbench
     r + """
     xa = seq(0, #{length}, by=#{length/xsteps})
     ya = seq(0, #{maxy}, by=#{maxy/ysteps})
-    axis(1, at = xa, labels = paste(xa/1000, 'kB', sep = '' ))
-    axis(2, at = ya, labels = paste(ya/1000000, 'MB/sec', sep = '' ))
+    axis(1, at = xa, labels = paste(xa/#{xaxis_divisor}, '#{xaxis_unit}', sep = ' ' ))
+    axis(2, at = ya, labels = paste(ya/#{yaxis_divisor}, '#{yaxis_unit}', sep = ' ' ))
     legend('topleft', pch=#{symbols}, col=#{colors}, c(#{series_names * ',' }),box.col='black', bg='white')
     """
   end
 
-  def self.lossplotter(
+  def self.comparison_plotter(
       data,
+      maxy: 1.5,
       to_plot: :transfer_rate,
       machines: [],
       experiments: [],
       receive_window: 87380,
       length: 500000,
-      xsteps: 10
+      xsteps: 10,
+      xaxis_title: "",
+      xaxis_unit: "",
+      xaxis_divisor: 1000,
+      yaxis_title: "",
+      yaxis_unit: "%",
+      title: ""
   )
     series_data = []
     series_names = []
@@ -383,11 +415,14 @@ module Ppbench
         '1,0.34,0.13'
     ]
 
+    ref = true
     for exp in experiments
       for machine in machines
+        reference = ref ? ' (Reference)' : ''
+        ref = false
         if (data.include? exp) && (data[exp].include? machine)
           series_data << data[exp][machine]
-          series_names << "'#{exp} on #{machine}'"
+          series_names << "'#{exp} on #{machine} #{reference}'"
         end
       end
     end
@@ -395,20 +430,20 @@ module Ppbench
     colors = "c(#{series_colors.map { |c| "rgb(#{c})" } * ','})"
 
     sym = 1;
-    r = "#{prepare_lossplot(1.5, receive_window: receive_window, length: length)}\n"
+    r = "#{prepare_comparisonplot(maxy, receive_window: receive_window, length: length, title: title, xaxis_title: xaxis_title, xaxis_unit: xaxis_unit, yaxis_title: yaxis_title, yaxis_unit: yaxis_unit)}\n"
 
     reference = series_data.first
 
     for serie in series_data
-      r += add_loss(reference, serie, to_plot: to_plot, color: series_colors.shift, symbol: sym, length: length)
+      r += add_comparisonplot(reference, serie, to_plot: to_plot, color: series_colors.shift, symbol: sym, length: length)
       sym = sym + 1
     end
 
     r + """
     xa = seq(0, #{length}, by=#{length/xsteps})
-    ya = seq(0, 1.5, by=#{0.1})
-    axis(1, at = xa, labels = paste(xa/1000, 'kB', sep = '' ))
-    axis(2, at = ya, labels = paste(ya * 100, ' %', sep = '' ))
+    ya = seq(0, #{maxy}, by=#{0.1})
+    axis(1, at = xa, labels = paste(xa/#{xaxis_divisor}, '#{xaxis_unit}', sep = '' ))
+    axis(2, at = ya, labels = paste(ya * 100, '#{yaxis_unit}', sep = '' ))
     legend('topleft', pch=c(16), col=#{colors}, c(#{series_names * ',' }),box.col='black', bg='white')
     """
   end
