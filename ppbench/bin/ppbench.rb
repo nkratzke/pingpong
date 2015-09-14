@@ -11,28 +11,64 @@ program :name, 'ppbench'
 program :version, "#{Ppbench::VERSION}"
 program :description, 'Ping pong benchmark'
 program :help, 'Author', 'Nane Kratzke <nane.kratzke@fh-luebeck.de>'
+program :help_formatter, :compact
 
-# Implements the run command.
-#
-def run(args, options)
-  options.default :min => 1, :max => 500000
-  options.default :machine => ''
-  options.default :experiment => ''
-  options.default :coverage => 0.01
-  options.default :repetitions => 10
-  options.default :concurrency => 1
-  options.default :timeout => 60
-
+def validate_run_options(args, options)
 
   if (options.machine.empty?)
-    print("You have to tag your benchmark data with the --machine option.\n")
+    print("You have to tag your benchmark data with the --machine flag.\n")
     exit!
   end
 
   if (options.experiment.empty?)
-    print("You have to tag your benchmark data with the --experiment option.\n")
+    print("You have to tag your benchmark data with the --experiment flag.\n")
     exit!
   end
+
+  if options.coverage < 0 || options.coverage > 1.0
+    print("Error in --coverage flag: Coverage must be in [0..1.0]\n")
+    exit!
+  end
+
+  if options.repetitions < 1
+    print("Error in --repetitions flag: Repetitions must be >= 1\n")
+    exit!
+  end
+
+  if options.concurrency < 1
+    print("Error in --concurrency flag: Concurrency must be >= 1\n")
+    exit!
+  end
+
+  if options.timeout < 1
+    print("Error in --timeout flag: Timeout must be >= 1 seconds\n")
+    exit!
+  end
+
+  if args.empty
+    print("You have to specify a log file.\n")
+    exit!
+  end
+
+  if args.length > 1
+    print("You should only specify one log file. You specified #{args.length} logfiles.\n")
+    exit!
+  end
+
+  if File.exist?(args[0])
+    print("Logfile #{args[0]} already exists. You do not want to overwrite collected benchmark data.\n")
+    exit!
+  end
+
+end
+
+def validate_comparison_options(args, options)
+
+end
+
+# Implements the run command.
+#
+def run(args, options)
 
   logfile = args[0]
 
@@ -108,10 +144,46 @@ def transfer_plot(args, options)
   )
 
   script = pdfout(rplot, file: options.pdf, width: options.width, height: options.height)
-
   print "#{ options.pdf.empty? ? rplot : script }"
 
-  #R.eval(pdfout(rplot, file: options.pdf, width: options.width, height: options.height)) unless options.pdf.empty?
+end
+
+# Implements the transfer-comparison-plot command
+#
+def transfer_comparison_plot(args, options)
+
+  experiments = options.experiments.split(',')
+  machines = options.machines.split(',')
+
+  data = Ppbench::load_data(args)
+  filtered_data = Ppbench::filter(
+      data,
+      maxsize: options.length * 1000,
+      experiments: experiments,
+      machines: machines
+  )
+  aggregated_data = Ppbench::aggregate(filtered_data)
+
+  rplot = Ppbench::comparison_plotter(
+      aggregated_data,
+      maxy: options.yaxis_max,
+      to_plot: :transfer_rate,
+      machines: machines,
+      experiments: experiments,
+      receive_window: options.recwindow,
+      length: options.length * 1000,
+      xsteps: options.xaxis_steps,
+      title: "Relative Comparison of Data Transfer Rates",
+      subtitle: "bigger is better",
+      xaxis_title: "Message Size",
+      xaxis_unit: "kB",
+      xaxis_divisor: 1000,
+      yaxis_title: "Relative Performance compared with Reference"
+  )
+
+  script = pdfout(rplot, file: options.pdf, width: options.width, height: options.height)
+  print "#{ options.pdf.empty? ? rplot : script }"
+
 end
 
 # Implements the request-plot command.
@@ -169,6 +241,43 @@ def request_plot(args, options)
   print "#{ options.pdf.empty? ? rplot : script }"
 end
 
+# Implements the request-comparison-plot command
+#
+def request_comparison_plot(args, options)
+
+  experiments = options.experiments.split(',')
+  machines = options.machines.split(',')
+
+  data = Ppbench::load_data(args)
+  filtered_data = Ppbench::filter(
+      data,
+      maxsize: options.length * 1000,
+      experiments: experiments,
+      machines: machines
+  )
+  aggregated_data = Ppbench::aggregate(filtered_data)
+
+  rplot = Ppbench::comparison_plotter(
+      aggregated_data,
+      maxy: options.yaxis_max,
+      to_plot: :rps,
+      machines: machines,
+      experiments: experiments,
+      receive_window: options.recwindow,
+      length: options.length * 1000,
+      xsteps: options.xaxis_steps,
+      title: "Relative Comparison of Requests per Second",
+      xaxis_title: "Message Size",
+      xaxis_unit: "kB",
+      xaxis_divisor: 1000,
+      yaxis_title: "Relative Performance compared with Reference",
+  )
+
+  script = pdfout(rplot, file: options.pdf, width: options.width, height: options.height)
+  print "#{ options.pdf.empty? ? rplot : script }"
+
+end
+
 # Implements the latency-plot command.
 #
 def latency_plot(args, options)
@@ -224,22 +333,9 @@ def latency_plot(args, options)
   print "#{ options.pdf.empty? ? rplot : script }"
 end
 
-
-# Implements the transfer-comparison-plot command
+# Implements the latency-comparison-plot command
 #
-def transfer_comparison_plot(args, options)
-
-  options.default :machines => ''
-  options.default :experiments => ''
-  options.default :length => 500
-  options.default :recwindow => 87380
-
-  options.default :maxy => 1.5
-  options.default :xsteps => 10
-
-  options.default :pdf => ''
-  options.default :width => 7
-  options.default :height => 7
+def latency_comparison_plot(args, options)
 
   experiments = options.experiments.split(',')
   machines = options.machines.split(',')
@@ -255,24 +351,26 @@ def transfer_comparison_plot(args, options)
 
   rplot = Ppbench::comparison_plotter(
       aggregated_data,
-      maxy: options.maxy,
-      to_plot: :transfer_rate,
+      maxy: options.yaxis_max,
+      to_plot: :tpr,
       machines: machines,
       experiments: experiments,
       receive_window: options.recwindow,
       length: options.length * 1000,
-      xsteps: options.xsteps,
-      title: "Relative Comparison of Data Transfer Rates",
+      xsteps: options.xaxis_steps,
+      title: "Relative Comparison of Round-trip Latency",
+      subtitle: "smaller is better",
       xaxis_title: "Message Size",
       xaxis_unit: "kB",
       xaxis_divisor: 1000,
-      yaxis_title: "Relative Performance compared with Reference"
+      yaxis_title: "Relative Performance compared with Reference",
   )
 
   script = pdfout(rplot, file: options.pdf, width: options.width, height: options.height)
   print "#{ options.pdf.empty? ? rplot : script }"
 
 end
+
 
 # Implements the inspect command
 #
@@ -296,18 +394,21 @@ def inspect_data(args, options)
   aggregated_data.each do |experiment, machines|
     machines.each do |machine, data|
       mtr = data.map { |e| e[:transfer_rate] }.median / 1000 # median transfer rate
-      rps = 1000 / data.map { |e| e[:tpr] }.median           # median request per second
-      rows << [experiment, machine, data.count, "%.2f" % mtr, "%.2f" % rps]
+      tpr = data.map { |e| e[:tpr] }.median                  # median round trip latency
+      rps = 1000 / tpr                                       # median request per second
+
+      rows << [experiment, machine, data.count, "%.2f" % mtr, "%.2f" % rps, "%.2f" % tpr]
     end
     rows << :separator
   end
   rows.pop
 
   print("We have data for: \n")
-  table = Terminal::Table.new(:headings => ['Experiment', 'Machine', 'Samples', 'Transfer Rate (kB/s)', "Requests/sec"], :rows => rows)
+  table = Terminal::Table.new(:headings => ['Experiment', 'Machine', 'Samples', 'Transfer (kB/s)', "Requests/sec", "Latency (ms)"], :rows => rows)
   table.align_column(2, :right)
   table.align_column(3, :right)
   table.align_column(4, :right)
+  table.align_column(5, :right)
   print("#{table}\n")
 end
 
@@ -333,7 +434,7 @@ def citation(args, options)
   To cite ppbench in publications use:
 
   Kratzke, Nane (2015). A distributed HTTP-based and REST-like ping-pong system for test and benchmarking purposes.
-  L\\\"ubeck University of Applied Sciences, L\\\"ubeck, Germany. URL https://github.com/nkratzke/pingpong.
+  Lübeck University of Applied Sciences, Lübeck, Germany. URL https://github.com/nkratzke/pingpong.
 
   A BibTeX entry for LaTeX users is: #{bibtex}
 
@@ -342,21 +443,31 @@ end
 
 command :run do |c|
   c.syntax = 'ppbench run [options] output.csv'
-  c.description = 'Runs a ping pong benchmark'
+  c.description = 'Runs a ping pong benchmark.'
   c.example 'Run a benchmark and tags the results as to be collected on a m3.2xlarge instance running a docker experiment',
             'ppbench run --host http://1.2.3.4:8080 --machine m3.2xlarge --experiment docker log.csv'
 
-  c.option '--host STRING', String, 'Host'
-  c.option '--machine STRING', String, 'A tag to categorize the machine (defaults to empty String)'
-  c.option '--experiment STRING', String, 'A tag to categorize the experiment (defaults to empty String)'
-  c.option '--min INTEGER', Integer, 'Minimum message size [bytes] (defaults to 1)'
-  c.option '--max INTEGER', Integer, 'Maximum message size [bytes] (defaults to 500.000)'
-  c.option '--coverage FLOAT', Float, 'Amount of test messages to send (defaults to 0.01)'
-  c.option '--repetitions INTEGER', Integer, 'Repetitions for each data point to collect (defaults to 10)'
-  c.option '--concurrency INTEGER', Integer, 'Concurrency level (defaults to 1)'
-  c.option '--timeout INTEGER', Integer, 'Timeout in seconds (defaults to 60 seconds)'
+  c.option '--host STRING',         String,  'Host'
+  c.option '--machine STRING',      String,  'A tag to categorize the machine (defaults to empty String)'
+  c.option '--experiment STRING',   String,  'A tag to categorize the experiment (defaults to empty String)'
+  c.option '--min INTEGER',         Integer, 'Minimum message size [bytes] (defaults to 1)'
+  c.option '--max INTEGER',         Integer, 'Maximum message size [bytes] (defaults to 500.000)'
+  c.option '--coverage FLOAT',      Float,   'Amount of requests to send (defaults to 0.01, must be between 0.0 and 1.0)'
+  c.option '--repetitions INTEGER', Integer, 'Repetitions for each data point to collect (defaults to 10, must be >= 1)'
+  c.option '--concurrency INTEGER', Integer, 'Requests to be send at the same time in parallel (defaults to 1, must be >= 1)'
+  c.option '--timeout INTEGER',     Integer, 'Timeout in seconds (defaults to 60 seconds, must be >= 1)'
 
   c.action do |args, options|
+
+    options.default :min => 1, :max => 500000
+    options.default :machine => ''
+    options.default :experiment => ''
+    options.default :coverage => 0.01
+    options.default :repetitions => 10
+    options.default :concurrency => 1
+    options.default :timeout => 60
+
+    validate_run_options(args, options)
     run(args, options)
     print("Finished\n")
   end
@@ -389,6 +500,40 @@ command 'transfer-plot' do |c|
   end
 end
 
+command 'transfer-comparison-plot' do |c|
+  c.syntax = 'ppbench transfer-comparison-plot [options] *.csv'
+  c.summary = 'Generates a R script to compare data transfer rates of ping pong experiments.'
+
+  c.option '--machines STRING', String, 'Only consider specific machines (e.g. m3.large, m3.xlarge, m3.2xlarge) comma separated'
+  c.option '--experiments STRING', String, 'Only consider specific experiments (e.g. bare, docker, weave, flannel) comma separated'
+  c.option '--length INTEGER', Integer, 'Maximum message size to consider in kB (e.g. 500). Defaults to 500kB.'
+  c.option '--recwindow INTEGER', Integer, 'Standard Receive Window. Defaults to 87380 byte. (Receive Window is not plotted if set to 0.)'
+
+  c.option '--yaxis_max FLOAT', Float, 'Maximum Y Value (must be greater than 1.0, defaults to 2.0)'
+  c.option '--xaxis_steps INTEGER', Integer, '(defaults to 10)'
+
+  c.option '--pdf FILE', String, 'Saves output to a PDF file'
+  c.option '--width INTEGER', Integer, 'Width of plot in inch (defaults to 7 inch, only useful with PDF output)'
+  c.option '--height INTEGER', Integer, 'Height of plot in inch (defaults to 7 inch, only useful with PDF output)'
+
+  c.action do |args, options|
+
+    options.default :machines => ''
+    options.default :experiments => ''
+    options.default :length => 500
+    options.default :recwindow => 87380
+
+    options.default :yaxis_max => 2.0
+    options.default :xaxis_steps => 10
+
+    options.default :pdf => ''
+    options.default :width => 7
+    options.default :height => 7
+
+    transfer_comparison_plot(args, options)
+  end
+end
+
 command 'request-plot' do |c|
   c.syntax = 'ppbench request-plot [options] *.csv'
   c.summary = 'Generates a R script to plot requests per second of ping pong experiments.'
@@ -413,6 +558,41 @@ command 'request-plot' do |c|
 
   c.action do |args, options|
     request_plot(args, options)
+  end
+end
+
+command 'request-comparison-plot' do |c|
+  c.syntax = 'ppbench request-comparison-plot [options] *.csv'
+  c.summary = 'Generates a R script to compare requests per second of ping pong experiments.'
+
+  c.option '--machines STRING', String, 'Only consider specific machines (e.g. m3.large, m3.xlarge, m3.2xlarge) comma separated'
+  c.option '--experiments STRING', String, 'Only consider specific experiments (e.g. bare, docker, weave, flannel) comma separated'
+  c.option '--length INTEGER', Integer, 'Maximum message size to consider in kB (e.g. 500). Defaults to 500kB.'
+  c.option '--recwindow INTEGER', Integer, 'Standard Receive Window. Defaults to 87380 byte. (Receive Window is not plotted if set to 0.)'
+
+  c.option '--yaxis_max FLOAT', Float, 'Maximum Y Value (must be greater than 1.0, defaults to 2.0)'
+
+  c.option '--xaxis_steps INTEGER', Integer, '(defaults to 10)'
+
+  c.option '--pdf FILE', String, 'Saves output to a PDF file'
+  c.option '--width INTEGER', Integer, 'Width of plot in inch (defaults to 7 inch, only useful with PDF output)'
+  c.option '--height INTEGER', Integer, 'Height of plot in inch (defaults to 7 inch, only useful with PDF output)'
+
+  c.action do |args, options|
+
+    options.default :machines => ''
+    options.default :experiments => ''
+    options.default :length => 500
+    options.default :recwindow => 87380
+
+    options.default :yaxis_max => 2.0
+    options.default :xaxis_steps => 10
+
+    options.default :pdf => ''
+    options.default :width => 7
+    options.default :height => 7
+
+    request_comparison_plot(args, options)
   end
 end
 
@@ -443,27 +623,38 @@ command 'latency-plot' do |c|
   end
 end
 
-
-
-command 'transfer-comparison-plot' do |c|
-  c.syntax = 'ppbench transfer-comparison-plot [options] *.csv'
-  c.summary = 'Generates a R script to compare data transfer rates of ping pong experiments.'
-
-  c.option '--maxy FLOAT', Float, 'Maximum Y Value (must be greater than 1.0, defaults to 1.5)'
+command 'latency-comparison-plot' do |c|
+  c.syntax = 'ppbench latency-comparison-plot [options] *.csv'
+  c.summary = 'Generates a R script to compare round-trip latencies of ping pong experiments.'
 
   c.option '--machines STRING', String, 'Only consider specific machines (e.g. m3.large, m3.xlarge, m3.2xlarge) comma separated'
   c.option '--experiments STRING', String, 'Only consider specific experiments (e.g. bare, docker, weave, flannel) comma separated'
   c.option '--length INTEGER', Integer, 'Maximum message size to consider in kB (e.g. 500). Defaults to 500kB.'
   c.option '--recwindow INTEGER', Integer, 'Standard Receive Window. Defaults to 87380 byte. (Receive Window is not plotted if set to 0.)'
 
-  c.option '--xsteps INTEGER', Integer, '(defaults to 10)'
+  c.option '--yaxis_max FLOAT', Float, 'Maximum Y Value (must be greater than 1.0, defaults to 2.0)'
+
+  c.option '--xaxis_steps INTEGER', Integer, '(defaults to 10)'
 
   c.option '--pdf FILE', String, 'Saves output to a PDF file'
   c.option '--width INTEGER', Integer, 'Width of plot in inch (defaults to 7 inch, only useful with PDF output)'
   c.option '--height INTEGER', Integer, 'Height of plot in inch (defaults to 7 inch, only useful with PDF output)'
 
   c.action do |args, options|
-    transfer_comparison_plot(args, options)
+
+    options.default :machines => ''
+    options.default :experiments => ''
+    options.default :length => 500
+    options.default :recwindow => 87380
+
+    options.default :yaxis_max => 2.0
+    options.default :xaxis_steps => 10
+
+    options.default :pdf => ''
+    options.default :width => 7
+    options.default :height => 7
+
+    latency_comparison_plot(args, options)
   end
 end
 

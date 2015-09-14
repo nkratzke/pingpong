@@ -64,7 +64,7 @@ module Ppbench
         end
 
         unless results[:duration].empty?
-          time_taken = results[:duration].median # in milliseconds
+          time_taken = results[:duration].mean # in milliseconds
           length = results[:length].median # message length
           transfer_rate = results[:length].sum * 1000 / results[:duration].sum
           code = results[:code].first # HTTP response code
@@ -157,12 +157,13 @@ module Ppbench
       xaxis_unit: "kB",
       yaxis_title: "Transfer Rate",
       yaxis_unit: "MB/sec",
-      title: "Data Transfer Rates"
+      title: "Data Transfer Rates",
+      subtitle: ""
   )
     recwindow = receive_window == 0 ? '' : "abline(v = seq(#{receive_window}, 500000, by=#{receive_window}), lty='dashed')"
 
     """
-    plot(x=c(0), y=c(0), xlim=c(0, #{length}), ylim=c(0, #{maxy}), main='#{title}', xlab='#{xaxis_title} (#{xaxis_unit})', ylab='#{yaxis_title} (#{yaxis_unit})', xaxt='n', yaxt='n', pch=NA)
+    plot(x=c(0), y=c(0), xlim=c(0, #{length}), ylim=c(0, #{maxy}), main='#{title}\\n(#{subtitle})', xlab='#{xaxis_title} (#{xaxis_unit})', ylab='#{yaxis_title} (#{yaxis_unit})', xaxt='n', yaxt='n', pch=NA)
    	#{recwindow}
     """
   end
@@ -175,12 +176,13 @@ module Ppbench
       xaxis_unit: "kB",
       yaxis_title: "Relative performance compared with reference experiment (%)",
       yaxis_unit: "%",
-      title: "Relative performance (Data Transfer Rate)"
+      title: "Relative performance (Data Transfer Rate)",
+      subtitle: ""
   )
     recwindow = receive_window == 0 ? '' : "abline(v = seq(#{receive_window}, 500000, by=#{receive_window}), lty='dashed')"
 
     """
-    plot(x=c(0), y=c(0), xlim=c(0, #{length}), ylim=c(0, #{maxy}), main='#{title}', xlab='#{xaxis_title} (#{xaxis_unit})', ylab='#{yaxis_title} (#{yaxis_unit})', xaxt='n', yaxt='n', pch=NA)
+    plot(x=c(0), y=c(0), xlim=c(0, #{length}), ylim=c(0, #{maxy}), main='#{title}\\n(#{subtitle})', xlab='#{xaxis_title} (#{xaxis_unit})', ylab='#{yaxis_title} (#{yaxis_unit})', xaxt='n', yaxt='n', pch=NA)
    	#{recwindow}
     """
   end
@@ -337,7 +339,8 @@ module Ppbench
       yaxis_title: "",
       yaxis_unit: "",
       yaxis_divisor: 1000000,
-      title: ""
+      title: "",
+      subtitle: ""
   )
     series_data = []
     series_names = []
@@ -366,7 +369,7 @@ module Ppbench
     colors = "c(#{series_colors.map { |c| "rgb(#{c})" } * ','})"
 
     sym = 1;
-    r = "#{prepare_plot(maxy, receive_window: receive_window, length: length, title: title, xaxis_title: xaxis_title, xaxis_unit: xaxis_unit, yaxis_title: yaxis_title, yaxis_unit: yaxis_unit)}\n"
+    r = "#{prepare_plot(maxy, receive_window: receive_window, length: length, title: title, xaxis_title: xaxis_title, xaxis_unit: xaxis_unit, yaxis_title: yaxis_title, yaxis_unit: yaxis_unit, subtitle: subtitle)}\n"
 
     for serie in series_data
       r += add_series(serie, to_plot: to_plot, with_bands: with_bands, no_points: no_points, color: series_colors.shift, symbol: sym, length: length, confidence: confidence)
@@ -398,7 +401,8 @@ module Ppbench
       xaxis_divisor: 1000,
       yaxis_title: "",
       yaxis_unit: "%",
-      title: ""
+      title: "",
+      subtitle: ""
   )
     series_data = []
     series_names = []
@@ -430,7 +434,7 @@ module Ppbench
     colors = "c(#{series_colors.map { |c| "rgb(#{c})" } * ','})"
 
     sym = 1;
-    r = "#{prepare_comparisonplot(maxy, receive_window: receive_window, length: length, title: title, xaxis_title: xaxis_title, xaxis_unit: xaxis_unit, yaxis_title: yaxis_title, yaxis_unit: yaxis_unit)}\n"
+    r = "#{prepare_comparisonplot(maxy, receive_window: receive_window, length: length, title: title, subtitle: subtitle, xaxis_title: xaxis_title, xaxis_unit: xaxis_unit, yaxis_title: yaxis_title, yaxis_unit: yaxis_unit)}\n"
 
     reference = series_data.first
 
