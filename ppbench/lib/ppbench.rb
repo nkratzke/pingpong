@@ -24,6 +24,8 @@ module Ppbench
       "Response Code"
   ]
 
+  # Runs a benchmark against a host and stores benchmark data in a log file.
+  #
   def self.run_bench(host, log, machine_tag: '', experiment_tag: '', timeout: 60, repetitions: 10, coverage: 0.1, min: 1, max: 500000, concurrency: 10)
     rounds = ((max - min) * coverage).to_i
 
@@ -148,7 +150,8 @@ module Ppbench
     end.to_h
   end
 
-
+  # Prepares a plot to present absolute values.
+  #
   def self.prepare_plot(
       maxy,
       receive_window: 87380,
@@ -168,6 +171,8 @@ module Ppbench
     """
   end
 
+  # Prepares a plot to present relative comparisons.
+  #
   def self.prepare_comparisonplot(
       maxy,
       receive_window: 87300,
@@ -187,6 +192,8 @@ module Ppbench
     """
   end
 
+  # Adds a serie to a plot.
+  #
   def self.add_series(
       data,
       to_plot: :tpr,
@@ -204,6 +211,8 @@ module Ppbench
     """
   end
 
+  # Adds a compare line to a comparison plot.
+  #
   def self.add_comparisonplot(
       reference,
       serie,
@@ -211,23 +220,37 @@ module Ppbench
       color: 'grey',
       symbol: 1,
       length: 500000,
-      n: 500,
+      n: 100,
       nknots: 20
   )
     step = length / n
     references = reference.map { |v| [v[:length], v[to_plot]] }
     ref_values = 1.upto(n).map do |i|
+      vs = references.select { |p| p[0] < i * step && p[0] >= (i - 1) * step }.map { |p| p[1] }
+
+      if vs.empty?
+        print("Sorry, we have not enough data for messages of about #{i * step} byte length.")
+        exit!
+      end
+
       [
           i * step,
-          references.select { |p| p[0] < i * step && p[0] >= (i - 1) * step }.map { |p| p[1] }.median
+          vs.median
       ]
     end.to_h
 
     series = serie.map { |v| [v[:length], v[to_plot]] }
     serie_values = 1.upto(n).map do |i|
+      vs = series.select { |p| p[0] < i * step && p[0] >= (i - 1) * step }.map { |p| p[1] }
+
+      if vs.empty?
+        print("Sorry, we have not enough data for messages of about #{i * step} byte length.")
+        exit!
+      end
+
       [
           i * step,
-          series.select { |p| p[0] < i * step && p[0] >= (i - 1) * step }.map { |p| p[1] }.median
+          vs.median
       ]
     end.to_h
 
@@ -249,6 +272,8 @@ module Ppbench
     """
   end
 
+  # Generates scatter plot of points for plots.
+  #
   def self.points(data, to_plot: :tpr, color: 'grey', alpha: 0.15, symbol: 1)
     points = data.map { |v| [v[:length], v[to_plot]] }
     xs = "c(#{points.map { |e| e[0] } * ','})"
@@ -261,7 +286,9 @@ module Ppbench
     """
   end
 
-  def self.bands(data, to_plot: :tpr, n: 500, length: 500000, color: 'grey', confidence: 90, nknots: 15)
+  # Generates median lines and confidence bands for plots.
+  #
+  def self.bands(data, to_plot: :tpr, n: 100, length: 500000, color: 'grey', confidence: 90, nknots: 15)
 
     step = length / n
     points = data.map { |v| [v[:length], v[to_plot]] }
@@ -278,6 +305,12 @@ module Ppbench
     semi_lower_confidence = (100 - confidence / 2) / 2
 
     summary = values.map do |x,vs|
+
+      if vs.empty?
+        print("Sorry, we have not enough data for messages of about #{x} byte length.")
+        exit!
+      end
+
       {
           :x => x,
           :lower => vs.percentile(lower_confidence),
@@ -318,7 +351,8 @@ module Ppbench
 
   end
 
-  # Generates a R plot output script.
+  # Generates an R plot output script which can be used for plotting benchmark data
+  # as scatter plot with optional confidence bands.
   #
   def self.plotter(
       data,
@@ -387,6 +421,9 @@ module Ppbench
     """
   end
 
+  # Generates an R plot output script which can be used for plotting comparison plots
+  # of benchmark data.
+  #
   def self.comparison_plotter(
       data,
       maxy: 1.5,

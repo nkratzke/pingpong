@@ -13,6 +13,8 @@ program :description, 'Ping pong benchmark'
 program :help, 'Author', 'Nane Kratzke <nane.kratzke@fh-luebeck.de>'
 program :help_formatter, :compact
 
+# Validates command line flags of the run command.
+#
 def validate_run_options(args, options)
 
   if (options.machine.empty?)
@@ -45,7 +47,7 @@ def validate_run_options(args, options)
     exit!
   end
 
-  if args.empty
+  if args.empty?
     print("You have to specify a log file.\n")
     exit!
   end
@@ -62,7 +64,15 @@ def validate_run_options(args, options)
 
 end
 
+# Validates command line flags of the xyz-comparison-plot commands.
+#
 def validate_comparison_options(args, options)
+
+end
+
+# Validates command line flags of the xyz-plot commands.
+#
+def validate_plot_options(args, options)
 
 end
 
@@ -137,6 +147,7 @@ def transfer_plot(args, options)
       ysteps: options.ysteps,
       xsteps: options.xsteps,
       title: "Data Transfer Rates",
+      subtitle: "bigger is better",
       xaxis_title: "Message Size",
       xaxis_unit: "kB",
       yaxis_title: "Transfer Rate",
@@ -173,12 +184,12 @@ def transfer_comparison_plot(args, options)
       receive_window: options.recwindow,
       length: options.length * 1000,
       xsteps: options.xaxis_steps,
-      title: "Relative Comparison of Data Transfer Rates",
+      title: "Data transfer in relative comparison",
       subtitle: "bigger is better",
       xaxis_title: "Message Size",
       xaxis_unit: "kB",
       xaxis_divisor: 1000,
-      yaxis_title: "Relative Performance compared with Reference"
+      yaxis_title: "Ratio"
   )
 
   script = pdfout(rplot, file: options.pdf, width: options.width, height: options.height)
@@ -191,7 +202,7 @@ end
 def request_plot(args, options)
   options.default :machines => ''
   options.default :experiments => ''
-  options.default :length => 5000
+  options.default :length => 500
   options.default :recwindow => 87380
   options.default :confidence => 90
 
@@ -228,7 +239,8 @@ def request_plot(args, options)
       maxy: options.maxy,
       ysteps: options.ysteps,
       xsteps: options.xsteps,
-      title: "Request per seconds",
+      title: "Requests per seconds",
+      subtitle: "bigger is better",
       xaxis_title: "Message Size",
       xaxis_unit: "kB",
       yaxis_title: "Requests per seconds",
@@ -266,11 +278,12 @@ def request_comparison_plot(args, options)
       receive_window: options.recwindow,
       length: options.length * 1000,
       xsteps: options.xaxis_steps,
-      title: "Relative Comparison of Requests per Second",
+      title: "Requests per second in relative comparison",
+      subtitle: "bigger is better",
       xaxis_title: "Message Size",
       xaxis_unit: "kB",
       xaxis_divisor: 1000,
-      yaxis_title: "Relative Performance compared with Reference",
+      yaxis_title: "Ratio",
   )
 
   script = pdfout(rplot, file: options.pdf, width: options.width, height: options.height)
@@ -358,12 +371,12 @@ def latency_comparison_plot(args, options)
       receive_window: options.recwindow,
       length: options.length * 1000,
       xsteps: options.xaxis_steps,
-      title: "Relative Comparison of Round-trip Latency",
-      subtitle: "smaller is better",
+      title: "Round-trip latency in relative comparison",
+      subtitle: "bigger is better",
       xaxis_title: "Message Size",
       xaxis_unit: "kB",
       xaxis_divisor: 1000,
-      yaxis_title: "Relative Performance compared with Reference",
+      yaxis_title: "Ratio",
   )
 
   script = pdfout(rplot, file: options.pdf, width: options.width, height: options.height)
@@ -627,6 +640,12 @@ command 'latency-comparison-plot' do |c|
   c.syntax = 'ppbench latency-comparison-plot [options] *.csv'
   c.summary = 'Generates a R script to compare round-trip latencies of ping pong experiments.'
 
+  c.example 'Generates a latency comparison plot for data collected on machine m3.xlarge for java, dart and go implementations of the ping-pong system.',
+            'ppbench latency-comparison-plot --machines m3.xlarge --experiments bare-java,bare-go,bare-dart *.csv > bare-comparison.R'
+
+  c.example 'Generates a latency comparison plot for data collected on machine m3.xlarge for java, dart implementations of the ping-pong system.',
+            'ppbench latency-comparison-plot --machines m3.xlarge --experiments bare-java,bare-go --pdf compare.pdf --width 9, --height 6 *.csv > bare-comparison.R'
+
   c.option '--machines STRING', String, 'Only consider specific machines (e.g. m3.large, m3.xlarge, m3.2xlarge) comma separated'
   c.option '--experiments STRING', String, 'Only consider specific experiments (e.g. bare, docker, weave, flannel) comma separated'
   c.option '--length INTEGER', Integer, 'Maximum message size to consider in kB (e.g. 500). Defaults to 500kB.'
@@ -688,7 +707,7 @@ command :citation do |c|
   c.option  '--bibtex', 'Get bibtex entry (for Latex users)'
 
   c.action do |args, options|
-    print citation(args, options)
+    print "#{citation(args, options)}\n"
   end
 end
 

@@ -11,7 +11,7 @@ sudo docker rm pong || true
 
 echo "Stopping ping if running"
 sudo docker stop ping || true
-sudo docker rm pong || true
+sudo docker rm ping || true
 
 echo "Stopping weave if running"
 sudo weave stop || true
