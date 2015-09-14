@@ -320,6 +320,10 @@ def latency_plot(args, options)
   )
   aggregated_data = Ppbench::aggregate(filtered_data)
 
+  # TO BE DONE AND CONTINUED
+  maxy = Pbbench::maximum(aggregated_data, :tpr)
+  maxx = Pbbench::maximum(aggregated_data, :length)
+
   rplot = Ppbench::plotter(
       aggregated_data,
       to_plot: :tpr,
@@ -334,6 +338,7 @@ def latency_plot(args, options)
       ysteps: options.ysteps,
       xsteps: options.xsteps,
       title: "Round-trip latency",
+      subtitle: "smaller is better",
       xaxis_title: "Message Size",
       xaxis_unit: "kB",
       yaxis_title: "Latency",

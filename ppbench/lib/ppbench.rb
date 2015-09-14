@@ -152,6 +152,18 @@ module Ppbench
     end.to_h
   end
 
+  # Determines biggest value of aggregated data.
+  #
+  def self.maximum(data, tomaximize: :tpr)
+    y = 0
+    for experiment, machines in data
+      for machine in machines
+        y = y > machine[tomaximize] ? y : machine[tomaximize]
+      end
+    end
+    y
+  end
+
   # Prepares a plot to present absolute values.
   #
   def self.prepare_plot(
