@@ -1,7 +1,7 @@
 require "ppbench/version"
 require "parallel"
 require "csv"
-require "net/http"
+require "httpclient"
 require "progressbar"
 require "thread"
 require "json"
@@ -34,6 +34,8 @@ module Ppbench
       logfile = Mutex.new
       progress = ProgressBar.new("Running", rounds)
 
+      webclient = HTTPClient.new
+
       Parallel.each(1.upto(rounds), in_threads: concurrency) do |_|
 
         length = Random.rand(min..max)
@@ -47,11 +49,11 @@ module Ppbench
             fails: []
         }
         begin
-          uri = URI("#{host}#{document}")
+          #uri = URI("#{host}#{document}")
           1.upto(repetitions) do
             answer = {}
             Timeout::timeout(timeout) do
-              response = Net::HTTP.get(uri)
+              response = webclient.get("#{host}#{document}").body
               answer = JSON.parse(response)
             end
             results[:duration] << answer['duration']
@@ -61,7 +63,7 @@ module Ppbench
             results[:fails] << (answer['code'] == 200 ? 0 : 1)
           end
         rescue Exception => e
-          print ("Timeout of '#{uri}'\n")
+          print ("Timeout of '#{host}#{document}'")
           print ("#{e}")
         end
 
