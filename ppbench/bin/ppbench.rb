@@ -455,7 +455,7 @@ def citation(args, options)
 end
 
 command :run do |c|
-  c.syntax = 'ppbench run [options] output.csv'
+  c.syntax = 'ppbench run [options] log.csv'
   c.description = 'Runs a ping pong benchmark.'
   c.example 'Run a benchmark and tags the results as to be collected on a m3.2xlarge instance running a docker experiment',
             'ppbench run --host http://1.2.3.4:8080 --machine m3.2xlarge --experiment docker log.csv'
@@ -465,8 +465,8 @@ command :run do |c|
   c.option '--experiment STRING',   String,  'A tag to categorize the experiment (defaults to empty String)'
   c.option '--min INTEGER',         Integer, 'Minimum message size [bytes] (defaults to 1)'
   c.option '--max INTEGER',         Integer, 'Maximum message size [bytes] (defaults to 500.000)'
-  c.option '--coverage FLOAT',      Float,   'Amount of requests to send (defaults to 0.01, must be between 0.0 and 1.0)'
-  c.option '--repetitions INTEGER', Integer, 'Repetitions for each data point to collect (defaults to 10, must be >= 1)'
+  c.option '--coverage FLOAT',      Float,   'Amount of requests to send (defaults to 5% == 0.05, must be between 0.0 and 1.0)'
+  c.option '--repetitions INTEGER', Integer, 'Repetitions for each data point to collect (defaults to 1, must be >= 1)'
   c.option '--concurrency INTEGER', Integer, 'Requests to be send at the same time in parallel (defaults to 1, must be >= 1)'
   c.option '--timeout INTEGER',     Integer, 'Timeout in seconds (defaults to 60 seconds, must be >= 1)'
 
@@ -475,8 +475,8 @@ command :run do |c|
     options.default :min => 1, :max => 500000
     options.default :machine => ''
     options.default :experiment => ''
-    options.default :coverage => 0.01
-    options.default :repetitions => 10
+    options.default :coverage => 0.05
+    options.default :repetitions => 1
     options.default :concurrency => 1
     options.default :timeout => 60
 
