@@ -222,7 +222,7 @@ module Ppbench
       color: 'grey',
       symbol: 1,
       length: 500000,
-      n: 100,
+      n: 500,
       nknots: 20
   )
     step = length / n
@@ -290,7 +290,7 @@ module Ppbench
 
   # Generates median lines and confidence bands for plots.
   #
-  def self.bands(data, to_plot: :tpr, n: 100, length: 500000, color: 'grey', confidence: 90, nknots: 15)
+  def self.bands(data, to_plot: :tpr, n: 500, length: 500000, color: 'grey', confidence: 90, nknots: 15)
 
     step = length / n
     points = data.map { |v| [v[:length], v[to_plot]] }

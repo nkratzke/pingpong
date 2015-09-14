@@ -509,6 +509,8 @@ command 'transfer-plot' do |c|
 
 
   c.action do |args, options|
+
+    validate_plot_options(args, options)
     transfer_plot(args, options)
   end
 end
@@ -543,6 +545,7 @@ command 'transfer-comparison-plot' do |c|
     options.default :width => 7
     options.default :height => 7
 
+    validate_comparison_options(args, options)
     transfer_comparison_plot(args, options)
   end
 end
@@ -570,6 +573,7 @@ command 'request-plot' do |c|
 
 
   c.action do |args, options|
+    validate_plot_options(args, options)
     request_plot(args, options)
   end
 end
@@ -605,6 +609,7 @@ command 'request-comparison-plot' do |c|
     options.default :width => 7
     options.default :height => 7
 
+    validate_comparison_options(args, options)
     request_comparison_plot(args, options)
   end
 end
@@ -632,6 +637,8 @@ command 'latency-plot' do |c|
 
 
   c.action do |args, options|
+
+    validate_plot_options(args, options)
     latency_plot(args, options)
   end
 end
@@ -673,6 +680,7 @@ command 'latency-comparison-plot' do |c|
     options.default :width => 7
     options.default :height => 7
 
+    validate_comparison_options(args, options)
     latency_comparison_plot(args, options)
   end
 end
