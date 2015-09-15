@@ -7,6 +7,33 @@ require 'ppbench'
 require 'commander/import'
 require 'terminal-table'
 
+# Description constants used by the help command.
+#
+MACHINES_DESCRIPTION    = 'Consider only specific machines (e.g. m3.large,m3.xlarge); comma separated list.'
+EXPERIMENTS_DESCRIPTION = 'Consider only specific experiments (e.g. bare,docker,weave); comma separated list.'
+RECWINDOW_DESCRIPTION   = 'Standard Receive Window. Defaults to 87380 byte (Window is not plotted if set to 0).'
+YAXIS_MAX_DESCRIPTION   = 'Maximum Y value on the Y axis (defaults to biggest value found).'
+YAXIS_STEPS_DESCRIPTION = 'How many ticks shall be plotted on yaxis (defaults to 10).'
+XAXIS_MAX_DESCRIPTION   = 'Maximum X value on the X axis (defaults to biggest message size found).'
+XAXIS_STEPS_DESCRIPTION = 'How many ticks shall be plotted on xaxis (defaults to 10).'
+CONFIDENCE_DESCRIPTION  = 'Percent value for confidence bands. Defaults to 90%.'
+WITHBANDS_DESCRIPTION   = 'Plots confidence bands (confidence bands are _not_ plotted by default).'
+NOPOINTS_DESCRIPTION    = 'Show no points (points are plotted by default).'
+PDF_DESCRIPTION         = 'Adds additional commands to an R script, so that it can be used to generate a PDF file.'
+PDF_WIDTH_DESCRIPTION   = 'Width of plot in inch (defaults to 7 inch, only useful with PDF output).'
+PDF_HEIGHT_DESCRIPTION  = 'Height of plot in inch (defaults to 7 inch, only useful with PDF output).'
+
+# Plotting constants used for plotting.
+#
+RECWINDOW_DEFAULT       = 87380
+CONFIDENCE_DEFAULT      = 90
+AXIS_STEP_DEFAULT       = 10
+COMPARISON_MAX_DEFAULT  = 2.0
+
+# Constants used for PDF generation.
+#
+PDF_DIMENSION_DEFAULT   = 7
+
 program :name, 'ppbench'
 program :version, "#{Ppbench::VERSION}"
 program :description, 'Ping pong benchmark'
@@ -14,7 +41,7 @@ program :help, 'Author', 'Nane Kratzke <nane.kratzke@fh-luebeck.de>'
 global_option '--precision POINTS', Integer, 'Amount of points used per series for plotting medians, comparisons and confidence intervals.'
 
 # Validates and processes global options like
-# - precision
+# - precision (used for comparison lines, median lines and confidence band plotting)
 #
 def validate_global_options(args, options)
   options.default :precision => 500
@@ -129,6 +156,8 @@ def validate_plot_options(args, options)
 
 end
 
+# Validates command line options dealing with PDF generation.
+#
 def validate_pdf_options(args, options)
   if options.height < 1
     $stderr.puts("Error in --height flag. You must provide a positive height >= 1 in inch.\n")
@@ -161,6 +190,9 @@ def run(args, options)
   )
 end
 
+# Embeds a R script (content) into some PDF generating
+# R statements.
+#
 def pdfout(content, file: 'output.pdf', width: 7, height: 7)
   """
   pdf('#{file}', width=#{width}, height=#{height})
@@ -208,9 +240,9 @@ def transfer_plot(args, options)
       yaxis_unit: "MB/sec"
   )
 
-  script = pdfout(rplot, file: options.pdf, width: options.width, height: options.height)
-  print "#{ options.pdf.empty? ? rplot : script }"
-
+  pdf = pdfout(rplot, file: options.pdf, width: options.width, height: options.height)
+  print("#{pdf}") unless options.pdf.empty?
+  print("#{rplot}") if options.pdf.empty?
 end
 
 # Implements the transfer-comparison-plot command.
@@ -247,8 +279,9 @@ def transfer_comparison_plot(args, options)
       yaxis_title: "Ratio"
   )
 
-  script = pdfout(rplot, file: options.pdf, width: options.width, height: options.height)
-  print "#{ options.pdf.empty? ? rplot : script }"
+  pdf = pdfout(rplot, file: options.pdf, width: options.width, height: options.height)
+  print("#{pdf}") unless options.pdf.empty?
+  print("#{rplot}") if options.pdf.empty?
 
 end
 
@@ -292,9 +325,9 @@ def request_plot(args, options)
       yaxis_divisor: 1
   )
 
-  script = pdfout(rplot, file: options.pdf, width: options.width, height: options.height)
-
-  print "#{ options.pdf.empty? ? rplot : script }"
+  pdf = pdfout(rplot, file: options.pdf, width: options.width, height: options.height)
+  print("#{pdf}") unless options.pdf.empty?
+  print("#{rplot}") if options.pdf.empty?
 end
 
 # Implements the request-comparison-plot command
@@ -460,10 +493,9 @@ def summary(args, options)
   print("#{table}\n")
 end
 
-# Implements the citation command
+# Implements the citation command.
 #
 def citation(args, options)
-
   bibtex =
   """
   @misc{Kra2015,
@@ -521,26 +553,6 @@ command :run do |c|
     print("Finished\n")
   end
 end
-
-MACHINES_DESCRIPTION    = 'Consider only specific machines (e.g. m3.large,m3.xlarge); comma separated list.'
-EXPERIMENTS_DESCRIPTION = 'Consider only specific experiments (e.g. bare,docker,weave); comma separated list.'
-RECWINDOW_DESCRIPTION   = 'Standard Receive Window. Defaults to 87380 byte (Window is not plotted if set to 0).'
-YAXIS_MAX_DESCRIPTION   = 'Maximum Y value on the Y axis (defaults to biggest value found).'
-YAXIS_STEPS_DESCRIPTION = 'How many ticks shall be plotted on yaxis (defaults to 10).'
-XAXIS_MAX_DESCRIPTION   = 'Maximum X value on the X axis (defaults to biggest message size found).'
-XAXIS_STEPS_DESCRIPTION = 'How many ticks shall be plotted on xaxis (defaults to 10).'
-CONFIDENCE_DESCRIPTION  = 'Percent value for confidence bands. Defaults to 90%.'
-WITHBANDS_DESCRIPTION   = 'Plots confidence bands (confidence bands are _not_ plotted by default).'
-NOPOINTS_DESCRIPTION    = 'Show no points (points are plotted by default).'
-PDF_DESCRIPTION         = 'Adds additional commands to an R script, so that it can be used to generate a PDF file.'
-PDF_WIDTH_DESCRIPTION   = 'Width of plot in inch (defaults to 7 inch, only useful with PDF output).'
-PDF_HEIGHT_DESCRIPTION  = 'Height of plot in inch (defaults to 7 inch, only useful with PDF output).'
-
-RECWINDOW_DEFAULT       = 87380
-CONFIDENCE_DEFAULT      = 90
-AXIS_STEP_DEFAULT       = 10
-PDF_DIMENSION_DEFAULT   = 7
-COMPARISON_MAX_DEFAULT  = 2.0
 
 command 'transfer-plot' do |c|
   c.syntax = 'ppbench transfer-plot [options] *.csv'
@@ -802,7 +814,7 @@ end
 
 command :summary do |c|
   c.syntax = 'ppbench summary [options] *.csv'
-  c.summary = 'Summarizes benchmark data.'
+  c.summary = 'Summarizes benchmark data. Useful to inspect data for completeness or to query machine and experiment tags.'
 
   c.example 'Lists a summary of all benchmark data.',
             'ppbench summary *.csv'
