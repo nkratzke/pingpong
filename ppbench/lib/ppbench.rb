@@ -10,6 +10,40 @@ require "descriptive_statistics"
 
 module Ppbench
 
+  def self.precision=(v)
+    @precision = v
+  end
+
+  def self.precision
+    @precision
+  end
+
+  def self.precision_error(length)
+    """
+    Sorry, we have not enough data for messages of about #{length} byte length.
+    You may want to reduce the precision with the global --precision flag.
+    Current precison is #{Ppbench::precision}.
+    So you could collect more data (preferred) or reduce the precision value.
+    """
+  end
+
+  R_COLORS = [
+      '0.5,0.5,0.5',
+      '0.96,0.26,0.21',
+      '0.25,0.31,0.71',
+      '0.13,0.59,0.95',
+      '0,0.59,0.53',
+      '0.30,0.69,0.31',
+      '0.8,0.86,0.22',
+      '1,0.6,0.03',
+      '1,0.6,0',
+      '1,0.34,0.13'
+  ]
+
+  R_NO_SYMBOL = "16"
+
+  R_SYMBOLS = "c(1,2,3,4,5,6,7,8,9,10)"
+
   LOG_HEADER = [
       "Machine Tag",
       "Experiment Tag",
@@ -124,7 +158,7 @@ module Ppbench
 
   # Filter benchmark data.
   #
-  def self.filter(data, maxsize: 500000, experiments: [], machines: [], fails: 0)
+  def self.filter(data, maxsize: 2 ** 64, experiments: [], machines: [], fails: 0)
     data.select { |entry| entry[:tpr] > 0 }
         .select { |entry| entry[:failed] <= fails }
         .select { |entry| entry[:length] <= maxsize }
@@ -154,11 +188,12 @@ module Ppbench
 
   # Determines biggest value of aggregated data.
   #
-  def self.maximum(data, tomaximize: :tpr)
+  def self.maximum(data, of: :tpr)
     y = 0
     for experiment, machines in data
-      for machine in machines
-        y = y > machine[tomaximize] ? y : machine[tomaximize]
+      for machine, values in machines
+        m = values.max_by { |e| e[of] }
+        y = (y > m[of] ? y : m[of])
       end
     end
     y
@@ -177,11 +212,11 @@ module Ppbench
       title: "Data Transfer Rates",
       subtitle: ""
   )
-    recwindow = receive_window == 0 ? '' : "abline(v = seq(#{receive_window}, 500000, by=#{receive_window}), lty='dashed')"
+    recwindow = receive_window == 0 ? '' : "abline(v = seq(#{receive_window}, #{length}, by=#{receive_window}), lty='dashed')"
 
     """
     plot(x=c(0), y=c(0), xlim=c(0, #{length}), ylim=c(0, #{maxy}), main='#{title}\\n(#{subtitle})', xlab='#{xaxis_title} (#{xaxis_unit})', ylab='#{yaxis_title} (#{yaxis_unit})', xaxt='n', yaxt='n', pch=NA)
-   	#{recwindow}
+   	#{recwindow if receive_window < length }
     """
   end
 
@@ -198,11 +233,11 @@ module Ppbench
       title: "Relative performance (Data Transfer Rate)",
       subtitle: ""
   )
-    recwindow = receive_window == 0 ? '' : "abline(v = seq(#{receive_window}, 500000, by=#{receive_window}), lty='dashed')"
+    recwindow = receive_window == 0 ? '' : "abline(v = seq(#{receive_window}, #{length}, by=#{receive_window}), lty='dashed')"
 
     """
     plot(x=c(0), y=c(0), xlim=c(0, #{length}), ylim=c(0, #{maxy}), main='#{title}\\n(#{subtitle})', xlab='#{xaxis_title} (#{xaxis_unit})', ylab='#{yaxis_title} (#{yaxis_unit})', xaxt='n', yaxt='n', pch=NA)
-   	#{recwindow}
+   	#{recwindow if receive_window < length}
     """
   end
 
@@ -234,7 +269,7 @@ module Ppbench
       color: 'grey',
       symbol: 1,
       length: 500000,
-      n: 500,
+      n: Ppbench::precision,
       nknots: 20
   )
     step = length / n
@@ -243,7 +278,7 @@ module Ppbench
       vs = references.select { |p| p[0] < i * step && p[0] >= (i - 1) * step }.map { |p| p[1] }
 
       if vs.empty?
-        print("Sorry, we have not enough data for messages of about #{i * step} byte length.")
+        $stderr.puts precision_error(i * step)
         exit!
       end
 
@@ -258,7 +293,7 @@ module Ppbench
       vs = series.select { |p| p[0] < i * step && p[0] >= (i - 1) * step }.map { |p| p[1] }
 
       if vs.empty?
-        print("Sorry, we have not enough data for messages of about #{i * step} byte length.")
+        $stderr.puts precision_error(i * step)
         exit!
       end
 
@@ -302,7 +337,7 @@ module Ppbench
 
   # Generates median lines and confidence bands for plots.
   #
-  def self.bands(data, to_plot: :tpr, n: 500, length: 500000, color: 'grey', confidence: 90, nknots: 15)
+  def self.bands(data, to_plot: :tpr, n: Ppbench::precision, length: 500000, color: 'grey', confidence: 90, nknots: 15)
 
     step = length / n
     points = data.map { |v| [v[:length], v[to_plot]] }
@@ -321,7 +356,7 @@ module Ppbench
     summary = values.map do |x,vs|
 
       if vs.empty?
-        print("Sorry, we have not enough data for messages of about #{x} byte length.")
+        $stderr.puts precision_error(x)
         exit!
       end
 
@@ -374,13 +409,13 @@ module Ppbench
       machines: [],
       experiments: [],
       receive_window: 87380,
-      length: 500000,
+      xaxis_max: 500000,
       confidence: 90,
       no_points: false,
       with_bands: false,
-      maxy: 10000000,
-      ysteps: 10,
-      xsteps: 10,
+      yaxis_max: 10000000,
+      yaxis_steps: 10,
+      xaxis_steps: 10,
       xaxis_title: "",
       xaxis_unit: "",
       xaxis_divisor: 1000,
@@ -392,18 +427,7 @@ module Ppbench
   )
     series_data = []
     series_names = []
-    series_colors = [
-        '0.5,0.5,0.5',
-        '0.96,0.26,0.21',
-        '0.25,0.31,0.71',
-        '0.13,0.59,0.95',
-        '0,0.59,0.53',
-        '0.30,0.69,0.31',
-        '0.8,0.86,0.22',
-        '1,0.6,0.03',
-        '1,0.6,0',
-        '1,0.34,0.13'
-    ]
+    series_colors = R_COLORS
 
     for exp in experiments
       for machine in machines
@@ -417,18 +441,18 @@ module Ppbench
     colors = "c(#{series_colors.map { |c| "rgb(#{c})" } * ','})"
 
     sym = 1;
-    r = "#{prepare_plot(maxy, receive_window: receive_window, length: length, title: title, xaxis_title: xaxis_title, xaxis_unit: xaxis_unit, yaxis_title: yaxis_title, yaxis_unit: yaxis_unit, subtitle: subtitle)}\n"
+    r = "#{prepare_plot(yaxis_max, receive_window: receive_window, length: xaxis_max, title: title, xaxis_title: xaxis_title, xaxis_unit: xaxis_unit, yaxis_title: yaxis_title, yaxis_unit: yaxis_unit, subtitle: subtitle)}\n"
 
     for serie in series_data
-      r += add_series(serie, to_plot: to_plot, with_bands: with_bands, no_points: no_points, color: series_colors.shift, symbol: sym, length: length, confidence: confidence)
+      r += add_series(serie, to_plot: to_plot, with_bands: with_bands, no_points: no_points, color: series_colors.shift, symbol: sym, length: xaxis_max, confidence: confidence)
       sym = sym + 1
     end
 
-    symbols = no_points ? "16" : "c(1,2,3,4,5,6,7,8,9,10)"
+    symbols = no_points ? R_NO_SYMBOL : R_SYMBOLS
 
     r + """
-    xa = seq(0, #{length}, by=#{length/xsteps})
-    ya = seq(0, #{maxy}, by=#{maxy/ysteps})
+    xa = seq(0, #{xaxis_max}, by=#{xaxis_max/xaxis_steps})
+    ya = seq(0, #{yaxis_max}, by=#{yaxis_max/yaxis_steps})
     axis(1, at = xa, labels = paste(xa/#{xaxis_divisor}, '#{xaxis_unit}', sep = ' ' ))
     axis(2, at = ya, labels = paste(ya/#{yaxis_divisor}, '#{yaxis_unit}', sep = ' ' ))
     legend('topleft', pch=#{symbols}, col=#{colors}, c(#{series_names * ',' }),box.col='black', bg='white')
@@ -440,13 +464,13 @@ module Ppbench
   #
   def self.comparison_plotter(
       data,
-      maxy: 1.5,
+      yaxis_max: 1.5,
       to_plot: :transfer_rate,
       machines: [],
       experiments: [],
       receive_window: 87380,
-      length: 500000,
-      xsteps: 10,
+      xaxis_max: 500000,
+      xaxis_steps: 10,
       xaxis_title: "",
       xaxis_unit: "",
       xaxis_divisor: 1000,
@@ -457,18 +481,7 @@ module Ppbench
   )
     series_data = []
     series_names = []
-    series_colors = [
-        '0.5,0.5,0.5',
-        '0.96,0.26,0.21',
-        '0.25,0.31,0.71',
-        '0.13,0.59,0.95',
-        '0,0.59,0.53',
-        '0.30,0.69,0.31',
-        '0.8,0.86,0.22',
-        '1,0.6,0.03',
-        '1,0.6,0',
-        '1,0.34,0.13'
-    ]
+    series_colors = R_COLORS
 
     ref = true
     for exp in experiments
@@ -485,22 +498,21 @@ module Ppbench
     colors = "c(#{series_colors.map { |c| "rgb(#{c})" } * ','})"
 
     sym = 1;
-    r = "#{prepare_comparisonplot(maxy, receive_window: receive_window, length: length, title: title, subtitle: subtitle, xaxis_title: xaxis_title, xaxis_unit: xaxis_unit, yaxis_title: yaxis_title, yaxis_unit: yaxis_unit)}\n"
+    r = "#{prepare_comparisonplot(yaxis_max, receive_window: receive_window, length: xaxis_max, title: title, subtitle: subtitle, xaxis_title: xaxis_title, xaxis_unit: xaxis_unit, yaxis_title: yaxis_title, yaxis_unit: yaxis_unit)}\n"
 
     reference = series_data.first
 
     for serie in series_data
-      r += add_comparisonplot(reference, serie, to_plot: to_plot, color: series_colors.shift, symbol: sym, length: length)
+      r += add_comparisonplot(reference, serie, to_plot: to_plot, color: series_colors.shift, symbol: sym, length: xaxis_max)
       sym = sym + 1
     end
 
     r + """
-    xa = seq(0, #{length}, by=#{length/xsteps})
-    ya = seq(0, #{maxy}, by=#{0.1})
+    xa = seq(0, #{xaxis_max}, by=#{xaxis_max/xaxis_steps})
+    ya = seq(0, #{yaxis_max}, by=#{0.1})
     axis(1, at = xa, labels = paste(xa/#{xaxis_divisor}, '#{xaxis_unit}', sep = '' ))
     axis(2, at = ya, labels = paste(ya * 100, '#{yaxis_unit}', sep = '' ))
-    legend('topleft', pch=c(16), col=#{colors}, c(#{series_names * ',' }),box.col='black', bg='white')
+    legend('topleft', pch=c(#{R_NO_SYMBOL}), col=#{colors}, c(#{series_names * ',' }),box.col='black', bg='white')
     """
   end
-
 end
