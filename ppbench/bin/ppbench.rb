@@ -6,45 +6,54 @@ require 'rubygems'
 require 'ppbench'
 require 'commander/import'
 require 'terminal-table'
+require 'json'
 
 # Description constants used by the help command.
 #
-MACHINES_DESCRIPTION    = 'Consider only specific machines (e.g. m3.large,m3.xlarge); comma separated list.'
-EXPERIMENTS_DESCRIPTION = 'Consider only specific experiments (e.g. bare,docker,weave); comma separated list.'
-RECWINDOW_DESCRIPTION   = 'Standard Receive Window. Defaults to 87380 byte (Window is not plotted if set to 0).'
-YAXIS_MAX_DESCRIPTION   = 'Maximum Y value on the Y axis (defaults to biggest value found).'
-YAXIS_STEPS_DESCRIPTION = 'How many ticks shall be plotted on yaxis (defaults to 10).'
-XAXIS_MAX_DESCRIPTION   = 'Maximum X value on the X axis (defaults to biggest message size found).'
-XAXIS_STEPS_DESCRIPTION = 'How many ticks shall be plotted on xaxis (defaults to 10).'
-CONFIDENCE_DESCRIPTION  = 'Percent value for confidence bands. Defaults to 90%.'
-WITHBANDS_DESCRIPTION   = 'Plots confidence bands (confidence bands are _not_ plotted by default).'
-NOPOINTS_DESCRIPTION    = 'Show no points (points are plotted by default).'
-PDF_DESCRIPTION         = 'Adds additional commands to an R script, so that it can be used to generate a PDF file.'
-PDF_WIDTH_DESCRIPTION   = 'Width of plot in inch (defaults to 7 inch, only useful with PDF output).'
-PDF_HEIGHT_DESCRIPTION  = 'Height of plot in inch (defaults to 7 inch, only useful with PDF output).'
+MACHINES_DESCRIPTION     = 'Consider only specific machines (e.g. m3.large,m3.xlarge); comma separated list.'
+EXPERIMENTS_DESCRIPTION  = 'Consider only specific experiments (e.g. bare,docker,weave); comma separated list.'
+RECWINDOW_DESCRIPTION    = 'Standard Receive Window. Defaults to 87380 byte (Window is not plotted if set to 0).'
+YAXIS_MAX_DESCRIPTION    = 'Maximum Y value on the Y axis (defaults to biggest value found).'
+YAXIS_STEPS_DESCRIPTION  = 'How many ticks shall be plotted on yaxis (defaults to 10).'
+XAXIS_MAX_DESCRIPTION    = 'Maximum X value on the X axis (defaults to biggest message size found).'
+XAXIS_STEPS_DESCRIPTION  = 'How many ticks shall be plotted on xaxis (defaults to 10).'
+PRECISION_DESCRIPTION    = 'Amount of points used per series for plotting medians, comparisons and confidence intervals.'
+CONFIDENCE_DESCRIPTION   = 'Percent value for confidence bands. Defaults to 90%.'
+WITHBANDS_DESCRIPTION    = 'Plots confidence bands (confidence bands are _not_ plotted by default).'
+NOPOINTS_DESCRIPTION     = 'Show no points (points are plotted by default).'
+NAMING_DESCRIPTION       = 'Use user defined names via an JSON file.'
+PDF_DESCRIPTION          = 'Adds additional commands to an R script, so that it can be used to generate a PDF file.'
+PDF_WIDTH_DESCRIPTION    = 'Width of plot in inch (defaults to 7 inch, only useful with PDF output).'
+PDF_HEIGHT_DESCRIPTION   = 'Height of plot in inch (defaults to 7 inch, only useful with PDF output).'
 
 # Plotting constants used for plotting.
 #
-RECWINDOW_DEFAULT       = 87380
-CONFIDENCE_DEFAULT      = 90
-AXIS_STEP_DEFAULT       = 10
-COMPARISON_MAX_DEFAULT  = 2.0
+RECWINDOW_DEFAULT        = 87380
+CONFIDENCE_DEFAULT       = 90
+AXIS_STEP_DEFAULT        = 10
+COMPARISON_MAX_DEFAULT   = 2.0
 
 # Constants used for PDF generation.
 #
-PDF_DIMENSION_DEFAULT   = 7
+PDF_HEIGHT_WIDTH_DEFAULT = 7
 
 program :name, 'ppbench'
 program :version, "#{Ppbench::VERSION}"
 program :description, 'Ping pong benchmark'
 program :help, 'Author', 'Nane Kratzke <nane.kratzke@fh-luebeck.de>'
-global_option '--precision POINTS', Integer, 'Amount of points used per series for plotting medians, comparisons and confidence intervals.'
+
+global_option '--precision POINTS', Integer, PRECISION_DESCRIPTION
+global_option '--naming FILE', String, NAMING_DESCRIPTION
+
+default_command :help
 
 # Validates and processes global options like
 # - precision (used for comparison lines, median lines and confidence band plotting)
+# - naming (used for user defined naming of machine and experiment tags)
 #
 def validate_global_options(args, options)
   options.default :precision => 500
+  options.default :naming => ''
 
   if options.precision < 20
     $stderr.puts("Error in --precision flag: Precision must be >= 20 points.\n")
@@ -57,6 +66,23 @@ def validate_global_options(args, options)
   end
 
   Ppbench::precision = options.precision
+
+  if !options.naming.empty? && !File.exist?(options.naming)
+    $stderr.puts("Error in --naming flag: File '#{options.naming}' does not exist.")
+    exit!
+  end
+
+  Ppbench::naming = {} if options.naming.empty?
+
+  unless options.naming.empty?
+    begin
+      file = File.read(options.naming)
+      Ppbench::naming = JSON.parse(file)
+    rescue Exception => ex
+      $stderr.puts("Error in naming file '#{options.naming}'. Does not seem to be a valid JSON file.")
+      exit!
+    end
+  end
 end
 
 # Validates command line flags of the run command.
@@ -98,7 +124,7 @@ def validate_run_options(args, options)
     exit!
   end
 
-  if $stderr.puts.length > 1
+  if $stderr.args.length > 1
     print("You should only specify one log file. You specified #{args.length} logfiles.\n")
     exit!
   end
@@ -114,11 +140,40 @@ end
 #
 def validate_comparison_options(args, options)
 
+  if args.empty?
+    $stderr.puts("You have to provide benchmark files (*.csv) to analyze.")
+    exit!
+  end
+
+  if options.recwindow < 0
+    $stderr.puts("Error in --recwindow flag: TCP standard receive window must be >= 0 bytes.\n")
+    exit!
+  end
+
+  if options.yaxis_max < 0
+    $stderr.puts("Error in --yaxis_max flag: Maximum value on yaxis must be >= 0.\n")
+  end
+
+  if options.xaxis_max < 0
+    $stderr.puts("Error in --xaxis_max flag: Maximum value on xaxis must be >= 0.\n")
+    exit!
+  end
+
+  if options.xaxis_steps <= 0
+    $stderr.puts("Error in --xaxis_steps flag: You must provide a positive step > 0.\n")
+    exit!
+  end
+
 end
 
 # Validates command line flags of the xyz-plot commands.
 #
 def validate_plot_options(args, options)
+
+  if args.empty?
+    $stderr.puts("You have to provide benchmark files (*.csv) to analyze.")
+    exit!
+  end
 
   if options.recwindow < 0
     $stderr.puts("Error in --recwindow flag: TCP standard receive window must be >= 0 bytes\n")
@@ -166,6 +221,20 @@ def validate_pdf_options(args, options)
 
   if options.width < 1
     $stderr.puts("Error in --width flag. You must provide a positive width >= 1 in inch.\n")
+    exit!
+  end
+end
+
+# Validates command line options for the naming-template command.
+#
+def validate_naming_options(args, options)
+  if args.empty?
+    $stderr.puts("Error due to missing files to analyze. You must provide at least one log file (csv).\n")
+    exit!
+  end
+
+  if !options.update.empty? && !File.exist?(options.update)
+    $stderr.puts("Error: File #{options.update} does not exist.\n")
     exit!
   end
 end
@@ -457,9 +526,6 @@ end
 #
 def summary(args, options)
 
-  options.default :machines => ''
-  options.default :experiments => ''
-
   experiments = options.experiments.split(',')
   machines = options.machines.split(',')
 
@@ -491,6 +557,52 @@ def summary(args, options)
   table.align_column(4, :right)
   table.align_column(5, :right)
   print("#{table}\n")
+end
+
+# Implements the naming command.
+#
+def naming(args, options)
+  experiments = options.experiments.split(',')
+  machines = options.machines.split(',')
+
+  data = Ppbench::load_data(args)
+  filtered_data = Ppbench::filter(
+      data,
+      experiments: experiments,
+      machines: machines
+  )
+
+  json_to_update = {}
+  existing_machine_names = []
+  existing_experiment_names = []
+  unless options.update.empty?
+    begin
+      file = File.read(options.update)
+      json_to_update = JSON.parse(file)
+    rescue Exception => ex
+      $stderr.puts("Could not process #{options.update}. It does not seem to be a valid JSON file.")
+      exit!
+    end
+  end
+
+  existing_machine_names = json_to_update['machines'].keys if json_to_update['machines']
+  existing_experiment_names = json_to_update['experiments'].keys if json_to_update['experiments']
+
+  machine_names = filtered_data.map { |entry| entry[:machine] }.uniq.sort - existing_machine_names
+  experiment_names = filtered_data.map { |entry| entry[:experiment] }.uniq.sort - existing_experiment_names
+
+  machines_map = (
+    machine_names.map { |e| [e, "#{e} (TODO: Provide a better name)"] } +
+    existing_machine_names.map { |e| [e, json_to_update['machines'][e]] }
+  ).to_h
+
+  experiments_map = (
+    experiment_names.map { |e| [e, "#{e} (TODO: Provide a better name)"] } +
+    existing_experiment_names.map { |e| [e, json_to_update['experiments'][e]] }
+  ).to_h
+
+  json = { "machines": machines_map, "experiments": experiments_map }
+  print ("#{JSON.pretty_generate(json)}")
 end
 
 # Implements the citation command.
@@ -556,7 +668,8 @@ end
 
 command 'transfer-plot' do |c|
   c.syntax = 'ppbench transfer-plot [options] *.csv'
-  c.summary = 'Generates a R script to plot data transfer rates in an absolute way.'
+  c.summary = 'Plots data transfer rates in an absolute way.'
+  c.description = 'Generates a R script to plot data transfer rates in an absolute way.'
 
   c.option '--machines LIST', String, MACHINES_DESCRIPTION
   c.option '--experiments LIST', String, EXPERIMENTS_DESCRIPTION
@@ -587,8 +700,8 @@ command 'transfer-plot' do |c|
     options.default :xaxis_steps => AXIS_STEP_DEFAULT
 
     options.default :pdf => ''
-    options.default :width => PDF_DIMENSION_DEFAULT
-    options.default :height => PDF_DIMENSION_DEFAULT
+    options.default :width => PDF_HEIGHT_WIDTH_DEFAULT
+    options.default :height => PDF_HEIGHT_WIDTH_DEFAULT
 
     validate_global_options(args, options)
     validate_plot_options(args, options)
@@ -600,7 +713,8 @@ end
 
 command 'transfer-comparison-plot' do |c|
   c.syntax = 'ppbench transfer-comparison-plot [options] *.csv'
-  c.summary = 'Generates a R script to compare data transfer rates in a relative way.'
+  c.summary = 'Compares data transfer rates in a relative way.'
+  c.description = 'Generates a R script to compare data transfer rates in a relative way.'
 
   c.option '--machines LIST', String, MACHINES_DESCRIPTION
   c.option '--experiments LIST', String, EXPERIMENTS_DESCRIPTION
@@ -627,8 +741,8 @@ command 'transfer-comparison-plot' do |c|
     options.default :xaxis_steps => AXIS_STEP_DEFAULT
 
     options.default :pdf => ''
-    options.default :width => PDF_DIMENSION_DEFAULT
-    options.default :height => PDF_DIMENSION_DEFAULT
+    options.default :width => PDF_HEIGHT_WIDTH_DEFAULT
+    options.default :height => PDF_HEIGHT_WIDTH_DEFAULT
 
     validate_global_options(args, options)
     validate_comparison_options(args, options)
@@ -639,7 +753,8 @@ end
 
 command 'request-plot' do |c|
   c.syntax = 'ppbench request-plot [options] *.csv'
-  c.summary = 'Generates a R script to plot requests per second in an absolute way.'
+  c.summary = 'Plots requests per second in an absolute way.'
+  c.description = 'Generates a R script to plot requests per second in an absolute way.'
 
   c.option '--machines LIST', String, MACHINES_DESCRIPTION
   c.option '--experiments LIST', String, EXPERIMENTS_DESCRIPTION
@@ -670,8 +785,8 @@ command 'request-plot' do |c|
     options.default :xaxis_steps => AXIS_STEP_DEFAULT
 
     options.default :pdf => ''
-    options.default :width => PDF_DIMENSION_DEFAULT
-    options.default :height => PDF_DIMENSION_DEFAULT
+    options.default :width => PDF_HEIGHT_WIDTH_DEFAULT
+    options.default :height => PDF_HEIGHT_WIDTH_DEFAULT
 
     validate_global_options(args, options)
     validate_plot_options(args, options)
@@ -682,7 +797,8 @@ end
 
 command 'request-comparison-plot' do |c|
   c.syntax = 'ppbench request-comparison-plot [options] *.csv'
-  c.summary = 'Generates a R script to compare requests per second in a relative way.'
+  c.summary = 'Compares requests per second in a relative way.'
+  c.description = 'Generates a R script to compare requests per second in a relative way.'
 
   c.option '--machines STRING', String, MACHINES_DESCRIPTION
   c.option '--experiments STRING', String, EXPERIMENTS_DESCRIPTION
@@ -708,8 +824,8 @@ command 'request-comparison-plot' do |c|
     options.default :xaxis_steps => AXIS_STEP_DEFAULT
 
     options.default :pdf => ''
-    options.default :width => PDF_DIMENSION_DEFAULT
-    options.default :height => PDF_DIMENSION_DEFAULT
+    options.default :width => PDF_HEIGHT_WIDTH_DEFAULT
+    options.default :height => PDF_HEIGHT_WIDTH_DEFAULT
 
     validate_global_options(args, options)
     validate_comparison_options(args, options)
@@ -720,7 +836,8 @@ end
 
 command 'latency-plot' do |c|
   c.syntax  = 'ppbench latency-plot [options] *.csv'
-  c.summary = 'Generates a R script to plot round-trip latencies in an absolute way.'
+  c.summary = 'Plots round-trip latencies in an absolute way.'
+  c.description = 'Generates a R script to plot round-trip latencies in an absolute way.'
 
   c.example 'Generates a latency plot for data collected on machine m3.xlarge for java, dart and go implementations of the ping-pong system.',
             'ppbench latency-plot --machines m3.xlarge --experiments bare-java,bare-go,bare-dart *.csv > bare-comparison.R'
@@ -759,8 +876,8 @@ command 'latency-plot' do |c|
     options.default :xaxis_steps => AXIS_STEP_DEFAULT
 
     options.default :pdf => ''
-    options.default :width => PDF_DIMENSION_DEFAULT
-    options.default :height => PDF_DIMENSION_DEFAULT
+    options.default :width => PDF_HEIGHT_WIDTH_DEFAULT
+    options.default :height => PDF_HEIGHT_WIDTH_DEFAULT
 
     validate_global_options(args, options)
     validate_plot_options(args, options)
@@ -771,7 +888,8 @@ end
 
 command 'latency-comparison-plot' do |c|
   c.syntax  = 'ppbench latency-comparison-plot [options] *.csv'
-  c.summary = 'Generates a R script to compare round-trip latencies in a relative way.'
+  c.summary = 'Compares round-trip latencies in a relative way.'
+  c.description = 'Generates a R script to compare round-trip latencies in a relative way.'
 
   c.example 'Generates a latency comparison plot for data collected on machine m3.xlarge for java, dart and go implementations of the ping-pong system.',
             'ppbench latency-comparison-plot --machines m3.xlarge --experiments bare-java,bare-go,bare-dart *.csv > bare-comparison.R'
@@ -802,8 +920,8 @@ command 'latency-comparison-plot' do |c|
     options.default :xaxis_steps => AXIS_STEP_DEFAULT
 
     options.default :pdf => ''
-    options.default :width => PDF_DIMENSION_DEFAULT
-    options.default :height => PDF_DIMENSION_DEFAULT
+    options.default :width => PDF_HEIGHT_WIDTH_DEFAULT
+    options.default :height => PDF_HEIGHT_WIDTH_DEFAULT
 
     validate_global_options(args, options)
     validate_comparison_options(args, options)
@@ -814,7 +932,8 @@ end
 
 command :summary do |c|
   c.syntax = 'ppbench summary [options] *.csv'
-  c.summary = 'Summarizes benchmark data. Useful to inspect data for completeness or to query machine and experiment tags.'
+  c.summary = 'Summarizes benchmark data.'
+  c.description = 'Summarizes benchmark data. Useful to inspect data for completeness or to query machine and experiment tags.'
 
   c.example 'Lists a summary of all benchmark data.',
             'ppbench summary *.csv'
@@ -823,17 +942,47 @@ command :summary do |c|
   c.example 'Lists a summary of all benchmark data tagged to be run as docker-java or bare-dart experiments',
             'ppbench summary --experiments bare-dart,docker-java *.csv'
 
-  c.option '--machines STRING', String, 'Consider only data of provided machines (comma separated)'
-  c.option '--experiments STRING', String, 'Consider only data of provided experiments (comma separated)'
+  c.option '--machines LIST', String, MACHINES_DESCRIPTION
+  c.option '--experiments LIST', String, EXPERIMENTS_DESCRIPTION
 
   c.action do |args, options|
+    options.default :machines => ''
+    options.default :experiments => ''
+
     summary(args, options)
   end
 end
 
+command 'naming-template' do |c|
+
+  c.syntax = 'ppbench naming-template [options] *.csv'
+  c.summary = 'Generates a JSON file for naming.'
+  c.description = 'Generates a JSON file from benchmark data for naming. This file can be used with the --naming flag.'
+
+  c.example 'Generates a naming template from all benchmark data.',
+            'ppbench naming-template *.csv > naming.json'
+  c.example 'Appends all missing names to an existing naming-template',
+            'ppbench naming-template --update naming.json > naming-update.json'
+
+  c.option '--machines LIST', String, MACHINES_DESCRIPTION
+  c.option '--experiments LIST', String, EXPERIMENTS_DESCRIPTION
+  c.option '--update FILE', 'Naming file to update with additional data.'
+
+  c.action do |args, options|
+    options.default :machines => ''
+    options.default :experiments => ''
+    options.default :update => ''
+
+    validate_naming_options(args, options)
+    naming(args, options)
+  end
+
+end
+
 command :citation do |c|
   c.syntax = 'ppbench citation [options]'
-  c.summary = 'Provides information how to cite ppbench in publications.'
+  c.summary = 'Citation information about ppbench.'
+  c.description = 'Provides information how to cite ppbench in publications.'
 
   c.example 'Get general information how to cite ppbench in publications',
             'ppbench citation'

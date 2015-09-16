@@ -10,6 +10,22 @@ require "descriptive_statistics"
 
 module Ppbench
 
+  def self.naming=(json)
+    @naming = json
+  end
+
+  def self.machine(key)
+    return key if @naming.empty?
+    name = @naming['machines'][key]
+    name == nil ? key : name
+  end
+
+  def self.experiment(key)
+    return key if @naming.empty?
+    name = @naming['experiments'][key]
+    name == nil ? key : name
+  end
+
   def self.precision=(v)
     @precision = v
   end
@@ -423,7 +439,8 @@ module Ppbench
       yaxis_unit: "",
       yaxis_divisor: 1000000,
       title: "",
-      subtitle: ""
+      subtitle: "",
+      legend_position: "topright"
   )
     series_data = []
     series_names = []
@@ -433,7 +450,7 @@ module Ppbench
       for machine in machines
         if (data.include? exp) && (data[exp].include? machine)
           series_data << data[exp][machine]
-          series_names << "'#{exp} on #{machine}'"
+          series_names << "'#{Ppbench::experiment(exp)} on #{Ppbench::machine(machine)}'"
         end
       end
     end
@@ -455,7 +472,7 @@ module Ppbench
     ya = seq(0, #{yaxis_max}, by=#{yaxis_max/yaxis_steps})
     axis(1, at = xa, labels = paste(xa/#{xaxis_divisor}, '#{xaxis_unit}', sep = ' ' ))
     axis(2, at = ya, labels = paste(ya/#{yaxis_divisor}, '#{yaxis_unit}', sep = ' ' ))
-    legend('topleft', pch=#{symbols}, col=#{colors}, c(#{series_names * ',' }),box.col='black', bg='white')
+    legend('#{legend_position}', cex=0.9, pch=#{symbols}, col=#{colors}, c(#{series_names * ',' }),box.col=rgb(1,1,1,0), bg=rgb(1,1,1,0.75))
     """
   end
 
@@ -477,7 +494,8 @@ module Ppbench
       yaxis_title: "",
       yaxis_unit: "%",
       title: "",
-      subtitle: ""
+      subtitle: "",
+      legend_position: "topright"
   )
     series_data = []
     series_names = []
@@ -486,11 +504,11 @@ module Ppbench
     ref = true
     for exp in experiments
       for machine in machines
-        reference = ref ? ' (Reference)' : ''
+        reference = ref ? 'Reference: ' : ''
         ref = false
         if (data.include? exp) && (data[exp].include? machine)
           series_data << data[exp][machine]
-          series_names << "'#{exp} on #{machine} #{reference}'"
+          series_names << "'#{reference}#{Ppbench::experiment(exp)} on #{Ppbench::machine(machine)}'"
         end
       end
     end
@@ -512,7 +530,7 @@ module Ppbench
     ya = seq(0, #{yaxis_max}, by=#{0.1})
     axis(1, at = xa, labels = paste(xa/#{xaxis_divisor}, '#{xaxis_unit}', sep = '' ))
     axis(2, at = ya, labels = paste(ya * 100, '#{yaxis_unit}', sep = '' ))
-    legend('topleft', pch=c(#{R_NO_SYMBOL}), col=#{colors}, c(#{series_names * ',' }),box.col='black', bg='white')
+    legend('#{legend_position}', cex=0.9, pch=c(#{R_NO_SYMBOL}), col=#{colors}, c(#{series_names * ',' }),box.col=rgb(1,1,1,0), bg=rgb(1,1,1,0.75))
     """
   end
 end
