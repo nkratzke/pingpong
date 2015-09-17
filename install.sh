@@ -1,30 +1,33 @@
 #!/bin/sh
 
-# Install dart from the stable channel
+# Update package lists
 sudo apt-get update
-sudo apt-add-repository ppa:hachre/dart
-sudo apt-get update
-sudo apt-get install dartsdk -y
 
-# Install apache benchmark, conntrack, curl
-sudo apt-get install apache2-utils conntrack curl -y
+# Install conntrack, curl
+sudo apt-get install conntrack curl -y
 
 # Install ruby and ppbench
 gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
 \curl -sSL https://get.rvm.io | bash -s stable --ruby
-source /usr/local/rvm/scripts/rvm
-sudo chmod o+w /usr/local/rvm/gems/* --recursive
+source $HOME/.rvm/scripts/rvm
 bundle install --gemfile=./ppbench/Gemfile
 
 # Install docker
-wget -qO- https://get.docker.com/ | sh
+curl -sSL https://get.docker.com/gpg | sudo apt-key add -
+curl -sSL https://get.docker.com/ | sudo sh
 
 # Install weave
 sudo curl -L git.io/weave -o /usr/local/bin/weave
 sudo chmod a+x /usr/local/bin/weave
 
-# Install ping and pong and dependencies
-pub install
+# Install all language modules
+for module in pingpong-*;
+do
+	echo "Installing $module"
+	cd $module
+	./install.sh
+	cd ..
+done
 
 # Report finished installation calling the start script
 ./start.sh

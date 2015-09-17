@@ -1,14 +1,32 @@
-# Don’t commit the following directories created by pub.
-build/
-packages/
-.buildlog
+# Don't commit the following directories for ppbench
+ppbench/.idea
+ppbench/.idea/workspace.xml
 
-# Or the files created by dart2js.
+# Don't commit the following for pingpong-dart
 *.dart.js
 *.dart.precompiled.js
 *.js_
 *.js.deps
 *.js.map
+pingpong-dart/pubspec.lock
+pingpong-dart/build/
+pingpong-dart/packages/
+pingpong-dart/.buildlog
 
-# Include when developing application packages.
-pubspec.lock
+# Don't commit the following for pingpong-java
+pingpong-java/.settings
+pingpong-java/bin
+pingpong-java/.idea
+pingpong-java/pingpong-java.iml
+
+# Don't commit the following for pingpong-go
+pingpong-go/.settings
+pingpong-go/bin
+pingpong-go/pkg
+
+# Further files to ignore (IDE specifics)
+.metadata
+
+
+
+

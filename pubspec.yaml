@@ -1,7 +1,0 @@
-name: pingpong
-author: Nane Kratzke
-description: A ping pong server to do load testing.
-dependencies:
-  args: any
-  http: any
-  start: any
