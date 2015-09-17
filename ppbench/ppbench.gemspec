@@ -7,15 +7,15 @@ Gem::Specification.new do |spec|
   spec.name          = "ppbench"
   spec.version       = Ppbench::VERSION
   spec.authors       = ["Nane Kratzke"]
-  spec.email         = ["nane.kratzke@googlemail.com"]
+  spec.email         = ["nane.kratzke@fh-luebeck.de"]
 
   if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com' to prevent pushes to rubygems.org, or delete to allow pushes to any server."
+    spec.metadata['allowed_push_host'] = ""
   end
 
-  spec.summary       = %q{Ping pong benchmark}
-  spec.description   = %q{A tool to run ping pong benchmark to figure HTTP REST performances.}
-  spec.homepage      = ""
+  spec.summary       = %q{ppbench - a REST ping pong benchmark}
+  spec.description   = %q{A tool to run ping pong benchmark to figure out HTTP REST performances.}
+  spec.homepage      = "https://github.com/nkratzke/pingpong"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
