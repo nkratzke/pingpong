@@ -281,7 +281,7 @@ ppbench transfer-plot --machines m3.xlarge \
 
 would produce a R script which will generate a scatter plot of measured transfer rates on all benchmark runs that have been tagged to be run on m3.xlarge (AWS virtual machines) with the bare deployment of ping and pong services implemented in Dart, Go or Java programming languages. So the performance impact of several programming language to data transfer rates can be compared visually. A typical plot might look like this one here.
 
-<img src="transferplot.png" width=50%>
+<img src="transferplot.png" width=100%>
     
 The plot commands of ppbench have several flags to tune your plotting. By using  the following additions flags
 it is possible to plot 75% confidence bands without showing all measured detail data points (omitting the <code>--nopoints</code> would show both,
@@ -298,5 +298,5 @@ ppbench transfer-plot --machines m3.xlarge \
 
 This would return in a much cleared picture with descriptive statistical information.
 
-<img src="transferplot-withbands.png" width=50%>
+<img src="transferplot-withbands.png" width=100%>
 
