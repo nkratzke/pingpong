@@ -36,7 +36,7 @@ Therefore variations of benchmark results can be assigned to above mentioned cha
 
 To do a benchmark you have to set up a _siege_, a _ping_ and a _pong_ host. 
 We assume these are Linux hosts with git, apt-get and curl installed. 
-Install this package on all of this three hosts by running following commands.
+Install this package on the ping and the pong hosts by running following commands.
 
 ```
 git clone https://github.com/nkratzke/pingpong.git
@@ -79,7 +79,7 @@ answers with 'poong'.
 #### Run a dockerized pong service
 
 ```
-pong:$ ./start.sh docker pong
+pong:$ ./start.sh docker pong-{lang}
 ```
 
 This will build the ping pong image if necessary. So start up may take some time.
@@ -102,7 +102,7 @@ Please figure out the IP adress or DNS name of your pong host. We will refer to 
 #### Run a dockerized pong service connected to a weave network
 
 ```
-pong:$ ./start.sh weave pong
+pong:$ ./start.sh weave pong-{lang}
 ```
 
 This will build the ping pong image as well as the necessary weave containers if necessary. 
@@ -118,27 +118,7 @@ sudo weave status dns
 should return something like that
 
 ```
-weave router 1.0.1
-Our name is 6a:15:b5:bf:ba:00(ip-172-31-9-17)
-
-...
-
-Peers:
-6a:15:b5:bf:ba:00(ip-172-31-9-17) (v8) (UID 17688622006055783656)
-   -> 6a:58:56:7b:86:a7(ip-172-31-14-183) [172.31.14.183:40353]
-6a:58:56:7b:86:a7(ip-172-31-14-183) (v2) (UID 4488684819840626089)
-   -> 6a:15:b5:bf:ba:00(ip-172-31-9-17) [172.31.9.17:6783]
-
-...
-
-weave DNS 1.0.1
-Listen address :53
-Fallback DNS config &{[172.31.0.2] [eu-central-1.compute.internal] 53 1 5 2}
-
-Local domain weave.local.
-Interface &{13 65535 ethwe b2:b7:ad:19:b4:34 up|broadcast|multicast}
-Zone database:
-81cac0157b0e: pong.weave.local.[10.128.0.2]
+TO BE DONE
 ```
 
 You want to check wether the _pong_ service is working correctly by checking that 
@@ -162,7 +142,7 @@ You have three options to do this:
 #### Run a bare ping service
 
 ```
-pong:$ ./start.sh bare ping <ponghostip>
+pong:$ ./start.sh bare ping-{lang} <ponghostip>
 ```
 
 You want to check wether the _ping_ service is working correctly by checking that 
@@ -176,7 +156,7 @@ answers with 'poong'.
 #### Run a dockered ping service
 
 ```
-pong:$ ./start.sh docker ping <ponghostip>
+pong:$ ./start.sh docker ping-{lang} <ponghostip>
 ```
 
 This will build necessary images. So startup may take some time.
@@ -209,11 +189,15 @@ answers with 'poong'.
 
 ### On the siege host: set up and run ppbench
 
-To install ppbench on your system, simply run (we assume you have Ruby and gem installed):
+We provide <code>ppbench</code> via RubyGems.org. So, installing <code>ppbench</code> 
+on your siege system (we assume that this is your personal laptop or workstation) is very easy.
+Assuming you have Ruby and gem installed, simply run
 
 ```
 gem install ppbench
 ```
+
+to install <code>ppbench</code>.
 
 <code>ppbench</code> provides several commands and parameters to run and analyze your experiments.
 <code>ppbench</code> comes with an online help included. Simply run
@@ -222,21 +206,25 @@ gem install ppbench
 ppbench help
 ```
 
-to get some online help.
+to get some online help about available commands <code>ppbench</code> is providing.
 
-A benchmark run is started with 
+A benchmark run is started like that: 
 
 ```
-ppbench run --host http://<pinghostip>:8080 --experiment experiment_tag --machine machine_tag log.csv
+ppbench run --host http://<pinghostip>:8080 \
+            --experiment experiment_tag \
+            --machine machine_tag \
+            log.csv
 ```
 
-A benchmark can be tuned . To learn more, simply run:
+A benchmark run can be defined via several parameters. To learn more, simply run:
 
 ```
 ppbench help run
 ```
 
-All benchmark results are written into a csv files. These csv files can be processed by <code>ppbench</code>. Ppbench is able to do some summary analysis on a set of collected benchmark files. Simply run
+All benchmark results are written into a log (csv format). These csv based log files can be processed by <code>ppbench</code>. 
+<code>Ppbench</code> is able to do some summary analysis on a set of collected benchmark files for a quick analysis. Simply run
 
 ```
 ppbench summary *.csv
@@ -269,7 +257,8 @@ We have data for:
 +-------------+-----------+---------+-----------------+--------------+--------------+
 ```
 
-However <code>ppbench</code> is able to generate R scripts for analysis and visualization of benchmark data.
+But much more interesting and helpful (summary data is intended to be used for completenes and plausability checking of data but not for detailed analysis), 
+<code>ppbench</code> is able to generate R scripts for analysis and visualization of benchmark data.
 
 This command chain here (using Rscript and assuming you have the statistical framework R installed)
 
@@ -296,7 +285,7 @@ ppbench transfer-plot --machines m3.xlarge \
                       --pdf graphic.pdf | Rscript -
 ```
 
-This would return in a much cleared picture with descriptive statistical information.
+This would produce a much clearer picture with additional descriptive statistical information.
 
 <img src="transferplot-withbands.png" width=100%>
 
