@@ -279,5 +279,5 @@ ppbench transfer-plot --machines m3.xlarge --experiments bare-dart,bare-go,bare-
 
 would produce a R script which will generate a scatter plot of measured transfer rates on all benchmark runs that have been tagged to be run on m3.xlarge (AWS virtual machines) with the bare deployment of ping and pong services implemented in Dart, Go or Java programming languages. So the performance impact of several programming language to data transfer rates can be compared visually. A typical plot might look like this one here.
 
-<img src="transfer-plot.png" width=50%>
+<img src="transfer-plot.pdf" width=50%>
 
