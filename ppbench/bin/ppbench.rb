@@ -124,8 +124,8 @@ def validate_run_options(args, options)
     exit!
   end
 
-  if $stderr.args.length > 1
-    print("You should only specify one log file. You specified #{args.length} logfiles.\n")
+  if args.length > 1
+    $stderr.puts("You should only specify one log file. You specified #{args.length} logfiles.\n")
     exit!
   end
 
