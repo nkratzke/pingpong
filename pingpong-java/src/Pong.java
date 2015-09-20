@@ -20,10 +20,16 @@ public class Pong {
 			 
 			final String[] request = httpExchange.getRequestURI().getPath().split("/");			
 			final int length = Integer.parseInt(request[2]);
+			
+			StringBuffer buffer = new StringBuffer();
+			buffer.append("p");
 			final String ooo = Stream.generate(() -> "o")
 					                 .limit(length < 4 ? 1 : length - 3)
 					                 .collect(Collectors.joining(""));
-			final byte[] out = ("p" + ooo + "ng").getBytes("UTF-8");
+			buffer.append(ooo);
+			buffer.append("ng");
+			final byte[] out = buffer.toString()
+			                         .getBytes("UTF-8");
 			
             httpExchange.sendResponseHeaders(200, out.length);
             OutputStream os = httpExchange.getResponseBody();
