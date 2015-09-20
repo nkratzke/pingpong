@@ -21,7 +21,7 @@ public class Pong {
 			final String[] request = httpExchange.getRequestURI().getPath().split("/");			
 			final int length = Integer.parseInt(request[2]);
 			
-			StringBuffer buffer = new StringBuffer();
+			StringBuffer buffer = new StringBuffer(length);
 			buffer.append("p");
 			final String ooo = Stream.generate(() -> "o")
 					                 .limit(length < 4 ? 1 : length - 3)
