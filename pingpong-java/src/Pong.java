@@ -1,15 +1,12 @@
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
 /**
  * Pong Service of the Ping Pong System.
- * Implemented in Java 8 with Streams.
  * @author Nane Kratzke
  * 
  */
@@ -23,10 +20,7 @@ public class Pong {
 			
 			StringBuffer buffer = new StringBuffer(length);
 			buffer.append("p");
-			final String ooo = Stream.generate(() -> "o")
-					                 .limit(length < 4 ? 1 : length - 3)
-					                 .collect(Collectors.joining(""));
-			buffer.append(ooo);
+			for (int n = 0; n < (length < 4 ? 1 : length - 3); n++) buffer.append("o");
 			buffer.append("ng");
 			final byte[] out = buffer.toString()
 			                         .getBytes("UTF-8");
