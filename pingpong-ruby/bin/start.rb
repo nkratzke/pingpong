@@ -7,6 +7,7 @@ require "pingpong/version"
 require "commander/import"
 require "webrick"
 require "httpclient"
+require "json"
 
 program :name, 'ping'
 program :version, Pingpong::VERSION
@@ -46,14 +47,14 @@ def mping_service(request, response, webclient, host, port)
     elapsed = (finished - start) / 1000.0 / 1000.0
 
     json = {
-        'duration': elapsed,
-        'length':   answer == nil ? 0 : answer.body.size,
-        'document': request.path,
-        'status':   answer == nil ? 503 : answer.status,
-        'retries':  retries
+        'duration' => elapsed,
+        'length'   => answer == nil ? 0 : answer.body.size,
+        'document' => request.path,
+        'status'   => answer == nil ? 503 : answer.status,
+        'retries'  => retries
     }
 
-    response.body = json.to_s
+    response.body = JSON.generate(json)
   rescue Exception => ex
     response.status = 503
     response.body = "#{request.path} is a bad request.\n#{ex}"
