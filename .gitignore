@@ -24,6 +24,10 @@ pingpong-go/.settings
 pingpong-go/bin
 pingpong-go/pkg
 
+# Don't commit the following for pingpong-ruby
+pingpong-ruby/.idea
+pingpong-ruby/.gitignore
+
 # Further files to ignore (IDE specifics)
 .metadata
 
