@@ -19,7 +19,7 @@ function usage {
 	echo "'start.sh weave pong-{lang}' starts the pong server as docker container and connects it to a weave SDN network"
 	echo "'start.sh weave ping-{lang} <pongip>' starts the ping server as docker container and connects it to a weave SDN network"
     echo ""
-	echo "{lang} can be one of the following: java, dart, go"
+	echo "{lang} can be one of the following: java, dart, go, ruby"
 }
 
 # Starts ping and pong services in bare mode
@@ -67,6 +67,14 @@ function docker {
 	ping-go)  sudo docker build -t ppgo pingpong-go/
 	          sudo docker run -d -p 8080:8080 --name ping ppgo -asPing -pongHost $pongip -pongPort 8080
 	          ;;
+
+	pong-ruby)  sudo docker build -t ppruby pingpong-ruby/
+	            sudo docker run -d -p 8080:8080 --name pong ppruby pong
+			  ;;
+			  
+	ping-ruby)  sudo docker build -t ppruby pingpong-ruby/
+	            sudo docker run -d -p 8080:8080 --name ping ppruby ping --ponghost $pongip -pongport 8080
+	          ;;
 			   
 	*)        echo "Unknown service $service" 
 	          usage
@@ -109,6 +117,16 @@ function weave {
 	ping-go)   sudo weave launch $pongip --ipalloc-range 10.2.0.0/16
 			   sudo docker build -t ppgo pingpong-go/
 			   sudo weave run --with-dns 10.2.1.2/16 --name=ping -d -p 8080:8080 ppgo -asPing -pongHost 10.2.1.1 -pongPort 8080
+			   ;;
+
+	pong-ruby)   sudo weave launch --ipalloc-range 10.2.0.0/16
+	           sudo docker build -t ppruby pingpong-go/
+			   sudo weave run --with-dns 10.2.1.1/16 --name=pong -d -p 8080:8080 ppruby pong
+			   ;;
+			   
+	ping-ruby)   sudo weave launch $pongip --ipalloc-range 10.2.0.0/16
+			   sudo docker build -t ppruby pingpong-go/
+			   sudo weave run --with-dns 10.2.1.2/16 --name=ping -d -p 8080:8080 ppruby ping --ponghost 10.2.1.1 --pongport 8080
 			   ;;
 			   
 	*)         echo "Unknown service $service" 
