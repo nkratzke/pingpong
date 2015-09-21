@@ -50,7 +50,7 @@ def mping_service(request, response, webclient, host, port)
         'duration' => elapsed,
         'length'   => answer == nil ? 0 : answer.body.size,
         'document' => request.path,
-        'status'   => answer == nil ? 503 : answer.status,
+        'code'     => answer == nil ? 503 : answer.status,
         'retries'  => retries
     }
 
