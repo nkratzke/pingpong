@@ -22,6 +22,7 @@ CONFIDENCE_DESCRIPTION   = 'Percent value for confidence bands. Defaults to 90%.
 WITHBANDS_DESCRIPTION    = 'Plots confidence bands (confidence bands are _not_ plotted by default).'
 NOPOINTS_DESCRIPTION     = 'Show no points (points are plotted by default).'
 NAMING_DESCRIPTION       = 'Use user defined names via an JSON file.'
+ALPHA_DESCRIPTION        = "Transparency (alpha) for points of scatter plots (defaults to 0.05, must be between 0.0 and 1.0)"
 PDF_DESCRIPTION          = 'Adds additional commands to an R script, so that it can be used to generate a PDF file.'
 PDF_WIDTH_DESCRIPTION    = 'Width of plot in inch (defaults to 7 inch, only useful with PDF output).'
 PDF_HEIGHT_DESCRIPTION   = 'Height of plot in inch (defaults to 7 inch, only useful with PDF output).'
@@ -44,6 +45,7 @@ program :help, 'Author', 'Nane Kratzke <nane.kratzke@fh-luebeck.de>'
 
 global_option '--precision POINTS', Integer, PRECISION_DESCRIPTION
 global_option '--naming FILE', String, NAMING_DESCRIPTION
+global_option '--alpha FLOAT', Float, ALPHA_DESCRIPTION
 
 default_command :help
 
@@ -54,6 +56,7 @@ default_command :help
 def validate_global_options(args, options)
   options.default :precision => 500
   options.default :naming => ''
+  options.default :alpha => 0.05
 
   if options.precision < 20
     $stderr.puts("Error in --precision flag: Precision must be >= 20 points.\n")
@@ -83,6 +86,13 @@ def validate_global_options(args, options)
       exit!
     end
   end
+
+  if options.alpha < 0.0 || options.alpha > 1.0
+    $stderr.puts("Error in --alpha flag: Alpha must be between 0.0 and 1.0, but alpha was '#{options.alpha}'.")
+    exit!
+  end
+
+  Ppbench::alpha = options.alpha
 end
 
 # Validates command line flags of the run command.

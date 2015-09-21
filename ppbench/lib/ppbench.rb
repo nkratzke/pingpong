@@ -34,6 +34,14 @@ module Ppbench
     @precision
   end
 
+  def self.alpha=(v)
+    @alpha = v
+  end
+
+  def self.alpha
+    @alpha
+  end
+
   def self.precision_error(length)
     """
     Sorry, we have not enough data for messages of about #{length} byte length.
@@ -264,7 +272,7 @@ module Ppbench
       to_plot: :tpr,
       color: 'grey',
       symbol: 1,
-      alpha: 0.15,
+      alpha: Ppbench::alpha,
       length: 500000,
       confidence: 90,
       no_points: false,
@@ -339,7 +347,7 @@ module Ppbench
 
   # Generates scatter plot of points for plots.
   #
-  def self.points(data, to_plot: :tpr, color: 'grey', alpha: 0.15, symbol: 1)
+  def self.points(data, to_plot: :tpr, color: 'grey', alpha: Ppbench::alpha, symbol: 1)
     points = data.map { |v| [v[:length], v[to_plot]] }
     xs = "c(#{points.map { |e| e[0] } * ','})"
     ys = "c(#{points.map { |e| e[1] } * ','})"

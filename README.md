@@ -65,7 +65,7 @@ You have three options to start the _pong_ service:
 #### Run a bare pong service
 
 ```
-pong:$ ./start.sh bare pong
+pong:$ ./start.sh bare pong-{lang}
 ```
 
 You want to check wether the _pong_ service is working correctly by checking that 
@@ -191,7 +191,7 @@ answers with 'poong'.
 
 We provide <code>ppbench</code> via RubyGems.org. So, installing <code>ppbench</code> 
 on your siege system (we assume that this is your personal laptop or workstation) is very easy.
-Assuming you have Ruby and gem installed, simply run
+Assuming you have __Ruby 2.2 (or higher installed)__ installed, simply run
 
 ```
 gem install ppbench
@@ -265,7 +265,8 @@ This command chain here (using Rscript and assuming you have the statistical fra
 ```
 ppbench transfer-plot --machines m3.xlarge \
                       --experiments bare-dart,bare-go,bare-java \
-                      --pdf graphic.pdf | Rscript -
+                      --pdf graphic.pdf \
+                      *.csv | Rscript -
 ```
 
 would produce a R script which will generate a scatter plot of measured transfer rates on all benchmark runs that have been tagged to be run on m3.xlarge (AWS virtual machines) with the bare deployment of ping and pong services implemented in Dart, Go or Java programming languages. So the performance impact of several programming language to data transfer rates can be compared visually. A typical plot might look like this one here.
@@ -282,7 +283,8 @@ ppbench transfer-plot --machines m3.xlarge \
                       --withbands \
                       --confidence 75 \
                       --nopoints \
-                      --pdf graphic.pdf | Rscript -
+                      --pdf graphic.pdf \
+                      *.csv | Rscript -
 ```
 
 This would produce a much clearer picture with additional descriptive statistical information.
