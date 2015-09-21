@@ -35,8 +35,8 @@ function bare {
 	pong-go)   $PWD/pingpong-go/bin/pingpong -asPong ;;
 	ping-go)   $PWD/pingpong-go/bin/pingpong -asPing -pongHost $pongip -pongPort 8080 ;;
 
-	pong-ruby) cd $PWD/pingpong-ruby/bin && ./start.rb pong ;;
-	ping-ruby) cd $PWD/pingpong-ruby/bin && ./start.rb ping --ponghost $pongip --pongport 8080 ;;
+	pong-ruby) source $HOME/.rvm/scripts/rvm && cd $PWD/pingpong-ruby/bin && ./start.rb pong ;;
+	ping-ruby) source $HOME/.rvm/scripts/rvm && cd $PWD/pingpong-ruby/bin && ./start.rb ping --ponghost $pongip --pongport 8080 ;;
 	
 	*)         echo "Unknown service $service" 
 	           usage ;;
