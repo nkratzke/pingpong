@@ -34,6 +34,9 @@ function bare {
 	
 	pong-go)   sudo $PWD/pingpong-go/bin/pingpong -asPong ;;
 	ping-go)   sudo $PWD/pingpong-go/bin/pingpong -asPing -pongHost $pongip -pongPort 8080 ;;
+
+	pong-ruby)   sudo $PWD/pingpong-ruby/bin/start.rb pong ;;
+	ping-ruby)   sudo $PWD/pingpong-ruby/bin/start.rb ping --ponghost $pongip --pongport 8080 ;;
 	
 	*)         echo "Unknown service $service" 
 	           usage ;;
