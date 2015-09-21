@@ -26,17 +26,17 @@ function usage {
 #
 function bare {
 	case "$service" in
-	pong-dart) sudo dart pingpong-dart/bin/pong.dart --port=8080 ;;
-	ping-dart) sudo dart pingpong-dart/bin/ping.dart --port=8080 --url="http://$pongip:8080" ;;
+	pong-dart) dart pingpong-dart/bin/pong.dart --port=8080 ;;
+	ping-dart) dart pingpong-dart/bin/ping.dart --port=8080 --url="http://$pongip:8080" ;;
 	
-	pong-java) sudo java -cp pingpong-java/bin Pong 8080 ;;
-	ping-java) sudo java -cp pingpong-java/bin Ping 8080 $pongip 8080 ;;
+	pong-java) java -cp pingpong-java/bin Pong 8080 ;;
+	ping-java) java -cp pingpong-java/bin Ping 8080 $pongip 8080 ;;
 	
-	pong-go)   sudo $PWD/pingpong-go/bin/pingpong -asPong ;;
-	ping-go)   sudo $PWD/pingpong-go/bin/pingpong -asPing -pongHost $pongip -pongPort 8080 ;;
+	pong-go)   $PWD/pingpong-go/bin/pingpong -asPong ;;
+	ping-go)   $PWD/pingpong-go/bin/pingpong -asPing -pongHost $pongip -pongPort 8080 ;;
 
-	pong-ruby)   sudo $PWD/pingpong-ruby/bin/start.rb pong ;;
-	ping-ruby)   sudo $PWD/pingpong-ruby/bin/start.rb ping --ponghost $pongip --pongport 8080 ;;
+	pong-ruby) cd $PWD/pingpong-ruby/bin && ./start.rb pong ;;
+	ping-ruby) cd $PWD/pingpong-ruby/bin && ./start.rb ping --ponghost $pongip --pongport 8080 ;;
 	
 	*)         echo "Unknown service $service" 
 	           usage ;;
@@ -63,25 +63,25 @@ function docker {
 	           sudo docker run -d -p 8080:8080 --name ping ppjava Ping 8080 $pongip 8080
 			   ;;
 			   
-	pong-go)  sudo docker build -t ppgo pingpong-go/
-	          sudo docker run -d -p 8080:8080 --name pong ppgo -asPong
-			  ;;
+	pong-go)   sudo docker build -t ppgo pingpong-go/
+	           sudo docker run -d -p 8080:8080 --name pong ppgo -asPong
+			   ;;
 			  
-	ping-go)  sudo docker build -t ppgo pingpong-go/
-	          sudo docker run -d -p 8080:8080 --name ping ppgo -asPing -pongHost $pongip -pongPort 8080
-	          ;;
+	ping-go)   sudo docker build -t ppgo pingpong-go/
+	           sudo docker run -d -p 8080:8080 --name ping ppgo -asPing -pongHost $pongip -pongPort 8080
+	           ;;
 
-	pong-ruby)  sudo docker build -t ppruby pingpong-ruby/
-	            sudo docker run -d -p 8080:8080 --name pong ppruby pong
-			  ;;
+	pong-ruby) sudo docker build -t ppruby pingpong-ruby/
+	           sudo docker run -d -p 8080:8080 --name pong ppruby pong
+			   ;;
 			  
-	ping-ruby)  sudo docker build -t ppruby pingpong-ruby/
-	            sudo docker run -d -p 8080:8080 --name ping ppruby ping --ponghost $pongip -pongport 8080
-	          ;;
+	ping-ruby) sudo docker build -t ppruby pingpong-ruby/
+	           sudo docker run -d -p 8080:8080 --name ping ppruby ping --ponghost $pongip -pongport 8080
+	           ;;
 			   
-	*)        echo "Unknown service $service" 
-	          usage
-	          ;;
+	*)         echo "Unknown service $service" 
+	           usage
+	           ;;
 	esac
 }
 

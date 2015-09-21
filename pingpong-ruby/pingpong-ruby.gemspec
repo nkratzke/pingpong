@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'pingpong/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "pingpong-ruby"
+  spec.name          = "pingpong"
   spec.version       = Pingpong::VERSION
   spec.authors       = ["Nane Kratzke"]
   spec.email         = ["nane.kratzke@googlemail.com"]
@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "bin"
-  spec.executables   = ["setup", "start.rb", "pong.rb"]
+  spec.executables   = ["setup", "start.rb"]
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler"

@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 
 require "bundler/setup"
-require "pingpong/version"
-
 require "rubygems"
+
+require "pingpong/version"
 require "commander/import"
 require "webrick"
 require "httpclient"
