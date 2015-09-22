@@ -3,7 +3,7 @@
 require 'bundler/setup'
 require 'rubygems'
 
-require 'ppbench'
+require_relative '../lib/ppbench'
 require 'commander/import'
 require 'terminal-table'
 require 'json'
