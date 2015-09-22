@@ -1,3 +1,4 @@
 #!/bin/bash
 
-source $HOME/.rvm/scripts/rvm && cd pingpong-ruby && bundle install
+source $HOME/.rvm/scripts/rvm
+bundle install
