@@ -123,12 +123,12 @@ function weave {
 			   ;;
 
 	pong-ruby)   sudo weave launch --ipalloc-range 10.2.0.0/16
-	           sudo docker build -t ppruby pingpong-go/
+	           sudo docker build -t ppruby pingpong-ruby/
 			   sudo weave run --with-dns 10.2.1.1/16 --name=pong -d -p 8080:8080 ppruby pong
 			   ;;
 			   
 	ping-ruby)   sudo weave launch $pongip --ipalloc-range 10.2.0.0/16
-			   sudo docker build -t ppruby pingpong-go/
+			   sudo docker build -t ppruby pingpong-ruby/
 			   sudo weave run --with-dns 10.2.1.2/16 --name=ping -d -p 8080:8080 ppruby ping --ponghost 10.2.1.1 --pongport 8080
 			   ;;
 			   
