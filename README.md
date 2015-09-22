@@ -57,6 +57,31 @@ This will install necessary dependencies. These include:
 It is possible to run the _Ping_ and _Pong_ service as a Docker container 
 and as a Docker container connected to a Weave SDN network. 
 
+If you are working with Ubuntu LTS 14.04 cloud machines 
+(following user-data is not tested with other
+distributions) capable to do cloud-config you can use the following
+[user-data](cloud-init.txt) to simply the setup of your machines a little bit: 
+
+```
+#cloud-config
+
+packages:
+  - git
+  
+runcmd:
+  - [git, clone, "https://github.com/nkratzke/pingpong", "-b", "working-0.0.2", /home/ubuntu/pingpong]
+  - [chown, "-R", "ubuntu:ubuntu", /home/ubuntu/pingpong]
+```
+
+After booting simply run
+
+```
+./install.sh
+```
+
+in your /home/ubuntu directory to do all the installation. This works for the _pong_ as well as the _ping_ host.
+
+
 ### On the pong host: Set up the _pong service_
 
 First step is to start the _pong_ service on the _pong_ host. This will start the _pong_ service on the host on port 8080.
@@ -118,7 +143,7 @@ sudo weave status dns
 should return something like that
 
 ```
-TO BE DONE
+pong         10.2.1.1        3efca64dc4aa 86:32:95:f5:e5:00
 ```
 
 You want to check wether the _pong_ service is working correctly by checking that 
