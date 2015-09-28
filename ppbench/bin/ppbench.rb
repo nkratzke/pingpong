@@ -1,9 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'bundler/setup'
-require 'rubygems'
-
-require_relative '../lib/ppbench'
+require 'ppbench'
 require 'commander/import'
 require 'terminal-table'
 require 'json'
