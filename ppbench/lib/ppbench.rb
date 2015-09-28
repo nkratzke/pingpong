@@ -16,12 +16,14 @@ module Ppbench
 
   def self.machine(key)
     return key if @naming.empty?
+    return key unless @naming.key?('machines')
     name = @naming['machines'][key]
     name == nil ? key : name
   end
 
   def self.experiment(key)
     return key if @naming.empty?
+    return key unless @naming.key?('experiments')
     name = @naming['experiments'][key]
     name == nil ? key : name
   end
@@ -294,7 +296,7 @@ module Ppbench
       symbol: 1,
       length: 500000,
       n: Ppbench::precision,
-      nknots: 20
+      nknots: Ppbench::precision
   )
     step = length / n
     references = reference.map { |v| [v[:length], v[to_plot]] }
@@ -361,7 +363,7 @@ module Ppbench
 
   # Generates median lines and confidence bands for plots.
   #
-  def self.bands(data, to_plot: :tpr, n: Ppbench::precision, length: 500000, color: 'grey', confidence: 90, nknots: 15)
+  def self.bands(data, to_plot: :tpr, n: Ppbench::precision, length: 500000, color: 'grey', confidence: 90, nknots: Ppbench::precision)
 
     step = length / n
     points = data.map { |v| [v[:length], v[to_plot]] }
