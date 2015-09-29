@@ -30,10 +30,18 @@ RECWINDOW_DEFAULT        = 87380
 CONFIDENCE_DEFAULT       = 90
 AXIS_STEP_DEFAULT        = 10
 COMPARISON_MAX_DEFAULT   = 2.0
+MIN_PRECISION_DEFAULT    = 20
+PRECISION_DEFAULT        = 1000
+ALPHA_DEFAULT            = 0.05
 
 # Constants used for PDF generation.
 #
 PDF_HEIGHT_WIDTH_DEFAULT = 7
+
+# Constants used to define benchmarking
+#
+COVERAGE_DEFAULT = 0.05
+
 
 program :name, 'ppbench'
 program :version, "#{Ppbench::VERSION}"
@@ -50,12 +58,13 @@ default_command :help
 # - precision (used for comparison lines, median lines and confidence band plotting)
 # - naming (used for user defined naming of machine and experiment tags)
 #
-def validate_global_options(args, options)
-  options.default :precision => 500
-  options.default :naming => ''
-  options.default :alpha => 0.05
 
-  if options.precision < 20
+def validate_global_options(args, options)
+  options.default :precision => PRECISION_DEFAULT
+  options.default :naming => ''
+  options.default :alpha => ALPHA_DEFAULT
+
+  if options.precision < MIN_PRECISION_DEFAULT
     $stderr.puts("Error in --precision flag: Precision must be >= 20 points.\n")
     exit!
   end
@@ -661,7 +670,7 @@ command :run do |c|
     options.default :min => 1, :max => 500000
     options.default :machine => ''
     options.default :experiment => ''
-    options.default :coverage => 0.05
+    options.default :coverage => COVERAGE_DEFAULT
     options.default :repetitions => 1
     options.default :concurrency => 1
     options.default :timeout => 60
