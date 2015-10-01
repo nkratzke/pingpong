@@ -203,6 +203,19 @@ pong:$ ./start.sh weave ping-{lang} <ponghostip>
 This will build necessary images and will connect to the SDN network established by the pong host.
 So startup may take some time.
 
+You can check whether this container was successfully added to the weave network.
+
+```
+sudo weave status dns
+```
+
+should return something like that
+
+```
+ping         10.2.1.2        edb8527251a4 0e:37:c7:60:f2:d0
+pong         10.2.1.1        2214f948aaa4 3e:07:d4:54:4e:d9
+```
+
 You want to check wether the _ping_ service is working correctly by checking that 
 
 ```
