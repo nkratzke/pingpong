@@ -1,8 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'bundler/setup'
-require 'rubygems'
-
 require 'ppbench'
 require 'commander/import'
 require 'terminal-table'
@@ -22,6 +19,7 @@ CONFIDENCE_DESCRIPTION   = 'Percent value for confidence bands. Defaults to 90%.
 WITHBANDS_DESCRIPTION    = 'Plots confidence bands (confidence bands are _not_ plotted by default).'
 NOPOINTS_DESCRIPTION     = 'Show no points (points are plotted by default).'
 NAMING_DESCRIPTION       = 'Use user defined names via an JSON file.'
+ALPHA_DESCRIPTION        = "Transparency (alpha) for points of scatter plots (defaults to 0.05, must be between 0.0 and 1.0)"
 PDF_DESCRIPTION          = 'Adds additional commands to an R script, so that it can be used to generate a PDF file.'
 PDF_WIDTH_DESCRIPTION    = 'Width of plot in inch (defaults to 7 inch, only useful with PDF output).'
 PDF_HEIGHT_DESCRIPTION   = 'Height of plot in inch (defaults to 7 inch, only useful with PDF output).'
@@ -32,10 +30,18 @@ RECWINDOW_DEFAULT        = 87380
 CONFIDENCE_DEFAULT       = 90
 AXIS_STEP_DEFAULT        = 10
 COMPARISON_MAX_DEFAULT   = 2.0
+MIN_PRECISION_DEFAULT    = 20
+PRECISION_DEFAULT        = 1000
+ALPHA_DEFAULT            = 0.05
 
 # Constants used for PDF generation.
 #
 PDF_HEIGHT_WIDTH_DEFAULT = 7
+
+# Constants used to define benchmarking
+#
+COVERAGE_DEFAULT = 0.05
+
 
 program :name, 'ppbench'
 program :version, "#{Ppbench::VERSION}"
@@ -44,6 +50,7 @@ program :help, 'Author', 'Nane Kratzke <nane.kratzke@fh-luebeck.de>'
 
 global_option '--precision POINTS', Integer, PRECISION_DESCRIPTION
 global_option '--naming FILE', String, NAMING_DESCRIPTION
+global_option '--alpha FLOAT', Float, ALPHA_DESCRIPTION
 
 default_command :help
 
@@ -51,11 +58,13 @@ default_command :help
 # - precision (used for comparison lines, median lines and confidence band plotting)
 # - naming (used for user defined naming of machine and experiment tags)
 #
-def validate_global_options(args, options)
-  options.default :precision => 500
-  options.default :naming => ''
 
-  if options.precision < 20
+def validate_global_options(args, options)
+  options.default :precision => PRECISION_DEFAULT
+  options.default :naming => ''
+  options.default :alpha => ALPHA_DEFAULT
+
+  if options.precision < MIN_PRECISION_DEFAULT
     $stderr.puts("Error in --precision flag: Precision must be >= 20 points.\n")
     exit!
   end
@@ -83,6 +92,13 @@ def validate_global_options(args, options)
       exit!
     end
   end
+
+  if options.alpha < 0.0 || options.alpha > 1.0
+    $stderr.puts("Error in --alpha flag: Alpha must be between 0.0 and 1.0, but alpha was '#{options.alpha}'.")
+    exit!
+  end
+
+  Ppbench::alpha = options.alpha
 end
 
 # Validates command line flags of the run command.
@@ -124,8 +140,8 @@ def validate_run_options(args, options)
     exit!
   end
 
-  if $stderr.args.length > 1
-    print("You should only specify one log file. You specified #{args.length} logfiles.\n")
+  if args.length > 1
+    $stderr.puts("You should only specify one log file. You specified #{args.length} logfiles.\n")
     exit!
   end
 
@@ -654,7 +670,7 @@ command :run do |c|
     options.default :min => 1, :max => 500000
     options.default :machine => ''
     options.default :experiment => ''
-    options.default :coverage => 0.05
+    options.default :coverage => COVERAGE_DEFAULT
     options.default :repetitions => 1
     options.default :concurrency => 1
     options.default :timeout => 60

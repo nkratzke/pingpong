@@ -14,7 +14,8 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/ppbench@install__ppbench.coverage" NAME="install: ppbench Coverage Results" MODIFIED="1442476150858" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="ppbench" />
+    <SUITE FILE_PATH="coverage/ppbench@install__ppbench.coverage" NAME="install: ppbench Coverage Results" MODIFIED="1443517546094" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="ppbench" />
+    <SUITE FILE_PATH="coverage/ppbench@build__ppbench.coverage" NAME="build: ppbench Coverage Results" MODIFIED="1442594808344" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="ppbench" />
     <SUITE FILE_PATH="coverage/ppbench@release__ppbench.coverage" NAME="release: ppbench Coverage Results" MODIFIED="1442475151952" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="ppbench" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -26,41 +27,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="console" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bin/console">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="4" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ppbench.rb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/ppbench.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="422" column="11" selection-start-line="422" selection-start-column="11" selection-end-line="422" selection-end-column="11" />
+              <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ppbench.gemspec" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ppbench.gemspec" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ppbench.gemspec">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4346591">
-              <caret line="18" column="28" selection-start-line="18" selection-start-column="28" selection-end-line="18" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="23" column="28" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="28" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="version.rb" pinned="false" current-in-tab="false">
+      <file leaf-file-name="version.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/ppbench/version.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="1" column="18" selection-start-line="1" selection-start-column="18" selection-end-line="1" selection-end-column="18" />
+            <state vertical-scroll-proportion="0.048158642">
+              <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
               <folding />
             </state>
           </provider>
@@ -70,13 +61,29 @@
         <entry file="file://$PROJECT_DIR$/bin/ppbench.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="79" column="6" selection-start-line="79" selection-start-column="6" selection-end-line="79" selection-end-column="6" />
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
-                <element signature="e#3404#4603#0" expanded="false" />
-                <element signature="e#4675#5363#0" expanded="false" />
-                <element signature="e#5424#6607#0" expanded="false" />
-                <element signature="e#6673#6984#0" expanded="false" />
-                <element signature="e#7054#7385#0" expanded="false" />
+                <marker date="1443510206000" expanded="true" signature="107:158" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="1767:1808" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="2028:2066" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="2097:2138" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="2549:2754" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="3938:3990" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="5191:5260" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="5951:6009" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="7195:7258" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="7572:7639" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="7973:8004" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="8387:8459" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="8614:8655" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="9984:10036" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="11149:11189" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="12530:12580" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="13688:13728" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="15050:15100" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="16208:16243" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="17392:17426" placeholder="#..." />
+                <marker date="1443510206000" expanded="true" signature="18924:18960" placeholder="#..." />
               </folding>
             </state>
           </provider>
@@ -84,16 +91,6 @@
       </file>
       <file leaf-file-name="Rakefile" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Rakefile">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="setup" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bin/setup">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -110,10 +107,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/lib/ppbench/version.rb" />
-        <option value="$PROJECT_DIR$/lib/ppbench.rb" />
-        <option value="$PROJECT_DIR$/bin/ppbench.rb" />
         <option value="$PROJECT_DIR$/ppbench.gemspec" />
+        <option value="$PROJECT_DIR$/lib/ppbench/version.rb" />
+        <option value="$PROJECT_DIR$/bin/ppbench.rb" />
+        <option value="$PROJECT_DIR$/lib/ppbench.rb" />
       </list>
     </option>
   </component>
@@ -153,6 +150,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -195,13 +193,30 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ppbench" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ppbench" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ppbench" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="bin" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -260,15 +275,28 @@
       <RAKE_RUN_CONFIG_SETTINGS_ID NAME="RAKE_TASK_OPTION_PREREQS" VALUE="false" />
       <method />
     </configuration>
-    <configuration default="true" type="BashConfigurationType" factoryName="Bash">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="INTERPRETER_PATH" value="/bin/bash" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="PARAMETERS" value="" />
-      <module name="" />
+    <configuration default="false" name="build: ppbench" type="RakeRunConfigurationType" factoryName="Rake" temporary="true">
+      <module name="ppbench" />
+      <RAKE_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="-e $stdout.sync=true;$stderr.sync=true;load($0=ARGV.shift)" />
+      <RAKE_RUN_CONFIG_SETTINGS_ID NAME="WORK DIR" VALUE="$MODULE_DIR$" />
+      <RAKE_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
+      <RAKE_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
+      <RAKE_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
       <envs />
+      <EXTENSION ID="BundlerRunConfigurationExtension" bundleExecEnabled="false" />
+      <EXTENSION ID="JRubyRunConfigurationExtension" NailgunExecEnabled="false" />
+      <EXTENSION ID="RubyCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" track_test_folders="true" runner="rcov">
+        <COVERAGE_PATTERN ENABLED="true">
+          <PATTERN REGEXPS="/.rvm/" INCLUDED="false" />
+        </COVERAGE_PATTERN>
+      </EXTENSION>
+      <EXTENSION ID="org.jetbrains.plugins.ruby.motion.run.MotionSimulatorRunExtension" />
+      <RAKE_RUN_CONFIG_SETTINGS_ID NAME="RAKE_TASK_NAME" VALUE="build" />
+      <RAKE_RUN_CONFIG_SETTINGS_ID NAME="RAKE_TASK_ARGS" VALUE="" />
+      <RAKE_RUN_CONFIG_SETTINGS_ID NAME="RAKE_TASK_ATTACHED_TEST_FRAMEWORKS" VALUE="" />
+      <RAKE_RUN_CONFIG_SETTINGS_ID NAME="RAKE_TASK_OPTION_TRACE" VALUE="false" />
+      <RAKE_RUN_CONFIG_SETTINGS_ID NAME="RAKE_TASK_OPTION_DRYRUN" VALUE="false" />
+      <RAKE_RUN_CONFIG_SETTINGS_ID NAME="RAKE_TASK_OPTION_PREREQS" VALUE="false" />
       <method />
     </configuration>
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
@@ -387,14 +415,16 @@
       <envs />
       <method />
     </configuration>
-    <list size="2">
+    <list size="3">
       <item index="0" class="java.lang.String" itemvalue="Rake.install: ppbench" />
       <item index="1" class="java.lang.String" itemvalue="Rake.release: ppbench" />
+      <item index="2" class="java.lang.String" itemvalue="Rake.build: ppbench" />
     </list>
     <recent_temporary>
-      <list size="2">
+      <list size="3">
         <item index="0" class="java.lang.String" itemvalue="Rake.install: ppbench" />
-        <item index="1" class="java.lang.String" itemvalue="Rake.release: ppbench" />
+        <item index="1" class="java.lang.String" itemvalue="Rake.build: ppbench" />
+        <item index="2" class="java.lang.String" itemvalue="Rake.release: ppbench" />
       </list>
     </recent_temporary>
   </component>
@@ -425,22 +455,22 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26747242" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27272728" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28046834" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2889835" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32662398" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32479414" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32890365" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32753888" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32753888" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -463,6 +493,60 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/lib/ppbench.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ppbench.gemspec">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="38" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ppbench/version.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1" column="19" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bin/ppbench.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding>
+            <marker date="1443510206000" expanded="true" signature="107:158" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="1767:1808" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2028:2066" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2097:2138" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2549:2754" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="3938:3990" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="5191:5260" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="5951:6009" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7195:7258" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7572:7639" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7973:8004" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="8387:8459" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="8614:8655" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="9984:10036" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="11149:11189" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="12530:12580" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="13688:13728" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="15050:15100" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="16208:16243" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="17392:17426" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="18924:18960" placeholder="#..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Rakefile">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -471,7 +555,61 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bin/setup">
+    <entry file="file://$PROJECT_DIR$/lib/ppbench.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="282" column="27" selection-start-line="282" selection-start-column="27" selection-end-line="282" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ppbench.gemspec">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="38" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ppbench/version.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1" column="28" selection-start-line="1" selection-start-column="28" selection-end-line="1" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bin/ppbench.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1443510206000" expanded="true" signature="107:158" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="1767:1808" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2028:2066" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2097:2138" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2549:2754" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="3938:3990" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="5191:5260" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="5951:6009" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7195:7258" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7572:7639" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7973:8004" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="8387:8459" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="8614:8655" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="9984:10036" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="11149:11189" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="12530:12580" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="13688:13728" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="15050:15100" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="16208:16243" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="17392:17426" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="18924:18960" placeholder="#..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rakefile">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -479,10 +617,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bin/console">
+    <entry file="file://$PROJECT_DIR$/Rakefile">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -516,11 +654,27 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3404#4603#0" expanded="false" />
-            <element signature="e#4675#5363#0" expanded="false" />
-            <element signature="e#5424#6607#0" expanded="false" />
-            <element signature="e#6673#6984#0" expanded="false" />
-            <element signature="e#7054#7385#0" expanded="false" />
+            <marker date="1443510206000" expanded="true" signature="107:158" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="1767:1808" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2028:2066" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2097:2138" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2549:2754" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="3938:3990" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="5191:5260" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="5951:6009" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7195:7258" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7572:7639" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7973:8004" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="8387:8459" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="8614:8655" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="9984:10036" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="11149:11189" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="12530:12580" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="13688:13728" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="15050:15100" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="16208:16243" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="17392:17426" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="18924:18960" placeholder="#..." />
           </folding>
         </state>
       </provider>
@@ -529,22 +683,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/setup">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/console">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -578,11 +716,27 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3404#4603#0" expanded="false" />
-            <element signature="e#4675#5363#0" expanded="false" />
-            <element signature="e#5424#6607#0" expanded="false" />
-            <element signature="e#6673#6984#0" expanded="false" />
-            <element signature="e#7054#7385#0" expanded="false" />
+            <marker date="1443510206000" expanded="true" signature="107:158" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="1767:1808" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2028:2066" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2097:2138" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2549:2754" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="3938:3990" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="5191:5260" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="5951:6009" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7195:7258" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7572:7639" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7973:8004" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="8387:8459" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="8614:8655" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="9984:10036" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="11149:11189" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="12530:12580" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="13688:13728" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="15050:15100" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="16208:16243" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="17392:17426" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="18924:18960" placeholder="#..." />
           </folding>
         </state>
       </provider>
@@ -591,22 +745,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/setup">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/console">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -640,11 +778,27 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3404#4603#0" expanded="false" />
-            <element signature="e#4675#5363#0" expanded="false" />
-            <element signature="e#5424#6607#0" expanded="false" />
-            <element signature="e#6673#6984#0" expanded="false" />
-            <element signature="e#7054#7385#0" expanded="false" />
+            <marker date="1443510206000" expanded="true" signature="107:158" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="1767:1808" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2028:2066" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2097:2138" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2549:2754" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="3938:3990" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="5191:5260" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="5951:6009" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7195:7258" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7572:7639" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7973:8004" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="8387:8459" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="8614:8655" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="9984:10036" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="11149:11189" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="12530:12580" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="13688:13728" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="15050:15100" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="16208:16243" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="17392:17426" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="18924:18960" placeholder="#..." />
           </folding>
         </state>
       </provider>
@@ -653,22 +807,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/setup">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/console">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -702,11 +840,27 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3404#4603#0" expanded="false" />
-            <element signature="e#4675#5363#0" expanded="false" />
-            <element signature="e#5424#6607#0" expanded="false" />
-            <element signature="e#6673#6984#0" expanded="false" />
-            <element signature="e#7054#7385#0" expanded="false" />
+            <marker date="1443510206000" expanded="true" signature="107:158" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="1767:1808" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2028:2066" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2097:2138" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2549:2754" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="3938:3990" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="5191:5260" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="5951:6009" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7195:7258" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7572:7639" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7973:8004" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="8387:8459" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="8614:8655" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="9984:10036" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="11149:11189" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="12530:12580" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="13688:13728" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="15050:15100" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="16208:16243" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="17392:17426" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="18924:18960" placeholder="#..." />
           </folding>
         </state>
       </provider>
@@ -715,22 +869,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/setup">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/console">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -764,11 +902,27 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="5" column="9" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
           <folding>
-            <element signature="e#3404#4603#0" expanded="false" />
-            <element signature="e#4675#5363#0" expanded="false" />
-            <element signature="e#5424#6607#0" expanded="false" />
-            <element signature="e#6673#6984#0" expanded="false" />
-            <element signature="e#7054#7385#0" expanded="false" />
+            <marker date="1443510206000" expanded="true" signature="107:158" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="1767:1808" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2028:2066" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2097:2138" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2549:2754" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="3938:3990" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="5191:5260" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="5951:6009" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7195:7258" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7572:7639" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7973:8004" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="8387:8459" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="8614:8655" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="9984:10036" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="11149:11189" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="12530:12580" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="13688:13728" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="15050:15100" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="16208:16243" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="17392:17426" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="18924:18960" placeholder="#..." />
           </folding>
         </state>
       </provider>
@@ -777,22 +931,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/setup">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/console">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -826,11 +964,27 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="33" column="43" selection-start-line="33" selection-start-column="43" selection-end-line="33" selection-end-column="43" />
           <folding>
-            <element signature="e#3404#4603#0" expanded="false" />
-            <element signature="e#4675#5363#0" expanded="false" />
-            <element signature="e#5424#6607#0" expanded="false" />
-            <element signature="e#6673#6984#0" expanded="false" />
-            <element signature="e#7054#7385#0" expanded="false" />
+            <marker date="1443510206000" expanded="true" signature="107:158" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="1767:1808" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2028:2066" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2097:2138" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2549:2754" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="3938:3990" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="5191:5260" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="5951:6009" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7195:7258" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7572:7639" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7973:8004" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="8387:8459" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="8614:8655" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="9984:10036" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="11149:11189" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="12530:12580" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="13688:13728" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="15050:15100" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="16208:16243" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="17392:17426" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="18924:18960" placeholder="#..." />
           </folding>
         </state>
       </provider>
@@ -843,38 +997,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bin/setup">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/ppbench/version.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1" column="18" selection-start-line="1" selection-start-column="18" selection-end-line="1" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/console">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/setup">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Rakefile">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -883,10 +1005,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/ppbench.rb">
+    <entry file="file://$PROJECT_DIR$/ppbench.gemspec">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="422" column="11" selection-start-line="422" selection-start-column="11" selection-end-line="422" selection-end-column="11" />
+          <caret line="23" column="28" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="28" />
           <folding />
         </state>
       </provider>
@@ -894,21 +1016,45 @@
     <entry file="file://$PROJECT_DIR$/bin/ppbench.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="79" column="6" selection-start-line="79" selection-start-column="6" selection-end-line="79" selection-end-column="6" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3404#4603#0" expanded="false" />
-            <element signature="e#4675#5363#0" expanded="false" />
-            <element signature="e#5424#6607#0" expanded="false" />
-            <element signature="e#6673#6984#0" expanded="false" />
-            <element signature="e#7054#7385#0" expanded="false" />
+            <marker date="1443510206000" expanded="true" signature="107:158" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="1767:1808" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2028:2066" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2097:2138" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="2549:2754" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="3938:3990" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="5191:5260" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="5951:6009" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7195:7258" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7572:7639" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="7973:8004" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="8387:8459" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="8614:8655" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="9984:10036" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="11149:11189" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="12530:12580" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="13688:13728" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="15050:15100" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="16208:16243" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="17392:17426" placeholder="#..." />
+            <marker date="1443510206000" expanded="true" signature="18924:18960" placeholder="#..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ppbench.gemspec">
+    <entry file="file://$PROJECT_DIR$/lib/ppbench.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4346591">
-          <caret line="18" column="28" selection-start-line="18" selection-start-column="28" selection-end-line="18" selection-end-column="28" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ppbench/version.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.048158642">
+          <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
           <folding />
         </state>
       </provider>

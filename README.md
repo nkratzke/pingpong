@@ -36,7 +36,7 @@ Therefore variations of benchmark results can be assigned to above mentioned cha
 
 To do a benchmark you have to set up a _siege_, a _ping_ and a _pong_ host. 
 We assume these are Linux hosts with git, apt-get and curl installed. 
-Install this package on all of this three hosts by running following commands.
+Install this package on the ping and the pong hosts by running following commands.
 
 ```
 git clone https://github.com/nkratzke/pingpong.git
@@ -57,6 +57,31 @@ This will install necessary dependencies. These include:
 It is possible to run the _Ping_ and _Pong_ service as a Docker container 
 and as a Docker container connected to a Weave SDN network. 
 
+If you are working with Ubuntu LTS 14.04 cloud machines 
+(following user-data is not tested with other
+distributions) capable to do cloud-config you can use the following
+[user-data](cloud-init.txt) to simply the setup of your machines a little bit: 
+
+```
+#cloud-config
+
+packages:
+  - git
+  
+runcmd:
+  - [git, clone, "https://github.com/nkratzke/pingpong", "-b", "working-0.0.2", /home/ubuntu/pingpong]
+  - [chown, "-R", "ubuntu:ubuntu", /home/ubuntu/pingpong]
+```
+
+After booting simply run
+
+```
+./install.sh
+```
+
+in your /home/ubuntu directory to do all the installation. This works for the _pong_ as well as the _ping_ host.
+
+
 ### On the pong host: Set up the _pong service_
 
 First step is to start the _pong_ service on the _pong_ host. This will start the _pong_ service on the host on port 8080.
@@ -65,7 +90,7 @@ You have three options to start the _pong_ service:
 #### Run a bare pong service
 
 ```
-pong:$ ./start.sh bare pong
+pong:$ ./start.sh bare pong-{lang}
 ```
 
 You want to check wether the _pong_ service is working correctly by checking that 
@@ -79,7 +104,7 @@ answers with 'poong'.
 #### Run a dockerized pong service
 
 ```
-pong:$ ./start.sh docker pong
+pong:$ ./start.sh docker pong-{lang}
 ```
 
 This will build the ping pong image if necessary. So start up may take some time.
@@ -102,47 +127,23 @@ Please figure out the IP adress or DNS name of your pong host. We will refer to 
 #### Run a dockerized pong service connected to a weave network
 
 ```
-pong:$ ./start.sh weave pong
+pong:$ ./start.sh weave pong-{lang}
 ```
 
 This will build the ping pong image as well as the necessary weave containers if necessary. 
 So start up may take some time (longer than docker start up above).
 You can check whether the pong service is running:
 
-```
-sudo docker ps
-```
-
 You can check whether this container was successfully added to the weave network.
 
 ```
-sudo weave status
+sudo weave status dns
 ```
 
 should return something like that
 
 ```
-weave router 1.0.1
-Our name is 6a:15:b5:bf:ba:00(ip-172-31-9-17)
-
-...
-
-Peers:
-6a:15:b5:bf:ba:00(ip-172-31-9-17) (v8) (UID 17688622006055783656)
-   -> 6a:58:56:7b:86:a7(ip-172-31-14-183) [172.31.14.183:40353]
-6a:58:56:7b:86:a7(ip-172-31-14-183) (v2) (UID 4488684819840626089)
-   -> 6a:15:b5:bf:ba:00(ip-172-31-9-17) [172.31.9.17:6783]
-
-...
-
-weave DNS 1.0.1
-Listen address :53
-Fallback DNS config &{[172.31.0.2] [eu-central-1.compute.internal] 53 1 5 2}
-
-Local domain weave.local.
-Interface &{13 65535 ethwe b2:b7:ad:19:b4:34 up|broadcast|multicast}
-Zone database:
-81cac0157b0e: pong.weave.local.[10.128.0.2]
+pong         10.2.1.1        3efca64dc4aa 86:32:95:f5:e5:00
 ```
 
 You want to check wether the _pong_ service is working correctly by checking that 
@@ -154,7 +155,6 @@ pong:$ curl http://localhost:8080/pong/5
 answers with 'poong'.
 
 Please figure out the IP adress or DNS name of your pong host. We will refer to it as <code>&lt;ponghostip&gt;</code>.
-Please figure out the SDN IP adress or SDN DNS name of your pong container. We will refer to it as <code>&lt;pongsdnip&gt;</code>.
 
 ### On the ping host: Set up the _ping service_
 
@@ -167,7 +167,7 @@ You have three options to do this:
 #### Run a bare ping service
 
 ```
-pong:$ ./start.sh bare ping <ponghostip>
+pong:$ ./start.sh bare ping-{lang} <ponghostip>
 ```
 
 You want to check wether the _ping_ service is working correctly by checking that 
@@ -181,7 +181,7 @@ answers with 'poong'.
 #### Run a dockered ping service
 
 ```
-pong:$ ./start.sh docker ping <ponghostip>
+pong:$ ./start.sh docker ping-{lang} <ponghostip>
 ```
 
 This will build necessary images. So startup may take some time.
@@ -197,11 +197,24 @@ answers with 'poong'.
 #### Run a dockered ping service attached to weave network
 
 ```
-pong:$ ./start.sh weave ping <pongsdnip> <ponghostip>
+pong:$ ./start.sh weave ping-{lang} <ponghostip>
 ```
 
 This will build necessary images and will connect to the SDN network established by the pong host.
 So startup may take some time.
+
+You can check whether this container was successfully added to the weave network.
+
+```
+sudo weave status dns
+```
+
+should return something like that
+
+```
+ping         10.2.1.2        edb8527251a4 0e:37:c7:60:f2:d0
+pong         10.2.1.1        2214f948aaa4 3e:07:d4:54:4e:d9
+```
 
 You want to check wether the _ping_ service is working correctly by checking that 
 
@@ -212,25 +225,107 @@ ping:$ curl http://localhost:8080/ping/5
 answers with 'poong'.
 
 
-### On the siege host: set up and run apachebench
+### On the siege host: set up and run ppbench
 
-Third step you should run the benchmark to figure out the answer performance of your ping-pong system. On your _siege_ 
-host you will find a <code>run.sh</code> script to start your benchmark. 
-
-```
-./run.sh <pinghostip>
-```
-
-The <code>run.sh</code> script provides more parameters to vary your experiments. You can change 
-
-- the amount of concurrent messages,
-- the message sizes,
-- and how often each benchmark run per message size should be executed.
-
-All benchmark results are written into a file <code>apachebench.log</code>. This log file can be processed by <code>bin/analyze.dart</code> to generate a csv file which is better suited to be imported into databases or statistical tools like R.
-
-The following line converts experiment data (apachebench log format), tag it with a name (here 'Reference') and convert it into a csv file. You can use tags to distinguish different experiments for analysis.
+We provide <code>ppbench</code> via RubyGems.org. So, installing <code>ppbench</code> 
+on your siege system (we assume that this is your personal laptop or workstation) is very easy.
+Assuming you have __Ruby 2.2 (or higher installed)__ installed, simply run
 
 ```
-dart bin/analyze.dart --tag Reference apachebench.log > reference.csv
+gem install ppbench
 ```
+
+to install <code>ppbench</code>.
+
+<code>ppbench</code> provides several commands and parameters to run and analyze your experiments.
+<code>ppbench</code> comes with an online help included. Simply run
+
+```
+ppbench help
+```
+
+to get some online help about available commands <code>ppbench</code> is providing.
+
+A benchmark run is started like that: 
+
+```
+ppbench run --host http://<pinghostip>:8080 \
+            --experiment experiment_tag \
+            --machine machine_tag \
+            log.csv
+```
+
+A benchmark run can be defined via several parameters. To learn more, simply run:
+
+```
+ppbench help run
+```
+
+All benchmark results are written into a log (csv format). These csv based log files can be processed by <code>ppbench</code>. 
+<code>Ppbench</code> is able to do some summary analysis on a set of collected benchmark files for a quick analysis. Simply run
+
+```
+ppbench summary *.csv
+```
+
+to get a result like this:
+
+```
+We have data for: 
++-------------+-----------+---------+-----------------+--------------+--------------+
+| Experiment  | Machine   | Samples | Transfer (kB/s) | Requests/sec | Latency (ms) |
++-------------+-----------+---------+-----------------+--------------+--------------+
+| bare-dart   | m3.xlarge |    4999 |        50752.03 |       298.51 |         3.35 |
++-------------+-----------+---------+-----------------+--------------+--------------+
+| bare-go     | m3.xlarge |    4999 |        47329.98 |       194.53 |         5.14 |
++-------------+-----------+---------+-----------------+--------------+--------------+
+| bare-java   | m3.xlarge |    2350 |        27749.37 |       111.94 |         8.93 |
++-------------+-----------+---------+-----------------+--------------+--------------+
+| docker-dart | m3.xlarge |    4999 |        47892.43 |       276.13 |         3.62 |
++-------------+-----------+---------+-----------------+--------------+--------------+
+| docker-go   | m3.xlarge |    4999 |        43761.69 |       183.17 |         5.46 |
++-------------+-----------+---------+-----------------+--------------+--------------+
+| docker-java | m3.xlarge |    3535 |        28128.78 |       116.15 |         8.61 |
++-------------+-----------+---------+-----------------+--------------+--------------+
+| weave-dart  | m3.xlarge |    4999 |        33645.47 |       189.50 |         5.28 |
++-------------+-----------+---------+-----------------+--------------+--------------+
+| weave-go    | m3.xlarge |    9115 |        35385.75 |       152.34 |         6.56 |
++-------------+-----------+---------+-----------------+--------------+--------------+
+| weave-java  | m3.xlarge |    4999 |        23586.90 |        92.07 |        10.86 |
++-------------+-----------+---------+-----------------+--------------+--------------+
+```
+
+But much more interesting and helpful (summary data is intended to be used for completenes and plausability checking of data but not for detailed analysis), 
+<code>ppbench</code> is able to generate R scripts for analysis and visualization of benchmark data.
+
+This command chain here (using Rscript and assuming you have the statistical framework R installed)
+
+```
+ppbench transfer-plot --machines m3.xlarge \
+                      --experiments bare-dart,bare-go,bare-java \
+                      --pdf graphic.pdf \
+                      *.csv | Rscript -
+```
+
+would produce a R script which will generate a scatter plot of measured transfer rates on all benchmark runs that have been tagged to be run on m3.xlarge (AWS virtual machines) with the bare deployment of ping and pong services implemented in Dart, Go or Java programming languages. So the performance impact of several programming language to data transfer rates can be compared visually. A typical plot might look like this one here.
+
+<img src="transferplot.png" width=100%>
+    
+The plot commands of ppbench have several flags to tune your plotting. By using  the following additions flags
+it is possible to plot 75% confidence bands without showing all measured detail data points (omitting the <code>--nopoints</code> would show both,
+confidence bands and all data points).
+    
+```
+ppbench transfer-plot --machines m3.xlarge \
+                      --experiments bare-dart,bare-go,bare-java \
+                      --withbands \
+                      --confidence 75 \
+                      --nopoints \
+                      --pdf graphic.pdf \
+                      *.csv | Rscript -
+```
+
+This would produce a much clearer picture with additional descriptive statistical information.
+
+<img src="transferplot-withbands.png" width=100%>
+

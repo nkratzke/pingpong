@@ -16,12 +16,14 @@ module Ppbench
 
   def self.machine(key)
     return key if @naming.empty?
+    return key unless @naming.key?('machines')
     name = @naming['machines'][key]
     name == nil ? key : name
   end
 
   def self.experiment(key)
     return key if @naming.empty?
+    return key unless @naming.key?('experiments')
     name = @naming['experiments'][key]
     name == nil ? key : name
   end
@@ -32,6 +34,14 @@ module Ppbench
 
   def self.precision
     @precision
+  end
+
+  def self.alpha=(v)
+    @alpha = v
+  end
+
+  def self.alpha
+    @alpha
   end
 
   def self.precision_error(length)
@@ -264,7 +274,7 @@ module Ppbench
       to_plot: :tpr,
       color: 'grey',
       symbol: 1,
-      alpha: 0.15,
+      alpha: Ppbench::alpha,
       length: 500000,
       confidence: 90,
       no_points: false,
@@ -286,7 +296,7 @@ module Ppbench
       symbol: 1,
       length: 500000,
       n: Ppbench::precision,
-      nknots: 20
+      nknots: Ppbench::precision
   )
     step = length / n
     references = reference.map { |v| [v[:length], v[to_plot]] }
@@ -339,7 +349,7 @@ module Ppbench
 
   # Generates scatter plot of points for plots.
   #
-  def self.points(data, to_plot: :tpr, color: 'grey', alpha: 0.15, symbol: 1)
+  def self.points(data, to_plot: :tpr, color: 'grey', alpha: Ppbench::alpha, symbol: 1)
     points = data.map { |v| [v[:length], v[to_plot]] }
     xs = "c(#{points.map { |e| e[0] } * ','})"
     ys = "c(#{points.map { |e| e[1] } * ','})"
@@ -353,7 +363,7 @@ module Ppbench
 
   # Generates median lines and confidence bands for plots.
   #
-  def self.bands(data, to_plot: :tpr, n: Ppbench::precision, length: 500000, color: 'grey', confidence: 90, nknots: 15)
+  def self.bands(data, to_plot: :tpr, n: Ppbench::precision, length: 500000, color: 'grey', confidence: 90, nknots: Ppbench::precision)
 
     step = length / n
     points = data.map { |v| [v[:length], v[to_plot]] }

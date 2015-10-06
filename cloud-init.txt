@@ -1,0 +1,8 @@
+#cloud-config
+
+packages:
+  - git
+  
+runcmd:
+  - [git, clone, "https://github.com/nkratzke/pingpong", /home/ubuntu/pingpong]
+  - [chown, "-R", "ubuntu:ubuntu", /home/ubuntu/pingpong]
