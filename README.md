@@ -69,7 +69,7 @@ packages:
   - git
   
 runcmd:
-  - [git, clone, "https://github.com/nkratzke/pingpong", "-b", "working-0.0.2", /home/ubuntu/pingpong]
+  - [git, clone, "https://github.com/nkratzke/pingpong", /home/ubuntu/pingpong]
   - [chown, "-R", "ubuntu:ubuntu", /home/ubuntu/pingpong]
 ```
 
