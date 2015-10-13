@@ -34,17 +34,8 @@ Therefore variations of benchmark results can be assigned to above mentioned cha
 
 ## Set up a benchmark experiment
 
-To do a benchmark you have to set up a _siege_, a _ping_ and a _pong_ host. 
-We assume these are Linux hosts with git, apt-get and curl installed. 
-Install this package on the ping and the pong hosts by running following commands.
-
-```
-git clone https://github.com/nkratzke/pingpong.git
-cd pingpong
-sudo sh ./install.sh
-```
-
-This will install necessary dependencies. These include:
+To do a benchmark you have to set up a _ping_ and a _pong_ host. 
+This is highly automated and will install necessary dependencies. These include:
 
 - Dart SDK
 - Docker
@@ -55,7 +46,7 @@ This will install necessary dependencies. These include:
 - ppbench (as benchmarking and analyzing front end)
 
 It is possible to run the _Ping_ and _Pong_ service as a Docker container 
-and as a Docker container connected to a Weave SDN network. 
+and as a Docker container connected to a Weave SDN network. Further container solutions and SDNs are planned for further releases.
 
 If you are working with Ubuntu LTS 14.04 cloud machines 
 (following user-data is not tested with other
