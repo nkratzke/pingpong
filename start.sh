@@ -158,7 +158,7 @@ function calico {
     sudo sysctl -w net.ipv6.conf.all.forwarding=1
 
 	# start etcd service and calico depending being ping or pong
-	if [ -n "$pongip" ]; 
+	if [ -z "$pongip" ]; 
 	then 
 		# We are the pong host
 	    NODE_IP=`hostname -i`
