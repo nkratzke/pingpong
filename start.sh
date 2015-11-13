@@ -153,9 +153,12 @@ function weave {
 function calico {
 
 	# load modules, enable IP forwarding
-    sudo modprobe xt_set
-    sudo sysctl -w net.ipv4.ip_forward=1
-    sudo sysctl -w net.ipv6.conf.all.forwarding=1
+    #
+	# CHECK THIS ON MONDAY
+	#
+	# sudo modprobe xt_set
+    # sudo sysctl -w net.ipv4.ip_forward=1
+    # sudo sysctl -w net.ipv6.conf.all.forwarding=1
 
 	# start etcd service and calico depending being ping or pong
 	if [ -z "$pongip" ]; 
