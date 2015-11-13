@@ -178,67 +178,67 @@ function calico {
 
 	case "$service" in
 	pong-dart) sudo docker build -t ppdart pingpong-dart/
-	           sudo docker run -d --name pong ppdart --asPong --port=8080
+	           sudo docker run -d -p 8080:8080 --name pong ppdart --asPong --port=8080
              sudo calicoctl container add pong 10.2.1.1
              sudo calicoctl container pong profile append PROF_PINGPONG
              # start socat since port forwarding doesn't work
-             socat TCP4-LISTEN:8080,fork TCP4:10.2.1.1:8080 > /dev/null 2>&1 &
+             # socat TCP4-LISTEN:8080,fork TCP4:10.2.1.1:8080 > /dev/null 2>&1 &
 	           ;;
 		  	
 	ping-dart) sudo docker build -t ppdart pingpong-dart/
-	           sudo docker run -d --name ping ppdart --asPing --port=8080 --url="http://10.2.1.1:8080"
+	           sudo docker run -d -p 8080:8080 --name ping ppdart --asPing --port=8080 --url="http://10.2.1.1:8080"
              sudo ETCD_AUTHORITY=$pongip:2379 calicoctl container add ping 10.2.1.2
              sudo ETCD_AUTHORITY=$pongip:2379 calicoctl container ping profile append PROF_PINGPONG
              # start socat since port forwarding doesn't work
-             socat TCP4-LISTEN:8080,fork TCP4:10.2.1.2:8080 > /dev/null 2>&1 &
+             # socat TCP4-LISTEN:8080,fork TCP4:10.2.1.2:8080 > /dev/null 2>&1 &
 		       ;;
 
     pong-java) sudo docker build -t ppjava pingpong-java/
-	           sudo docker run -d --name pong ppjava Pong 8080
+	           sudo docker run -d -p 8080:8080 --name pong ppjava Pong 8080
              sudo calicoctl container add pong 10.2.1.1
              sudo calicoctl container pong profile append PROF_PINGPONG
              # start socat since port forwarding doesn't work
-             socat TCP4-LISTEN:8080,fork TCP4:10.2.1.1:8080 > /dev/null 2>&1 &
+             # socat TCP4-LISTEN:8080,fork TCP4:10.2.1.1:8080 > /dev/null 2>&1 &
 			   ;;
 		  
     ping-java) sudo docker build -t ppjava pingpong-java/
-	           sudo docker run -d --name ping ppjava Ping 8080 10.2.1.1 8080
+	           sudo docker run -d -p 8080:8080 --name ping ppjava Ping 8080 10.2.1.1 8080
              sudo ETCD_AUTHORITY=$pongip:2379 calicoctl container add ping 10.2.1.2
              sudo ETCD_AUTHORITY=$pongip:2379 calicoctl container ping profile append PROF_PINGPONG
              # start socat since port forwarding doesn't work
-             socat TCP4-LISTEN:8080,fork TCP4:10.2.1.2:8080 > /dev/null 2>&1 &
+             # socat TCP4-LISTEN:8080,fork TCP4:10.2.1.2:8080 > /dev/null 2>&1 &
 			   ;;
 			   
 	pong-go)   sudo docker build -t ppgo pingpong-go/
-	           sudo docker run -d --name pong ppgo -asPong
+	           sudo docker run -d -p 8080:8080 --name pong ppgo -asPong
              sudo calicoctl container add pong 10.2.1.1
              sudo calicoctl container pong profile append PROF_PINGPONG
              # start socat since port forwarding doesn't work
-             socat TCP4-LISTEN:8080,fork TCP4:10.2.1.1:8080 > /dev/null 2>&1 &
+             # socat TCP4-LISTEN:8080,fork TCP4:10.2.1.1:8080 > /dev/null 2>&1 &
 			   ;;
 			  
 	ping-go)   sudo docker build -t ppgo pingpong-go/
-	           sudo docker run -d --name ping ppgo -asPing -pongHost 10.2.1.1 -pongPort 8080
+	           sudo docker run -d -p 8080:8080 --name ping ppgo -asPing -pongHost 10.2.1.1 -pongPort 8080
              sudo ETCD_AUTHORITY=$pongip:2379 calicoctl container add ping 10.2.1.2
              sudo ETCD_AUTHORITY=$pongip:2379 calicoctl container ping profile append PROF_PINGPONG
              # start socat since port forwarding doesn't work
-             socat TCP4-LISTEN:8080,fork TCP4:10.2.1.2:8080 > /dev/null 2>&1 &
+             # socat TCP4-LISTEN:8080,fork TCP4:10.2.1.2:8080 > /dev/null 2>&1 &
 	           ;;
 
 	pong-ruby) sudo docker build -t ppruby pingpong-ruby/
-	           sudo docker run -d --name pong ppruby pong
+	           sudo docker run -d -p 8080:8080 --name pong ppruby pong
              sudo calicoctl container add pong 10.2.1.1
              sudo calicoctl container pong profile append PROF_PINGPONG
              # start socat since port forwarding doesn't work
-             socat TCP4-LISTEN:8080,fork TCP4:10.2.1.1:8080 > /dev/null 2>&1 &
+             # socat TCP4-LISTEN:8080,fork TCP4:10.2.1.1:8080 > /dev/null 2>&1 &
      		   ;;
 			  
 	ping-ruby) sudo docker build -t ppruby pingpong-ruby/
-	           sudo docker run -d--name ping ppruby ping --ponghost 10.2.1.1 -pongport 8080
+	           sudo docker run -d -p 8080:8080 --name ping ppruby ping --ponghost 10.2.1.1 -pongport 8080
              sudo ETCD_AUTHORITY=$pongip:2379 calicoctl container add ping 10.2.1.2
              sudo ETCD_AUTHORITY=$pongip:2379 calicoctl container ping profile append PROF_PINGPONG
              # start socat since port forwarding doesn't work
-             socat TCP4-LISTEN:8080,fork TCP4:10.2.1.2:8080 > /dev/null 2>&1 &
+             # socat TCP4-LISTEN:8080,fork TCP4:10.2.1.2:8080 > /dev/null 2>&1 &
 	           ;;
 			   
 	*)         echo "Unknown service $service" 
