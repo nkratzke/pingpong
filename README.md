@@ -329,3 +329,8 @@ This would produce a much clearer picture with additional descriptive statistica
 
 <img src="transferplot-withbands.png" width=100%>
 
+## Acknowledgement
+
+Thank you to our contributors.
+
+- __René Peinl__ and his Systems Integration Research Group at Hof University (Institute for Information Systems) for providing the [Calico](http://www.projectcalico.org/) SDN integration.

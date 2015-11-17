@@ -186,14 +186,14 @@ function calico {
              sudo calicoctl container pong profile append PROF_PINGPONG
              # start socat since port forwarding doesn't work
              # socat TCP4-LISTEN:8080,fork TCP4:10.2.1.1:8080 > /dev/null 2>&1 &
-	           ;;
+	         ;;
 		  	
 	ping-dart) sudo docker build -t ppdart pingpong-dart/
 	           sudo docker run -d -p 8080:8080 --name ping ppdart --asPing --port=8080 --url="http://10.2.1.1:8080"
              sudo ETCD_AUTHORITY=$pongip:2379 calicoctl container add ping 10.2.1.2
              sudo ETCD_AUTHORITY=$pongip:2379 calicoctl container ping profile append PROF_PINGPONG
              # start socat since port forwarding doesn't work
-             # socat TCP4-LISTEN:8080,fork TCP4:10.2.1.2:8080 > /dev/null 2>&1 &
+             socat TCP4-LISTEN:8080,fork TCP4:10.2.1.2:8080 > /dev/null 2>&1 &
 		       ;;
 
     pong-java) sudo docker build -t ppjava pingpong-java/
@@ -221,7 +221,7 @@ function calico {
 			   ;;
 			  
 	ping-go)   sudo docker build -t ppgo pingpong-go/
-	           sudo docker run -d -p 8080:8080 --name ping ppgo -asPing -pongHost 10.2.1.1 -pongPort 8080
+	           sudo docker run -d -p 8080:8080 --net host --name ping ppgo -asPing -pongHost 10.2.1.1 -pongPort 8080
              sudo ETCD_AUTHORITY=$pongip:2379 calicoctl container add ping 10.2.1.2
              sudo ETCD_AUTHORITY=$pongip:2379 calicoctl container ping profile append PROF_PINGPONG
              # start socat since port forwarding doesn't work
