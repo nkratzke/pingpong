@@ -15,3 +15,7 @@ sudo docker rm ping || true
 
 echo "Stopping weave if running"
 sudo weave stop || true
+
+echo "Stopping calico if running"
+sudo calicoctl node stop --force || true
+sudo kill `pidof etcd` || true
