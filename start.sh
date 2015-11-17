@@ -141,20 +141,16 @@ function weave {
 	esac
 }
 
-# !!! UNDER CONSTRUCTION !!!
 
+#
 # Starts ping and pong services as docker containers 
 # attached to a calico SDN (CIDR 10.2.0.0/16)
 # Pong gets IP 10.2.1.1
 # Ping gets IP 10.2.1.2
 #
-# !!! UNDER CONSTRUCTION !!! 
-#
 function calico {
 
 	# load modules, enable IP forwarding
-    #
-	# CHECK THIS ON MONDAY
 	#
 	sudo modprobe xt_set
     sudo sysctl -w net.ipv4.ip_forward=1
