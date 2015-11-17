@@ -156,9 +156,9 @@ function calico {
     #
 	# CHECK THIS ON MONDAY
 	#
-	# sudo modprobe xt_set
-    # sudo sysctl -w net.ipv4.ip_forward=1
-    # sudo sysctl -w net.ipv6.conf.all.forwarding=1
+	sudo modprobe xt_set
+    sudo sysctl -w net.ipv4.ip_forward=1
+    sudo sysctl -w net.ipv6.conf.all.forwarding=1
 
 	# start etcd service and calico depending being ping or pong
 	if [ -z "$pongip" ]; 
@@ -174,6 +174,10 @@ function calico {
 		sudo calicoctl node
 		sudo calicoctl pool add 10.2.0.0/16 --ipip --nat-outgoing
 		sudo calicoctl profile add PROF_PINGPONG
+		
+		# Store ETCD_AUTHORITY
+		rm etcd_authority || true
+		echo "localhost:2379" > etcd_authority
 	else
 		# We are the ping host and have to store connection parameters for the etcd server
 		rm etcd_authority || true
