@@ -175,7 +175,9 @@ function calico {
 		sudo calicoctl pool add 10.2.0.0/16 --ipip --nat-outgoing
 		sudo calicoctl profile add PROF_PINGPONG
 	else
-		# We are the ping host
+		# We are the ping host and have to store connection parameters for the etcd server
+		rm etcd_authority || true
+		echo "$pongip:2379" > etcd_authority
 		sudo ETCD_AUTHORITY=$pongip:2379 calicoctl node		
 	fi	
 
@@ -221,11 +223,11 @@ function calico {
 			   ;;
 			  
 	ping-go)   sudo docker build -t ppgo pingpong-go/
-	           sudo docker run -d -p 8080:8080 --net host --name ping ppgo -asPing -pongHost 10.2.1.1 -pongPort 8080
+	           sudo docker run -d -p 80:8080 --name ping ppgo -asPing -pongHost 10.2.1.1 -pongPort 8080
              sudo ETCD_AUTHORITY=$pongip:2379 calicoctl container add ping 10.2.1.2
              sudo ETCD_AUTHORITY=$pongip:2379 calicoctl container ping profile append PROF_PINGPONG
              # start socat since port forwarding doesn't work
-             # socat TCP4-LISTEN:8080,fork TCP4:10.2.1.2:8080 > /dev/null 2>&1 &
+             socat TCP4-LISTEN:8080,fork TCP4:10.2.1.2:80 > /dev/null 2>&1 &
 	           ;;
 
 	pong-ruby) sudo docker build -t ppruby pingpong-ruby/

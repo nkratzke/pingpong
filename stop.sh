@@ -17,5 +17,7 @@ echo "Stopping weave if running"
 sudo weave stop || true
 
 echo "Stopping calico if running"
-sudo calicoctl node stop --force || true
-sudo kill `pidof etcd` || true
+sudo killall socat || true
+sudo ETCD_AUTHORITY=`cat etcd_authority` calicoctl node stop --force || true
+sudo killall etcd || true
+sudo rm -r default.etcd/ || true
