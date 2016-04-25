@@ -23,6 +23,17 @@ curl -sSL https://get.docker.com/ | sudo sh
 sudo curl -L git.io/weave -o /usr/local/bin/weave
 sudo chmod a+x /usr/local/bin/weave
 
+# Install calico, etcd and prerequisites
+sudo apt-get install ipset iptables socat -y
+sudo wget http://www.projectcalico.org/latest/calicoctl -O /usr/local/bin/calicoctl
+sudo chmod a+x /usr/local/bin/calicoctl
+sudo docker pull calico/node:latest
+
+sudo mkdir -p /opt/etcd/
+sudo curl -L  https://github.com/coreos/etcd/releases/download/v2.2.1/etcd-v2.2.1-linux-amd64.tar.gz -o /opt/etcd/etcd.tar.gz
+sudo tar xzvf /opt/etcd/etcd.tar.gz -C /opt/etcd/
+sudo cp /opt/etcd/etcd-*/etcd* /usr/local/bin/
+
 # Install all language modules
 for module in pingpong-*;
 do

@@ -51,7 +51,7 @@ and as a Docker container connected to a Weave SDN network. Further container so
 If you are working with Ubuntu LTS 14.04 cloud machines 
 (following user-data is not tested with other
 distributions) capable to do cloud-config you can use the following
-[user-data](cloud-init.txt) to simply the setup of your machines a little bit: 
+[user-data](cloud-init.txt) to simplify the setup of your machines a little bit: 
 
 ```
 #cloud-config
@@ -320,3 +320,8 @@ This would produce a much clearer picture with additional descriptive statistica
 
 <img src="transferplot-withbands.png" width=100%>
 
+## Acknowledgement
+
+Many thanks to our contributors.
+
+- __René Peinl__ and his Systems Integration Research Group at Hof University (Institute for Information Systems) for providing the [Calico](http://www.projectcalico.org/) SDN integration.
