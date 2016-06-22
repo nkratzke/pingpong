@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   end
 
   spec.summary       = %q{ppbench - a REST ping pong benchmark}
-  spec.description   = %q{A tool to run ping pong benchmark to figure out HTTP REST performances.}
+  spec.description   = %q{A tool to trigger ping pong benchmark to investigate HTTP REST performances.}
   spec.homepage      = "https://github.com/nkratzke/pingpong"
   spec.license       = "MIT"
 
