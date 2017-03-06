@@ -11,11 +11,13 @@ import (
 
 func pongHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	i, _ := strconv.Atoi(params["length"])
+	i, err := strconv.Atoi(params["length"])
+	if err != nil {
+		panic(err)
+	}
 	i -= 4
-	var result bytes.Buffer
-	result.WriteString("po")
-	for ; i > 0; i-- {
+	result := bytes.NewBufferString("po")
+	for j := 0; j < i; j++ {
 		result.WriteString("o")
 	}
 	result.WriteString("ng")
