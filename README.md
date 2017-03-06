@@ -3,6 +3,8 @@ pingpong
 
 A distributed HTTP-based and REST-like ping-pong system for test and benchmarking purposes.
 
+If you are interested in some of the details there is a [research paper](https://www.researchgate.net/publication/292657431) about _ppbench_.
+
 The intended usage of this package is to run two hosts which are queried (benchmarked) by a third host (the _siege_). 
 Host 1 runs a _ping_ service querying a _pong_ service (on host 2) for the answer. 
 _Ping_ and _pong_ build a very simple distributed system communicating via a simple HTTP based resource API.
@@ -34,17 +36,8 @@ Therefore variations of benchmark results can be assigned to above mentioned cha
 
 ## Set up a benchmark experiment
 
-To do a benchmark you have to set up a _siege_, a _ping_ and a _pong_ host. 
-We assume these are Linux hosts with git, apt-get and curl installed. 
-Install this package on the ping and the pong hosts by running following commands.
-
-```
-git clone https://github.com/nkratzke/pingpong.git
-cd pingpong
-sudo sh ./install.sh
-```
-
-This will install necessary dependencies. These include:
+To do a benchmark you have to set up a _ping_ and a _pong_ host. 
+This is highly automated and will install necessary dependencies. These include:
 
 - Dart SDK
 - Docker
@@ -55,7 +48,7 @@ This will install necessary dependencies. These include:
 - ppbench (as benchmarking and analyzing front end)
 
 It is possible to run the _Ping_ and _Pong_ service as a Docker container 
-and as a Docker container connected to a Weave SDN network. 
+and as a Docker container connected to a Weave SDN network. Further container solutions and SDNs are planned for further releases.
 
 If you are working with Ubuntu LTS 14.04 cloud machines 
 (following user-data is not tested with other
