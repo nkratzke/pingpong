@@ -9,8 +9,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
-const RETRIES = 100
-const JSONANSWER = "{\"length\": %v, \"code\": %v, \"retries\": %v, \"duration\": %v}"
+const retries = 100
+const jsonAnswer = "{\"length\": %v, \"code\": %v, \"retries\": %v, \"duration\": %v}"
 
 var pongUrl string
 
@@ -31,7 +31,7 @@ func get(url string) (content string, code int, err error) {
 func pingHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
-	for i := 1; i <= RETRIES; i++ {
+	for i := 1; i <= retries; i++ {
 		message, _, err := get(pongUrl + "/pong/" + params["length"])
 
 		if err == nil {
@@ -48,12 +48,12 @@ func mpingHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
 	start := time.Now().UnixNano()
-	for retries := 0; retries < RETRIES; retries++ {
+	for r := 0; r < retries; r++ {
 		message, code, err := get(pongUrl + "/pong/" + params["length"])
 		if err == nil {
 			end := time.Now().UnixNano()
 			duration := float64(end-start) / 1000.0 / 1000.0
-			json := fmt.Sprintf(JSONANSWER, len(message), code, retries, duration)
+			json := fmt.Sprintf(jsonAnswer, len(message), code, r, duration)
 			w.Write([]byte(json))
 			return
 		}
@@ -61,7 +61,7 @@ func mpingHandler(w http.ResponseWriter, r *http.Request) {
 
 	end := time.Now().UnixNano()
 	duration := float64(end-start) / 1000.0 / 1000.0
-	json := fmt.Sprintf(JSONANSWER, 0, http.StatusServiceUnavailable, RETRIES, duration)
+	json := fmt.Sprintf(jsonAnswer, 0, http.StatusServiceUnavailable, retries, duration)
 	w.Write([]byte(json))
 }
 
