@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-    
-    "github.com/gorilla/mux"
+
+	"github.com/gorilla/mux"
 )
 
 func pongHandler(w http.ResponseWriter, r *http.Request) {
