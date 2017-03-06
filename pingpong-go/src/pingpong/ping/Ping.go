@@ -65,6 +65,8 @@ func mpingHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(json))
 }
 
+// Start starts the ping service on the given port. ponghost and pongport are the
+// connection details of the pong service.
 func Start(port int, ponghost string, pongport int) {
 	myport := fmt.Sprintf(":%v", port)
 

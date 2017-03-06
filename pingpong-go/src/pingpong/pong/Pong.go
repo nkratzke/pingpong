@@ -22,6 +22,7 @@ func pongHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(result.Bytes())
 }
 
+// Start starts the pong service on the given port.
 func Start(port int) {
 	r := mux.NewRouter()
 	r.HandleFunc("/pong/{length:[0-9]+}", pongHandler)
